@@ -1,0 +1,197 @@
+:root {
+    /* Paleta Sanrio */
+    --primary-pink: #FFB7C5;
+    --primary-blue: #BBE1FA;
+    --deep-blue: #89C2D9;
+    --bg-color: #FFF0F5;
+    
+    /* CAMBIO 1: Fondo mucho más transparente (0.5 en vez de 0.85) */
+    --glass-white: rgba(255, 255, 255, 0.50); 
+    
+    --text-main: #5A4E5A;
+    --accent-color: #FF6B81;
+    --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Quicksand', sans-serif;
+    color: var(--text-main);
+    background-color: var(--bg-color);
+    min-height: 100vh;
+    padding: 20px;
+    
+    /* Configuración de fondo (para que se vea tu imagen) */
+    background-image: url(img/fondo.jpg.jpg);
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.main-container {
+    max-width: 600px;
+    margin: 0 auto;
+    animation: fadeIn 1.5s ease-out;
+}
+
+/* Hero */
+.hero-section {
+    text-align: center;
+    margin-bottom: 30px;
+    padding-top: 20px;
+    text-shadow: 0 2px 4px rgba(255,255,255,0.8); /* Para leer mejor sobre fondo */
+}
+
+.sanrio-icon { font-size: 4rem; margin-bottom: 10px; }
+h1 { font-family: 'Patrick Hand', cursive; font-size: 3rem; color: #554455; }
+.subtitle {
+    background: rgba(255, 255, 255, 0.7);
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+/* CAMBIO: Tarjetas más transparentes y con borde sutil */
+.card {
+    background: var(--glass-white);
+    backdrop-filter: blur(12px); /* Más desenfoque para efecto vidrio premium */
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 25px;
+    padding: 25px;
+    margin-bottom: 30px;
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+h2 {
+    text-align: center;
+    color: var(--deep-blue);
+    margin-bottom: 25px;
+    font-family: 'Patrick Hand', cursive;
+    font-size: 2rem;
+}
+
+/* Timer Grid */
+.timer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(65px, 1fr));
+    gap: 10px;
+    text-align: center;
+}
+
+.time-box {
+    background: rgba(255, 255, 255, 0.7); /* Fondo blanquito suave para los números */
+    padding: 10px 5px;
+    border-radius: 15px;
+    border-bottom: 3px solid var(--primary-pink);
+}
+
+.time-val { display: block; font-size: 1.6rem; font-weight: bold; }
+.time-label { font-size: 0.75rem; text-transform: uppercase; color: #777; }
+
+/* =========================================
+   NUEVO: LINEA DE TIEMPO MERGEADA (GAME MAP)
+   ========================================= */
+.timeline-container {
+    position: relative;
+    padding-left: 20px; /* Espacio para la línea */
+}
+
+/* La línea vertical (El "tubo" de la barra de progreso) */
+.timeline-line {
+    position: absolute;
+    left: 29px; /* Ajuste para centrar con los círculos */
+    top: 10px;
+    bottom: 30px;
+    width: 4px;
+    background: linear-gradient(to bottom, var(--primary-pink) 0%, var(--primary-blue) 100%);
+    border-radius: 4px;
+    z-index: 1;
+}
+
+/* Los items individuales */
+.timeline-item {
+    position: relative;
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    z-index: 2; /* Para estar sobre la línea */
+}
+
+/* El círculo del checkpoint */
+.timeline-dot {
+    width: 22px;
+    height: 22px;
+    background: white;
+    border: 4px solid var(--primary-pink);
+    border-radius: 50%;
+    margin-right: 15px;
+    box-shadow: 0 0 0 4px rgba(255, 183, 197, 0.3);
+    flex-shrink: 0; /* Evita que se aplaste */
+    transition: transform 0.3s ease;
+}
+
+.timeline-item:hover .timeline-dot {
+    transform: scale(1.2);
+    border-color: var(--primary-blue);
+}
+
+/* La tarjeta de contenido (Fecha y Texto) */
+.timeline-content {
+    background: rgba(255, 255, 255, 0.8);
+    padding: 10px 15px;
+    border-radius: 15px;
+    flex-grow: 1;
+    border-left: 3px solid var(--primary-blue);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.timeline-info h3 {
+    font-size: 1.1rem;
+    margin-bottom: 2px;
+    color: var(--text-main);
+}
+
+.timeline-date {
+    font-size: 0.85rem;
+    color: var(--deep-blue);
+    font-weight: 600;
+}
+
+.timeline-icon {
+    font-size: 1.2rem;
+    color: var(--primary-pink);
+}
+
+/* Galería Polaroid (Igual que antes) */
+.gallery-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+.polaroid {
+    background: white;
+    padding: 8px 8px 40px 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transform: rotate(-2deg);
+    width: 45%;
+    max-width: 300px;
+    margin-bottom: 20px;
+}
+.polaroid img { width: 100%; height: 250px; object-fit: cover; }
+.polaroid p { text-align: center; font-family: 'Patrick Hand'; margin-top: 5px; color: #666; }
+
+/* Animaciones */
+@keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0px); } }
+.floating-anim { animation: float 3s ease-in-out infinite; }
