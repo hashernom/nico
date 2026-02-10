@@ -5,7 +5,8 @@ const CHECKPOINTS = [
     { title: "Primer contacto", date: "2025-04-04",},
     { title: "Primera Cita", date: "2025-04-10",},
     { title: "Conocí a tus papás", date: "2026-24-01",},
-    { title: "Primer pico", date: "2026-24-01",}
+    { title: "Primer pico", date: "2026-24-01",},
+    { title: "Primer dia en ocaña", date: "2026-14-02",}
 ];
 
 const PHOTOS = [
