@@ -4,9 +4,9 @@ const START_DATE = new Date(2025, 3, 4, 0, 0);
 const CHECKPOINTS = [
     { title: "Primer contacto", date: "2025-04-04",},
     { title: "Primera Cita", date: "2025-04-10",},
-    { title: "Conocí a tus papás", date: "2026-24-01",},
-    { title: "Primer pico", date: "2026-24-01",},
-    { title: "Primer dia en ocaña", date: "2026-14-02",}
+    { title: "Conocí a tus papás", date: "2026-01-24",},
+    { title: "Primer pico", date: "2026-01-24",},
+    { title: "Primer dia en ocaña", date: "2026-02-14",}
 ];
 
 const PHOTOS = [
