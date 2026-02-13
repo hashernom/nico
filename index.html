@@ -4,43 +4,95 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>niconiconiconico</title>
-    <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Fuentes Pixel Art -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <!-- Partículas de fondo -->
+    <div class="particles-container" id="particles"></div>
 
     <main class="main-container">
         
+        <!-- Hero con estilo Stardew -->
         <header class="hero-section">
-            <div class="sanrio-icon floating-anim">☁️🎀</div>
-            <h1>Antologia de nuestros momentos</h1>
-            <p class="subtitle">Desde el 4 de Abril, 2025</p>
+            <div class="stardew-title-box">
+                <div class="corner-deco top-left"></div>
+                <div class="corner-deco top-right"></div>
+                <div class="corner-deco bottom-left"></div>
+                <div class="corner-deco bottom-right"></div>
+                
+                <div class="pixel-hearts">
+                    <span class="pixel-heart">❤️</span>
+                </div>
+                
+                <h1 class="pixel-title">Antologia de nuestros momentos :p</h1>
+                <div class="subtitle-box">
+                    <span class="pixel-icon">🌸</span>
+                    <span>Desde el 4 de Abril, 2025</span>
+                    <span class="pixel-icon">🌸</span>
+                </div>
+            </div>
         </header>
 
-        <section class="card timer-card">
-            <h2>Tiempo desde que nos conocimos</h2>
-            <div id="timer" class="timer-grid">
-                </div>
-        </section>
-
-        <section class="card timeline-card">
-            <h2>Checkpoint bar</h2>
-            
-            <div class="timeline-container">
-                <div class="timeline-line"></div>
-
-                <div id="checkpoints-list"></div>
+        <!-- Timer Card Estilo Stardew -->
+        <section class="stardew-card timer-card">
+            <div class="card-header">
+                <div class="header-border"></div>
+                <h2>Tiempo desde que nos conocimos</h2>
+                <div class="header-border"></div>
             </div>
+            
+            <div class="card-content">
+                <div id="timer" class="timer-grid"></div>
+            </div>
+            
+            <div class="card-footer"></div>
         </section>
 
-        <section class="gallery-section">
-            <h2>Galeria (us)</h2>
-            <div class="gallery-grid" id="gallery-grid"></div>
+        <!-- Timeline Estilo Stardew -->
+        <section class="stardew-card timeline-card">
+            <div class="card-header">
+                <div class="header-border"></div>
+                <h2>Checkpoint bar</h2>
+                <div class="header-border"></div>
+            </div>
+            
+            <div class="card-content">
+                <div class="timeline-container">
+                    <div class="timeline-line"></div>
+                    <div id="checkpoints-list"></div>
+                </div>
+            </div>
+            
+            <div class="card-footer"></div>
         </section>
 
-        <footer>
-            <p style="color: white; text-shadow: 1px 1px 2px rgba(0,0,0,0.2);">Hecho con ❤️ para nicole</p>
+        <!-- Galería Álbum de Recuerdos -->
+        <section class="stardew-card gallery-card">
+            <div class="card-header">
+                <div class="header-border"></div>
+                <h2>📖 Galeria (us)</h2>
+                <div class="header-border"></div>
+            </div>
+            
+            <div class="card-content">
+                <div class="photo-album" id="gallery-grid"></div>
+            </div>
+            
+            <div class="card-footer"></div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="stardew-footer">
+            <div class="footer-content">
+                <span class="pixel-icon"></span>
+                <p>Hecho con ❤️ para nicole</p>
+                <span class="pixel-icon"></span>
+            </div>
         </footer>
     </main>
 

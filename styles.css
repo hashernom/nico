@@ -1,197 +1,773 @@
+/* ============================================
+   PALETA STARDEW VALLEY + TOQUES CELESTE/ROSA
+   ============================================ */
 :root {
-    /* Paleta Sanrio */
-    --primary-pink: #FFB7C5;
-    --primary-blue: #BBE1FA;
-    --deep-blue: #89C2D9;
-    --bg-color: #FFF0F5;
+    /* Colores principales Stardew */
+    --wood-dark: #5C4033;
+    --wood-light: #8B6F47;
+    --wood-medium: #6F4E37;
+    --grass-green: #8BC34A;
+    --dirt-brown: #A67C52;
+    --sky-blue: #87CEEB;
     
-    /* CAMBIO 1: Fondo mucho más transparente (0.5 en vez de 0.85) */
-    --glass-white: rgba(255, 255, 255, 0.50); 
+    /* Toques personalizados celeste y rosa */
+    --soft-pink: #FFB7C5;
+    --soft-blue: #A8D8EA;
+    --rose-accent: #FF9AA2;
     
-    --text-main: #5A4E5A;
-    --accent-color: #FF6B81;
-    --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+    /* Fondos y textos */
+    --bg-paper: #F5E6D3;
+    --text-dark: #3E2723;
+    --text-light: #6D4C41;
+    
+    /* Sombras pixel art */
+    --shadow-pixel: 4px 4px 0px rgba(0, 0, 0, 0.3);
+    --shadow-wood: inset -2px -2px 0px rgba(0, 0, 0, 0.2),
+                   inset 2px 2px 0px rgba(255, 255, 255, 0.1);
 }
 
+/* ============================================
+   RESET Y BASE
+   ============================================ */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    image-rendering: pixelated; /* Para mantener el estilo pixel art */
 }
 
 body {
     font-family: 'Quicksand', sans-serif;
-    color: var(--text-main);
-    background-color: var(--bg-color);
+    color: var(--text-dark);
     min-height: 100vh;
     padding: 20px;
+    position: relative;
+    overflow-x: hidden;
     
-    /* Configuración de fondo (para que se vea tu imagen) */
-    background-image: url(img/fondo.jpg.jpg);
+    
+    
+    background-image: url('img/fondo.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
+    background-repeat: no-repeat;
+    
+    
+    /* OPCIÓN 2: Fondo degradado por defecto (comentar si usas imagen) */
+    /*/background: 
+        linear-gradient(to bottom, 
+            var(--sky-blue) 0%, 
+            var(--soft-blue) 30%, 
+            var(--grass-green) 70%, 
+            var(--dirt-brown) 100%
+        );
+    background-attachment: fixed;*/
+    
+    /* OPCIÓN 3: Combinar imagen + overlay de color semi-transparente */
+    /*
+    background-image: 
+        linear-gradient(to bottom, 
+            rgba(135, 206, 235, 0.3) 0%, 
+            rgba(168, 216, 234, 0.3) 30%, 
+            rgba(139, 195, 74, 0.2) 70%, 
+            rgba(166, 124, 82, 0.2) 100%
+        ),
+        url('img/fondo-stardew.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    */
 }
 
+/* Patrón de textura sutil */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 2px,
+            rgba(0, 0, 0, 0.03) 2px,
+            rgba(0, 0, 0, 0.03) 4px
+        ),
+        repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 2px,
+            rgba(0, 0, 0, 0.03) 2px,
+            rgba(0, 0, 0, 0.03) 4px
+        );
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* ============================================
+   SISTEMA DE PARTÍCULAS
+   ============================================ */
+.particles-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 2;
+    overflow: hidden;
+}
+
+.particle {
+    position: absolute;
+    font-size: 20px;
+    opacity: 0.6;
+    animation: float-particle 15s infinite ease-in-out;
+}
+
+@keyframes float-particle {
+    0% {
+        transform: translateY(100vh) translateX(0) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.6;
+    }
+    90% {
+        opacity: 0.6;
+    }
+    100% {
+        transform: translateY(-100px) translateX(100px) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* ============================================
+   CONTENEDOR PRINCIPAL
+   ============================================ */
 .main-container {
-    max-width: 600px;
+    max-width: 700px;
     margin: 0 auto;
-    animation: fadeIn 1.5s ease-out;
+    position: relative;
+    z-index: 3;
+    animation: slideDown 0.8s ease-out;
 }
 
-/* Hero */
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ============================================
+   HERO SECTION - TÍTULO PRINCIPAL
+   ============================================ */
 .hero-section {
-    text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
     padding-top: 20px;
-    text-shadow: 0 2px 4px rgba(255,255,255,0.8); /* Para leer mejor sobre fondo */
+    animation: bounceIn 1s ease-out;
 }
 
-.sanrio-icon { font-size: 4rem; margin-bottom: 10px; }
-h1 { font-family: 'Patrick Hand', cursive; font-size: 3rem; color: #554455; }
-.subtitle {
-    background: rgba(255, 255, 255, 0.7);
-    padding: 5px 15px;
-    border-radius: 20px;
-    font-weight: 600;
-    font-size: 0.9rem;
+@keyframes bounceIn {
+    0% {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+    60% {
+        transform: scale(1.1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1);
+    }
 }
 
-/* CAMBIO: Tarjetas más transparentes y con borde sutil */
-.card {
-    background: var(--glass-white);
-    backdrop-filter: blur(12px); /* Más desenfoque para efecto vidrio premium */
-    -webkit-backdrop-filter: blur(12px);
-    border-radius: 25px;
-    padding: 25px;
-    margin-bottom: 30px;
-    box-shadow: var(--shadow);
-    border: 1px solid rgba(255, 255, 255, 0.6);
+.stardew-title-box {
+    background: var(--wood-light);
+    border: 6px solid var(--wood-dark);
+    border-radius: 8px;
+    padding: 30px 20px;
+    position: relative;
+    box-shadow: 
+        var(--shadow-pixel),
+        inset 0 0 20px rgba(0, 0, 0, 0.1);
+    
+    /* Textura de madera */
+    background-image: 
+        repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 10px,
+            rgba(0, 0, 0, 0.05) 10px,
+            rgba(0, 0, 0, 0.05) 11px
+        );
 }
 
-h2 {
-    text-align: center;
-    color: var(--deep-blue);
-    margin-bottom: 25px;
-    font-family: 'Patrick Hand', cursive;
+/* Decoraciones de esquina */
+.corner-deco {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: var(--wood-dark);
+    border: 2px solid var(--wood-medium);
+}
+
+.corner-deco.top-left { top: -6px; left: -6px; border-radius: 4px 0 0 0; }
+.corner-deco.top-right { top: -6px; right: -6px; border-radius: 0 4px 0 0; }
+.corner-deco.bottom-left { bottom: -6px; left: -6px; border-radius: 0 0 0 4px; }
+.corner-deco.bottom-right { bottom: -6px; right: -6px; border-radius: 0 0 4px 0; }
+
+.pixel-hearts {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 15px;
+    animation: heartbeat 2s infinite;
+}
+
+@keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    10% { transform: scale(1.1); }
+    20% { transform: scale(1); }
+}
+
+.pixel-heart {
     font-size: 2rem;
+    filter: drop-shadow(2px 2px 0px rgba(0, 0, 0, 0.3));
+    animation: bounce 2s infinite;
 }
 
-/* Timer Grid */
+.pixel-heart:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.pixel-title {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 1.3rem;
+    color: var(--bg-paper);
+    text-align: center;
+    line-height: 1.8;
+    text-shadow: 
+        3px 3px 0px var(--wood-dark),
+        -1px -1px 0px rgba(255, 255, 255, 0.2);
+    margin-bottom: 15px;
+}
+
+.subtitle-box {
+    background: var(--bg-paper);
+    border: 3px solid var(--wood-dark);
+    border-radius: 20px;
+    padding: 8px 20px;
+    display: inline-block;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--text-dark);
+    box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 auto;
+    width: fit-content;
+}
+
+.pixel-icon {
+    font-size: 1.2rem;
+    animation: rotate-icon 3s infinite ease-in-out;
+}
+
+@keyframes rotate-icon {
+    0%, 100% { transform: rotate(0deg); }
+    50% { transform: rotate(20deg); }
+}
+
+/* ============================================
+   TARJETAS ESTILO STARDEW
+   ============================================ */
+.stardew-card {
+    background: var(--bg-paper);
+    border: 6px solid var(--wood-dark);
+    border-radius: 12px;
+    margin-bottom: 30px;
+    position: relative;
+    box-shadow: var(--shadow-pixel);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.stardew-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.4);
+}
+
+.card-header {
+    background: linear-gradient(to bottom, var(--wood-light), var(--wood-medium));
+    padding: 15px 20px;
+    border-bottom: 4px solid var(--wood-dark);
+    position: relative;
+    
+    background-image: 
+        repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 8px,
+            rgba(0, 0, 0, 0.1) 8px,
+            rgba(0, 0, 0, 0.1) 9px
+        );
+}
+
+.header-border {
+    position: absolute;
+    top: 50%;
+    width: 40px;
+    height: 2px;
+    background: var(--wood-dark);
+}
+
+.header-border:first-child {
+    left: 20px;
+}
+
+.header-border:last-child {
+    right: 20px;
+}
+
+.card-header h2 {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 1rem;
+    color: var(--bg-paper);
+    text-align: center;
+    text-shadow: 2px 2px 0px var(--wood-dark);
+    margin: 0;
+    line-height: 1.6;
+}
+
+.card-content {
+    padding: 25px;
+}
+
+.card-footer {
+    height: 12px;
+    background: linear-gradient(to bottom, var(--wood-medium), var(--wood-dark));
+    border-top: 2px solid rgba(0, 0, 0, 0.2);
+}
+
+/* ============================================
+   TIMER GRID
+   ============================================ */
 .timer-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(65px, 1fr));
-    gap: 10px;
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    gap: 15px;
     text-align: center;
 }
 
 .time-box {
-    background: rgba(255, 255, 255, 0.7); /* Fondo blanquito suave para los números */
-    padding: 10px 5px;
-    border-radius: 15px;
-    border-bottom: 3px solid var(--primary-pink);
+    background: linear-gradient(to bottom, #FFF8E7, var(--bg-paper));
+    border: 4px solid var(--wood-dark);
+    border-radius: 8px;
+    padding: 15px 10px;
+    position: relative;
+    box-shadow: 
+        inset 0 2px 0 rgba(255, 255, 255, 0.5),
+        2px 2px 0px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
 }
 
-.time-val { display: block; font-size: 1.6rem; font-weight: bold; }
-.time-label { font-size: 0.75rem; text-transform: uppercase; color: #777; }
+.time-box::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 8px;
+    height: 8px;
+    background: var(--soft-pink);
+    border: 2px solid var(--wood-dark);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--rose-accent);
+}
 
-/* =========================================
-   NUEVO: LINEA DE TIEMPO MERGEADA (GAME MAP)
-   ========================================= */
+.time-box:hover {
+    transform: scale(1.05);
+    border-color: var(--soft-blue);
+    box-shadow: 
+        inset 0 2px 0 rgba(255, 255, 255, 0.5),
+        3px 3px 0px rgba(0, 0, 0, 0.3),
+        0 0 20px var(--soft-blue);
+}
+
+.time-val {
+    display: block;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 1.5rem;
+    color: var(--wood-dark);
+    margin-bottom: 5px;
+    text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.5);
+}
+
+.time-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--text-light);
+    letter-spacing: 1px;
+}
+
+/* ============================================
+   TIMELINE ESTILO GAME MAP
+   ============================================ */
 .timeline-container {
     position: relative;
-    padding-left: 20px; /* Espacio para la línea */
+    padding-left: 40px;
 }
 
-/* La línea vertical (El "tubo" de la barra de progreso) */
 .timeline-line {
     position: absolute;
-    left: 29px; /* Ajuste para centrar con los círculos */
-    top: 10px;
-    bottom: 30px;
-    width: 4px;
-    background: linear-gradient(to bottom, var(--primary-pink) 0%, var(--primary-blue) 100%);
-    border-radius: 4px;
+    left: 18px;
+    top: 20px;
+    bottom: 20px;
+    width: 6px;
+    background: linear-gradient(
+        to bottom,
+        var(--soft-pink) 0%,
+        var(--rose-accent) 30%,
+        var(--soft-blue) 70%,
+        var(--grass-green) 100%
+    );
+    border-radius: 3px;
+    border: 2px solid var(--wood-dark);
+    box-shadow: 2px 0 4px rgba(0, 0, 0, 0.2);
     z-index: 1;
 }
 
-/* Los items individuales */
 .timeline-item {
     position: relative;
-    margin-bottom: 30px;
+    margin-bottom: 25px;
     display: flex;
     align-items: center;
-    z-index: 2; /* Para estar sobre la línea */
+    z-index: 2;
+    animation: fadeInLeft 0.6s ease-out backwards;
 }
 
-/* El círculo del checkpoint */
+.timeline-item:nth-child(1) { animation-delay: 0.1s; }
+.timeline-item:nth-child(2) { animation-delay: 0.2s; }
+.timeline-item:nth-child(3) { animation-delay: 0.3s; }
+.timeline-item:nth-child(4) { animation-delay: 0.4s; }
+.timeline-item:nth-child(5) { animation-delay: 0.5s; }
+
+@keyframes fadeInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
 .timeline-dot {
-    width: 22px;
-    height: 22px;
-    background: white;
-    border: 4px solid var(--primary-pink);
+    width: 28px;
+    height: 28px;
+    background: radial-gradient(circle, var(--soft-pink), var(--rose-accent));
+    border: 4px solid var(--wood-dark);
     border-radius: 50%;
     margin-right: 15px;
-    box-shadow: 0 0 0 4px rgba(255, 183, 197, 0.3);
-    flex-shrink: 0; /* Evita que se aplaste */
-    transition: transform 0.3s ease;
+    box-shadow: 
+        0 0 0 4px var(--bg-paper),
+        0 0 0 6px var(--wood-dark),
+        0 0 15px var(--soft-pink);
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.timeline-dot::after {
+    content: '⭐';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 14px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
 
 .timeline-item:hover .timeline-dot {
-    transform: scale(1.2);
-    border-color: var(--primary-blue);
+    transform: scale(1.3) rotate(180deg);
+    background: radial-gradient(circle, var(--soft-blue), var(--sky-blue));
+    box-shadow: 
+        0 0 0 4px var(--bg-paper),
+        0 0 0 6px var(--wood-dark),
+        0 0 25px var(--soft-blue);
 }
 
-/* La tarjeta de contenido (Fecha y Texto) */
+.timeline-item:hover .timeline-dot::after {
+    opacity: 1;
+}
+
 .timeline-content {
-    background: rgba(255, 255, 255, 0.8);
-    padding: 10px 15px;
-    border-radius: 15px;
+    background: linear-gradient(to right, #FFFEF7, var(--bg-paper));
+    padding: 12px 18px;
+    border-radius: 8px;
     flex-grow: 1;
-    border-left: 3px solid var(--primary-blue);
+    border: 3px solid var(--wood-dark);
+    border-left: 6px solid var(--soft-blue);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.timeline-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background: linear-gradient(to right, transparent, var(--soft-blue));
+    opacity: 0.1;
+    transition: width 0.4s ease;
+}
+
+.timeline-item:hover .timeline-content::before {
+    width: 100%;
+}
+
+.timeline-item:hover .timeline-content {
+    transform: translateX(5px);
+    border-left-color: var(--soft-pink);
+    box-shadow: 5px 5px 0px rgba(0, 0, 0, 0.2);
 }
 
 .timeline-info h3 {
+    font-family: 'Quicksand', sans-serif;
     font-size: 1.1rem;
-    margin-bottom: 2px;
-    color: var(--text-main);
+    font-weight: 700;
+    margin-bottom: 3px;
+    color: var(--text-dark);
 }
 
 .timeline-date {
     font-size: 0.85rem;
-    color: var(--deep-blue);
+    color: var(--text-light);
     font-weight: 600;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.6rem;
 }
 
 .timeline-icon {
-    font-size: 1.2rem;
-    color: var(--primary-pink);
+    font-size: 1.5rem;
+    filter: drop-shadow(2px 2px 0px rgba(0, 0, 0, 0.2));
 }
 
-/* Galería Polaroid (Igual que antes) */
-.gallery-grid {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
+/* ============================================
+   GALERÍA - ÁLBUM DE RECUERDOS
+   ============================================ */
+.photo-album {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+    padding: 10px;
 }
-.polaroid {
-    background: white;
-    padding: 8px 8px 40px 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    transform: rotate(-2deg);
-    width: 45%;
-    max-width: 300px;
+
+.album-photo {
+    background: #FFF;
+    border: 5px solid var(--wood-dark);
+    border-radius: 4px;
+    padding: 12px;
+    box-shadow: 
+        4px 4px 0px rgba(0, 0, 0, 0.3),
+        inset 0 0 20px rgba(139, 195, 74, 0.1);
+    transition: all 0.4s ease;
+    position: relative;
+    transform-origin: center;
+    cursor: pointer;
+}
+
+.album-photo::before {
+    content: '📌';
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.5rem;
+    filter: drop-shadow(2px 2px 0px rgba(0, 0, 0, 0.3));
+}
+
+.album-photo:hover {
+    transform: scale(1.05) rotate(2deg);
+    box-shadow: 
+        6px 6px 0px rgba(0, 0, 0, 0.4),
+        inset 0 0 30px rgba(139, 195, 74, 0.2),
+        0 0 30px var(--soft-pink);
+    z-index: 10;
+}
+
+.album-photo-frame {
+    position: relative;
+    overflow: hidden;
+    border: 3px solid var(--dirt-brown);
+    border-radius: 2px;
+    background: var(--dirt-brown);
+}
+
+.album-photo-frame::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        135deg,
+        transparent 40%,
+        rgba(255, 255, 255, 0.3) 50%,
+        transparent 60%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.album-photo:hover .album-photo-frame::after {
+    opacity: 1;
+}
+
+.album-photo img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.album-photo:hover img {
+    transform: scale(1.1);
+}
+
+.album-caption {
+    margin-top: 10px;
+    padding: 8px;
+    background: var(--bg-paper);
+    border: 2px solid var(--wood-medium);
+    border-radius: 4px;
+    text-align: center;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 600;
+    color: var(--text-dark);
+    font-size: 0.9rem;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* ============================================
+   FOOTER
+   ============================================ */
+.stardew-footer {
+    margin-top: 40px;
     margin-bottom: 20px;
 }
-.polaroid img { width: 100%; height: 250px; object-fit: cover; }
-.polaroid p { text-align: center; font-family: 'Patrick Hand'; margin-top: 5px; color: #666; }
 
-/* Animaciones */
-@keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0px); } }
-.floating-anim { animation: float 3s ease-in-out infinite; }
+.footer-content {
+    background: var(--wood-light);
+    border: 4px solid var(--wood-dark);
+    border-radius: 20px;
+    padding: 15px 30px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.3);
+    
+    background-image: 
+        repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 10px,
+            rgba(0, 0, 0, 0.05) 10px,
+            rgba(0, 0, 0, 0.05) 11px
+        );
+}
+
+.footer-content p {
+    margin: 0;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--bg-paper);
+    text-shadow: 2px 2px 0px var(--wood-dark);
+}
+
+.footer-content .pixel-icon {
+    font-size: 1.5rem;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 600px) {
+    .pixel-title {
+        font-size: 0.9rem;
+        line-height: 1.6;
+    }
+    
+    .card-header h2 {
+        font-size: 0.8rem;
+    }
+    
+    .timer-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .time-val {
+        font-size: 1.2rem;
+    }
+    
+    .photo-album {
+        grid-template-columns: 1fr;
+    }
+    
+    .timeline-container {
+        padding-left: 30px;
+    }
+}
+
+/* ============================================
+   ANIMACIONES ADICIONALES
+   ============================================ */
+@keyframes shimmer {
+    0% {
+        background-position: -1000px 0;
+    }
+    100% {
+        background-position: 1000px 0;
+    }
+}
+
+.shimmer-effect {
+    animation: shimmer 3s infinite;
+    background: linear-gradient(
+        to right,
+        transparent 0%,
+        rgba(255, 255, 255, 0.3) 50%,
+        transparent 100%
+    );
+    background-size: 1000px 100%;
+}
