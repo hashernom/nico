@@ -14,10 +14,10 @@ const CHECKPOINTS = [
 const PHOTOS = [
     { url: 'img/img1.jpg', caption: 'segunda date jajaja' },
     { url: 'img/img2.jpg', caption: 'primera date :u' },
-    { url: 'img/img3.jpg', caption: 'dia de almuerzo con la family' },
-    { url: 'img/img4.jpg', caption: 'pre date' },
-    { url: 'img/img5.jpg', caption: 'oye bonita!!!' },
-    { url: 'img/img6.jpg', caption: 'pechochos' }
+    { url: 'img/img3.jfif', caption: 'dia de almuerzo con la family' },
+    { url: 'img/img4.jfif', caption: 'pre date' },
+    { url: 'img/img5.jfif', caption: 'oye bonita!!!' },
+    { url: 'img/img6.jfif', caption: 'pechochos' }
 ];
 
 // ============================================
