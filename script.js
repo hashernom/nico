@@ -1,14 +1,17 @@
 // ============================================
 // CONFIGURACIÓN
 // ============================================
-const START_DATE = new Date(2025, 3, 4, 0, 0); 
+const START_DATE = new Date(2025, 3, 4, 0, 0); // 4 de Abril 2025
+const MARRIED_DATE = new Date(2026, 1, 21, 0, 0); // 21 de Febrero 2026 (Febrero = 1)
 
 const CHECKPOINTS = [
     { title: "Primer contacto", date: "2025-04-04",},
     { title: "Primera Cita", date: "2025-04-10",},
     { title: "Conocí a tus papás", date: "2026-01-24",},
     { title: "Primer pico", date: "2026-01-24",},
-    { title: "Primer dia en ocaña", date: "2026-02-14",}
+    { title: "Primer dia en ocaña", date: "2026-02-14",},
+    { title: "Cena familiar", date: "2026-02-20",},
+    { title: "nobios alaberga", date: "2026-02-21",}
 ];
 
 const PHOTOS = [
@@ -17,7 +20,11 @@ const PHOTOS = [
     { url: 'img/img3.jfif', caption: 'dia de almuerzo con la family' },
     { url: 'img/img4.jfif', caption: 'pre date' },
     { url: 'img/img5.jfif', caption: 'oye bonita!!!' },
-    { url: 'img/img6.jfif', caption: 'pechochos' }
+    { url: 'img/img6.jfif', caption: 'pechochos' },
+    { url: 'img/img7.jfif', caption: 'prueba de embarazo...' },
+    { url: 'img/img8.jfif', caption: 'integracion familiar ishh' },
+    { url: 'img/img9.jfif', caption: 'pre night' },
+    { url: 'img/img10.jfif', caption: 'NO MAMES EL BIG DAY' }
 ];
 
 // ============================================
@@ -43,7 +50,7 @@ function createParticles() {
 }
 
 // ============================================
-// TIMER
+// TIMER 1 - TIEMPO DESDE QUE SE CONOCIERON
 // ============================================
 function updateTimer() {
     const now = new Date();
@@ -84,6 +91,58 @@ function updateTimer() {
         </div>
     `;
     document.getElementById('timer').innerHTML = timerHTML;
+}
+
+// ============================================
+// TIMER 2 - TIEMPO DESDE EL 21 DE FEBRERO
+// ============================================
+function updateTimer2() {
+    const now = new Date();
+    const diff = now - MARRIED_DATE;
+    
+    // Si la fecha es futura, mostramos cuenta regresiva
+    if (diff < 0) {
+        const countdownDiff = Math.abs(diff);
+        const daysUntil = Math.floor(countdownDiff / (1000 * 60 * 60 * 24));
+        const hoursUntil = Math.floor((countdownDiff / (1000 * 60 * 60)) % 24);
+        
+        document.getElementById('timer2').innerHTML = `
+            <p style="width:100%; text-align: center; font-family: 'Quicksand'; font-weight: 700; font-size: 1rem; padding: 20px;">
+                💕 Faltan ${daysUntil} días y ${hoursUntil} horas 💕
+            </p>
+        `;
+        return;
+    }
+
+    const seconds = Math.floor((diff / 1000) % 60);
+    const minutes = Math.floor((diff / (1000 * 60)) % 60);
+    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const months = Math.floor(days / 30.44);
+
+    const timer2HTML = `
+        <div class="time-box">
+            <span class="time-val">${months}</span>
+            <span class="time-label">Meses</span>
+        </div>
+        <div class="time-box">
+            <span class="time-val">${days}</span>
+            <span class="time-label">Días</span>
+        </div>
+        <div class="time-box">
+            <span class="time-val">${hours}</span>
+            <span class="time-label">Hrs</span>
+        </div>
+        <div class="time-box">
+            <span class="time-val">${minutes}</span>
+            <span class="time-label">Min</span>
+        </div>
+        <div class="time-box">
+            <span class="time-val">${seconds}</span>
+            <span class="time-label">Seg</span>
+        </div>
+    `;
+    document.getElementById('timer2').innerHTML = timer2HTML;
 }
 
 // ============================================
@@ -131,8 +190,10 @@ function renderGallery() {
     
     gallery.innerHTML = html;
     
-    // Agregar efecto de click a las fotos
-    addPhotoClickEffects();
+    // Agregar efecto de click a las fotos DESPUÉS de crearlas
+    setTimeout(() => {
+        addPhotoClickEffects();
+    }, 100);
 }
 
 // ============================================
@@ -141,16 +202,23 @@ function renderGallery() {
 function addPhotoClickEffects() {
     const photos = document.querySelectorAll('.album-photo');
     
-    photos.forEach(photo => {
+    console.log('🎯 Agregando efectos de click a', photos.length, 'fotos');
+    
+    photos.forEach((photo, index) => {
+        // Remover listeners previos si existen
+        photo.style.cursor = 'pointer';
+        
         photo.addEventListener('click', function(e) {
+            console.log('✨ Click en foto', index + 1);
+            
             // Efecto de corazones al hacer click
-            createHeartBurst(e.pageX, e.pageY);
+            createHeartBurst(e.clientX, e.clientY);
             
             // Efecto de shake
-            this.style.animation = 'none';
+            this.classList.add('photo-shake');
             setTimeout(() => {
-                this.style.animation = '';
-            }, 10);
+                this.classList.remove('photo-shake');
+            }, 500);
         });
     });
 }
@@ -159,8 +227,10 @@ function addPhotoClickEffects() {
 // EFECTO DE CORAZONES AL HACER CLICK
 // ============================================
 function createHeartBurst(x, y) {
-    const hearts = ['💕', '💖', '💗', '💝'];
-    const burstCount = 6;
+    const hearts = ['💕', '💖', '💗', '💝', '❤️'];
+    const burstCount = 8;
+    
+    console.log('💕 Creando explosión de corazones en', x, y);
     
     for (let i = 0; i < burstCount; i++) {
         const heart = document.createElement('div');
@@ -168,31 +238,34 @@ function createHeartBurst(x, y) {
         heart.style.position = 'fixed';
         heart.style.left = x + 'px';
         heart.style.top = y + 'px';
-        heart.style.fontSize = '1.5rem';
+        heart.style.fontSize = '2rem';
         heart.style.pointerEvents = 'none';
-        heart.style.zIndex = '9999';
+        heart.style.zIndex = '99999';
+        heart.style.userSelect = 'none';
         
         const angle = (Math.PI * 2 / burstCount) * i;
-        const distance = 50 + Math.random() * 50;
+        const distance = 80 + Math.random() * 60;
         const endX = x + Math.cos(angle) * distance;
         const endY = y + Math.sin(angle) * distance;
         
         document.body.appendChild(heart);
         
         // Animación
-        heart.animate([
+        const animation = heart.animate([
             { 
-                transform: 'translate(0, 0) scale(0) rotate(0deg)',
+                transform: 'translate(-50%, -50%) scale(0) rotate(0deg)',
                 opacity: 1 
             },
             { 
-                transform: `translate(${endX - x}px, ${endY - y}px) scale(1.5) rotate(${Math.random() * 360}deg)`,
+                transform: `translate(${endX - x}px, ${endY - y}px) scale(1.5) rotate(${Math.random() * 720}deg)`,
                 opacity: 0 
             }
         ], {
-            duration: 1000,
+            duration: 1200,
             easing: 'cubic-bezier(0.4, 0.0, 0.2, 1)'
-        }).onfinish = () => {
+        });
+        
+        animation.onfinish = () => {
             heart.remove();
         };
     }
@@ -213,15 +286,6 @@ function addCardHoverEffects() {
             this.style.filter = 'brightness(1)';
         });
     });
-}
-
-// ============================================
-// EFECTO DE SONIDO (OPCIONAL)
-// ============================================
-function playClickSound() {
-    // Aquí puedes agregar sonidos si lo deseas
-    // Por ahora solo un efecto visual
-    console.log('✨ Click!');
 }
 
 // ============================================
@@ -254,6 +318,8 @@ function animateOnScroll() {
 function addTitleSparkles() {
     const titleBox = document.querySelector('.stardew-title-box');
     
+    if (!titleBox) return;
+    
     setInterval(() => {
         const sparkle = document.createElement('div');
         sparkle.textContent = '✨';
@@ -282,25 +348,24 @@ function addTitleSparkles() {
 // INICIALIZACIÓN
 // ============================================
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('🌾 Iniciando página Stardew Valley...');
+    
     // Iniciar todas las funciones
     createParticles();
     updateTimer();
+    updateTimer2(); // ← IMPORTANTE: Segundo timer
     renderCheckpoints();
     renderGallery();
     addCardHoverEffects();
     animateOnScroll();
     addTitleSparkles();
     
-    // Actualizar timer cada segundo
-    setInterval(updateTimer, 1000);
+    // Actualizar ambos timers cada segundo
+    setInterval(() => {
+        updateTimer();
+        updateTimer2(); // ← IMPORTANTE: Actualizar segundo timer
+    }, 1000);
     
-    console.log('🌾 Página estilo Stardew Valley cargada correctamente! 🌾');
-});
-
-// ============================================
-// EFECTO DE CURSOR PERSONALIZADO (OPCIONAL)
-// ============================================
-document.addEventListener('mousemove', function(e) {
-    // Puedes agregar un cursor personalizado aquí si lo deseas
-    // Por ejemplo, una mini estrella que siga al cursor
+    console.log('🌾 ¡Página cargada correctamente!');
+    console.log('💕 Efectos de click activados en fotos');
 });
