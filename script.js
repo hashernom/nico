@@ -11,7 +11,13 @@ const CHECKPOINTS = [
     { title: "Primer pico", date: "2026-01-24",},
     { title: "Primer dia en ocaña", date: "2026-02-14",},
     { title: "Cena familiar", date: "2026-02-20",},
-    { title: "nobios alaberga", date: "2026-02-21",}
+    { title: "nobios alaberga", date: "2026-02-21",},
+    { title: "primera date de cine", date: "2026-03-18",},
+    { title: "primer mes", date: "2026-03-21",},
+    { title: "el mejo regalo del mundo", date: "2026-03-21",},
+    { title: "Santiago arrives ocaña once again", date: "2026-03-28",},
+    { title: "Serenata de cumpeaños 18 de nico", date: "",},
+    { title: "", date: "",}
 ];
 
 const PHOTOS = [
@@ -24,7 +30,16 @@ const PHOTOS = [
     { url: 'img/img7.jfif', caption: 'prueba de embarazo...' },
     { url: 'img/img8.jfif', caption: 'integracion familiar ishh' },
     { url: 'img/img9.jfif', caption: 'pre night' },
-    { url: 'img/img10.jfif', caption: 'NO MAMES EL BIG DAY' }
+    { url: 'img/img10.jfif', caption: 'NO MAMES EL BIG DAY' },
+    { url: 'img/img10.1.jpeg', caption: 'Best date' },
+    { url: 'img/img11.jpeg', caption: 'primer mes!!!!' },
+    { url: 'img/img12.jpeg', caption: 'El mejor regalo del mundo lit' },
+    { url: 'img/img13.jpeg', caption: 'Almuerzo de pumple de mi nico' },
+    { url: 'img/img14.jpeg', caption: 'us 4:3' },
+    { url: 'img/img15.jpeg', caption: 'Pumple de mamor bello mua' },
+    { url: 'img/img16.jpeg', caption: 'primer beso formal' },
+    { url: 'img/img17.jpeg', caption: 'brunch con el suegro' },
+    { url: 'img/img18.jpeg', caption: 'mi foto fav por ahora (4/04/2026)' }
 ];
 
 // ============================================
