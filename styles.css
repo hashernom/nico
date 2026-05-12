@@ -401,6 +401,71 @@ body::before {
     box-shadow: 0 0 10px var(--rose-accent);
 }
 
+/* Contenedor de animación de orquídeas */
+.flower-animation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    pointer-events: auto;
+    cursor: pointer;
+    transition: opacity 0.5s ease-in-out;
+    opacity: 1;
+    background-color: rgba(0, 0, 0, 0.3); /* Fondo semitransparente para destacar las flores */
+}
+
+.flower-animation.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Elementos ocultos inicialmente */
+.initial-hidden {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0.8s ease-in-out, opacity 0.8s ease-in-out;
+}
+
+.initial-hidden.show {
+    visibility: visible;
+    opacity: 1;
+}
+
+.main-container.initial-hidden {
+    visibility: hidden;
+    opacity: 0;
+    display: flex;
+}
+
+.main-container.initial-hidden.show {
+    visibility: visible;
+    opacity: 1;
+}
+
+#particles.initial-hidden {
+    visibility: hidden;
+    opacity: 0;
+    display: block;
+}
+
+#particles.initial-hidden.show {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Asegurar que el contenido principal esté por encima */
+.main-container {
+    position: relative;
+    z-index: 3;
+}
+
+/* Partículas por encima de la animación */
+.particles-container {
+    z-index: 2;
+}
+
 .time-box:hover {
     transform: scale(1.05);
     border-color: var(--soft-blue);

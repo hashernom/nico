@@ -360,10 +360,57 @@ function addTitleSparkles() {
 }
 
 // ============================================
+// MANEJO DE ANIMACIÓN DE FLORES (CLICK PARA OCULTAR)
+// ============================================
+function setupFlowerAnimationClick() {
+    const flowerAnimation = document.querySelector('.flower-animation');
+    const mainContainer = document.querySelector('.main-container');
+    const particlesContainer = document.getElementById('particles');
+    
+    if (!flowerAnimation) {
+        console.log('⚠️ No se encontró el contenedor de animación de flores');
+        return;
+    }
+    
+    // Agregar evento click para ocultar animación y mostrar contenido principal
+    flowerAnimation.addEventListener('click', function() {
+        console.log('🌸 Click en animación de flores - Mostrando contenido principal');
+        
+        // Ocultar animación de flores con transición usando clase CSS
+        flowerAnimation.classList.add('hidden');
+        
+        // Mostrar contenido principal y partículas usando clases CSS
+        if (mainContainer) {
+            mainContainer.classList.remove('initial-hidden');
+            mainContainer.classList.add('show');
+        }
+        if (particlesContainer) {
+            particlesContainer.classList.remove('initial-hidden');
+            particlesContainer.classList.add('show');
+        }
+        
+        // Remover completamente el contenedor después de la transición
+        setTimeout(() => {
+            flowerAnimation.style.display = 'none';
+            console.log('✅ Animación de flores ocultada, contenido principal visible');
+        }, 500);
+    });
+    
+    // Agregar indicador visual de que es clickeable
+    flowerAnimation.style.cursor = 'pointer';
+    flowerAnimation.title = 'Haz click para continuar a la página principal';
+    
+    console.log('🌸 Animación de flores configurada - Click para continuar');
+}
+
+// ============================================
 // INICIALIZACIÓN
 // ============================================
 document.addEventListener('DOMContentLoaded', function() {
     console.log('🌾 Iniciando página Stardew Valley...');
+    
+    // Configurar animación de flores (click para ocultar)
+    setupFlowerAnimationClick();
     
     // Iniciar todas las funciones
     createParticles();
