@@ -17,7 +17,7 @@ const CHECKPOINTS = [
     { title: "el mejo regalo del mundo", date: "2026-03-21",},
     { title: "Santiago arrives ocaña once again", date: "2026-03-28",},
     { title: "Serenata de cumpeaños 18 de nico", date: "",},
-    { title: "", date: "",}
+    { title: "Pumple santi", date: "2026-05-24",}
 ];
 
 const PHOTOS = [
@@ -40,14 +40,14 @@ const PHOTOS = [
     { url: 'img/img16.jpeg', caption: 'primer beso formal' },
     { url: 'img/img17.jpeg', caption: 'brunch con el suegro' },
     { url: 'img/img18.jpeg', caption: 'mi foto fav por ahora (4/04/2026)' },
-    { url: 'img/img19.jpeg', caption: '' },
-    { url: 'img/img20.jpeg', caption: '' },
-    { url: 'img/img21.jpeg', caption: '' },
-    { url: 'img/img22.jpeg', caption: '' },
-    { url: 'img/img23.jpeg', caption: '' },
-    { url: 'img/img24.jpeg', caption: '' },
-    { url: 'img/img25.jpeg', caption: '' },
-    { url: 'img/img26.jpeg', caption: '' }
+    { url: 'img/img19.jpeg', caption: 'noche del temple' },
+    { url: 'img/img20.jpeg', caption: 'us 2D' },
+    { url: 'img/img21.jpeg', caption: 'tavo facereveal' },
+    { url: 'img/img22.jpeg', caption: 'mi novia es muy linda dios mio' },
+    { url: 'img/img23.jpeg', caption: 'somos muy lindos dios mio' },
+    { url: 'img/img24.jpeg', caption: 'te amo amor' },
+    { url: 'img/img25.jpeg', caption: 'lit el mejor regalo del mundo v2.0' },
+    { url: 'img/img26.jpeg', caption: 'mi cumpleeeee' }
 ];
 
 // ============================================
