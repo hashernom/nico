@@ -880,6 +880,7 @@ body.dark-mode .stardew-title-box {
 
 body.dark-mode .pixel-title {
     text-shadow: 3px 3px 0px #0a0503, -1px -1px 0px rgba(255, 255, 255, 0.08);
+    color: #f0e6d0;
 }
 
 body.dark-mode .subtitle-box {
@@ -901,6 +902,7 @@ body.dark-mode .card-header {
 
 body.dark-mode .card-header h2 {
     text-shadow: 2px 2px 0px #0a0503;
+    color: #f0e6d0;
 }
 
 body.dark-mode .card-footer {
@@ -962,6 +964,7 @@ body.dark-mode .footer-content {
 
 body.dark-mode .footer-content p {
     text-shadow: 2px 2px 0px #0a0503;
+    color: #f0e6d0;
 }
 
 body.dark-mode .lightbox-frame {
