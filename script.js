@@ -203,9 +203,7 @@ function renderGallery() {
     PHOTOS.forEach((photo, index) => {
         html += `
         <div class="album-photo" style="animation-delay: ${index * 0.2}s">
-            <div class="album-photo-frame">
-                <img src="${photo.url}" alt="${photo.caption}" loading="lazy">
-            </div>
+                <img src="${photo.url}" alt="${photo.caption}" loading="eager" style="width:100%;height:auto;display:block;image-rendering:auto">
             <div class="album-caption">${photo.caption}</div>
         </div>
         `;
