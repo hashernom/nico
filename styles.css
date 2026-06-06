@@ -736,6 +736,7 @@ body::before {
     display: block;
     transition: transform 0.3s ease;
     background: #f5f5f5; /* Fondo para fotos con transparencia */
+    image-rendering: auto;
 }
 
 .album-photo:hover img {
