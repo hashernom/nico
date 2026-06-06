@@ -1110,7 +1110,6 @@ body.dark-mode .stars-container {
     height: 100%;
     z-index: 10000;
     background: rgba(0, 0, 0, 0.88);
-    backdrop-filter: blur(6px);
     justify-content: center;
     align-items: center;
 }
@@ -1128,10 +1127,30 @@ body.dark-mode .stars-container {
     background: none;
     border: none;
     cursor: pointer;
-    z-index: 10001;
+    z-index: 10002;
     font-family: 'Quicksand', sans-serif;
     text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
     transition: transform 0.2s ease;
+    touch-action: manipulation;
+}
+
+.lightbox-nav {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    z-index: 10001;
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
+    width: 50px;
+    cursor: pointer;
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .lightbox-close:hover {
