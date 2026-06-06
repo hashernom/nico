@@ -789,7 +789,7 @@ body::before {
     }
     
     .photo-album {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
     }
     
     .timeline-container {
@@ -1538,6 +1538,10 @@ body.dark-mode .todo-footer {
 
     .card-header h2 {
         font-size: 0.55rem;
+    }
+
+    .photo-album {
+        grid-template-columns: 1fr;
     }
 
     .time-val {
