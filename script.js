@@ -204,7 +204,7 @@ function renderGallery() {
         html += `
         <div class="album-photo" style="animation-delay: ${index * 0.2}s">
             <div class="album-photo-frame">
-                <img src="${photo.url}" alt="${photo.caption}" loading="lazy">
+                <img src="${photo.url}" alt="${photo.caption}">
             </div>
             <div class="album-caption">${photo.caption}</div>
         </div>
