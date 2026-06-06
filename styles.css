@@ -738,27 +738,6 @@ body::before {
     image-rendering: auto;
 }
 
-/* DIAGNÓSTICO: forzar visibilidad en mobile */
-@media (max-width: 768px) {
-    .album-photo-frame {
-        background: #ffcccc !important;
-        min-height: 250px !important;
-    }
-    .album-photo-frame img,
-    .album-photo img {
-        display: block !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-        min-height: 100px !important;
-        min-width: 100px !important;
-        width: 100% !important;
-        height: auto !important;
-        image-rendering: auto !important;
-        border: 3px solid #ff0000 !important;
-        background: #ffff00 !important;
-    }
-}
-
 .album-photo:hover img {
     transform: scale(1.05); /* Zoom más sutil: 1.05 en vez de 1.1 */
 }
