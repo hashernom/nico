@@ -23,14 +23,14 @@ const CHECKPOINTS = [
 const PHOTOS = [
     { url: 'img/img1.jpg', caption: 'segunda date jajaja' },
     { url: 'img/img2.jpg', caption: 'primera date :u' },
-    { url: 'img/img3.jpg', caption: 'dia de almuerzo con la family' },
-    { url: 'img/img4.jpg', caption: 'pre date' },
-    { url: 'img/img5.jpg', caption: 'oye bonita!!!' },
-    { url: 'img/img6.jpg', caption: 'pechochos' },
-    { url: 'img/img7.jpg', caption: 'prueba de embarazo...' },
-    { url: 'img/img8.jpg', caption: 'integracion familiar ishh' },
-    { url: 'img/img9.jpg', caption: 'pre night' },
-    { url: 'img/img10.jpg', caption: 'NO MAMES EL BIG DAY' },
+    { url: 'img/img3.jfif', caption: 'dia de almuerzo con la family' },
+    { url: 'img/img4.jfif', caption: 'pre date' },
+    { url: 'img/img5.jfif', caption: 'oye bonita!!!' },
+    { url: 'img/img6.jfif', caption: 'pechochos' },
+    { url: 'img/img7.jfif', caption: 'prueba de embarazo...' },
+    { url: 'img/img8.jfif', caption: 'integracion familiar ishh' },
+    { url: 'img/img9.jfif', caption: 'pre night' },
+    { url: 'img/img10.jfif', caption: 'NO MAMES EL BIG DAY' },
     { url: 'img/img10.1.jpeg', caption: 'Best date' },
     { url: 'img/img11.jpeg', caption: 'primer mes!!!!' },
     { url: 'img/img12.jpeg', caption: 'El mejor regalo del mundo lit' },
@@ -228,204 +228,22 @@ function addPhotoClickEffects() {
     console.log('🎯 Agregando efectos de click a', photos.length, 'fotos');
     
     photos.forEach((photo, index) => {
+        // Remover listeners previos si existen
         photo.style.cursor = 'pointer';
         
         photo.addEventListener('click', function(e) {
             console.log('✨ Click en foto', index + 1);
             
+            // Efecto de corazones al hacer click
             createHeartBurst(e.clientX, e.clientY);
             
+            // Efecto de shake
             this.classList.add('photo-shake');
             setTimeout(() => {
                 this.classList.remove('photo-shake');
             }, 500);
         });
     });
-}
-
-// ============================================
-// LIGHTBOX - EXPANSIÓN DE IMÁGENES
-// ============================================
-function setupLightbox() {
-    const overlay = document.getElementById('lightboxOverlay');
-    const closeBtn = document.getElementById('lightboxClose');
-    const imgEl = document.getElementById('lightboxImg');
-    const captionEl = document.getElementById('lightboxCaption');
-
-    document.querySelectorAll('.album-photo').forEach(photo => {
-        photo.addEventListener('click', function() {
-            const img = this.querySelector('img');
-            const captionDiv = this.querySelector('.album-caption');
-            const src = img.getAttribute('src');
-            const caption = captionDiv ? captionDiv.textContent : '';
-
-            imgEl.src = src;
-            imgEl.alt = caption;
-            captionEl.textContent = caption || '\u00A0';
-            overlay.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        });
-    });
-
-    function closeLightbox() {
-        overlay.classList.remove('active');
-        document.body.style.overflow = '';
-    }
-
-    closeBtn.addEventListener('click', closeLightbox);
-    overlay.addEventListener('click', function(e) {
-        if (e.target === overlay) closeLightbox();
-    });
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') closeLightbox();
-    });
-}
-
-// ============================================
-// MODO OSCURO CON ESTRELLAS Y LUCIÉRNAGAS
-// ============================================
-function createStars() {
-    const container = document.createElement('div');
-    container.className = 'stars-container';
-    container.id = 'starsContainer';
-    document.body.prepend(container);
-
-    for (let i = 0; i < 120; i++) {
-        const star = document.createElement('div');
-        star.className = 'star';
-        const size = 1 + Math.random() * 3;
-        star.style.width = size + 'px';
-        star.style.height = size + 'px';
-        star.style.left = Math.random() * 100 + '%';
-        star.style.top = Math.random() * 100 + '%';
-        star.style.setProperty('--duration', 2 + Math.random() * 4 + 's');
-        star.style.setProperty('--delay', Math.random() * 5 + 's');
-        star.style.setProperty('--min-opacity', 0.2 + Math.random() * 0.3);
-        star.style.setProperty('--max-opacity', 0.6 + Math.random() * 0.4);
-        container.appendChild(star);
-    }
-
-    for (let i = 0; i < 20; i++) {
-        const firefly = document.createElement('div');
-        firefly.className = 'firefly';
-        firefly.style.left = Math.random() * 100 + '%';
-        firefly.style.top = Math.random() * 100 + '%';
-        firefly.style.setProperty('--fly-duration', 6 + Math.random() * 8 + 's');
-        firefly.style.setProperty('--fly-delay', Math.random() * 10 + 's');
-        firefly.style.setProperty('--fly-x', (-200 + Math.random() * 400) + 'px');
-        firefly.style.setProperty('--fly-y', (-200 + Math.random() * 400) + 'px');
-        container.appendChild(firefly);
-    }
-}
-
-function setupDarkMode() {
-    const toggle = document.getElementById('darkToggle');
-    const icon = toggle.querySelector('.toggle-icon');
-
-    if (localStorage.getItem('darkMode') === 'true') {
-        document.body.classList.add('dark-mode');
-        icon.textContent = '☀️';
-    }
-
-    toggle.addEventListener('click', function() {
-        document.body.classList.toggle('dark-mode');
-        const isDark = document.body.classList.contains('dark-mode');
-        icon.textContent = isDark ? '☀️' : '🌙';
-        localStorage.setItem('darkMode', isDark);
-    });
-}
-
-// ============================================
-// TO-DO LIST PANEL
-// ============================================
-function setupTodoPanel() {
-    const panel = document.getElementById('todoPanel');
-    const openBtn = document.getElementById('todoOpenBtn');
-    const toggleBtn = document.getElementById('todoToggleBtn');
-    const input = document.getElementById('todoInput');
-    const addBtn = document.getElementById('todoAddBtn');
-    const list = document.getElementById('todoList');
-
-    function loadTodos() {
-        const saved = localStorage.getItem('todos');
-        return saved ? JSON.parse(saved) : [];
-    }
-
-    function saveTodos(todos) {
-        localStorage.setItem('todos', JSON.stringify(todos));
-    }
-
-    function renderTodos() {
-        const todos = loadTodos();
-        list.innerHTML = '';
-        todos.forEach((todo, index) => {
-            const li = document.createElement('li');
-            li.innerHTML = `
-                <button class="todo-check ${todo.done ? 'checked' : ''}" data-index="${index}">
-                    ${todo.done ? '<i class="fas fa-check"></i>' : ''}
-                </button>
-                <span class="todo-text ${todo.done ? 'done' : ''}">${escapeHtml(todo.text)}</span>
-                <button class="todo-del" data-index="${index}"><i class="fas fa-trash-alt"></i></button>
-            `;
-            list.appendChild(li);
-        });
-
-        list.querySelectorAll('.todo-check').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const todos = loadTodos();
-                const idx = parseInt(this.dataset.index);
-                todos[idx].done = !todos[idx].done;
-                saveTodos(todos);
-                renderTodos();
-            });
-        });
-
-        list.querySelectorAll('.todo-del').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const todos = loadTodos();
-                const idx = parseInt(this.dataset.index);
-                todos.splice(idx, 1);
-                saveTodos(todos);
-                renderTodos();
-            });
-        });
-    }
-
-    function escapeHtml(text) {
-        const d = document.createElement('div');
-        d.textContent = text;
-        return d.innerHTML;
-    }
-
-    function addTodo() {
-        const text = input.value.trim();
-        if (!text) return;
-        const todos = loadTodos();
-        todos.push({ text, done: false });
-        saveTodos(todos);
-        renderTodos();
-        input.value = '';
-    }
-
-    addBtn.addEventListener('click', addTodo);
-    input.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') addTodo();
-    });
-
-    function openPanel() {
-        panel.classList.add('open');
-        openBtn.classList.add('hidden');
-    }
-
-    function closePanel() {
-        panel.classList.remove('open');
-        openBtn.classList.remove('hidden');
-    }
-
-    openBtn.addEventListener('click', openPanel);
-    toggleBtn.addEventListener('click', closePanel);
-
-    renderTodos();
 }
 
 // ============================================
@@ -594,18 +412,198 @@ function setupFlowerAnimationClick() {
 }
 
 // ============================================
+// NUEVO: ESTRELLAS Y LUCIÉRNAGAS MODO OSCURO
+// ============================================
+function createStars() {
+    const container = document.createElement('div');
+    container.className = 'stars-container';
+    container.id = 'starsContainer';
+    document.body.prepend(container);
+
+    for (let i = 0; i < 120; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        const size = 1 + Math.random() * 3;
+        star.style.width = size + 'px';
+        star.style.height = size + 'px';
+        star.style.left = Math.random() * 100 + '%';
+        star.style.top = Math.random() * 100 + '%';
+        star.style.setProperty('--duration', 2 + Math.random() * 4 + 's');
+        star.style.setProperty('--delay', Math.random() * 5 + 's');
+        star.style.setProperty('--min-opacity', 0.2 + Math.random() * 0.3);
+        star.style.setProperty('--max-opacity', 0.6 + Math.random() * 0.4);
+        container.appendChild(star);
+    }
+
+    for (let i = 0; i < 20; i++) {
+        const firefly = document.createElement('div');
+        firefly.className = 'firefly';
+        firefly.style.left = Math.random() * 100 + '%';
+        firefly.style.top = Math.random() * 100 + '%';
+        firefly.style.setProperty('--fly-duration', 6 + Math.random() * 8 + 's');
+        firefly.style.setProperty('--fly-delay', Math.random() * 10 + 's');
+        firefly.style.setProperty('--fly-x', (-200 + Math.random() * 400) + 'px');
+        firefly.style.setProperty('--fly-y', (-200 + Math.random() * 400) + 'px');
+        container.appendChild(firefly);
+    }
+}
+
+// ============================================
+// NUEVO: MODO OSCURO
+// ============================================
+function setupDarkMode() {
+    const toggle = document.getElementById('darkToggle');
+    const icon = toggle.querySelector('.toggle-icon');
+
+    if (localStorage.getItem('darkMode') === 'true') {
+        document.body.classList.add('dark-mode');
+        icon.textContent = '☀️';
+    }
+
+    toggle.addEventListener('click', function() {
+        document.body.classList.toggle('dark-mode');
+        const isDark = document.body.classList.contains('dark-mode');
+        icon.textContent = isDark ? '☀️' : '🌙';
+        localStorage.setItem('darkMode', isDark);
+    });
+}
+
+// ============================================
+// NUEVO: TO-DO LIST PANEL
+// ============================================
+function setupTodoPanel() {
+    const panel = document.getElementById('todoPanel');
+    const openBtn = document.getElementById('todoOpenBtn');
+    const toggleBtn = document.getElementById('todoToggleBtn');
+    const input = document.getElementById('todoInput');
+    const addBtn = document.getElementById('todoAddBtn');
+    const list = document.getElementById('todoList');
+
+    function loadTodos() {
+        const saved = localStorage.getItem('todos');
+        return saved ? JSON.parse(saved) : [];
+    }
+
+    function saveTodos(todos) {
+        localStorage.setItem('todos', JSON.stringify(todos));
+    }
+
+    function renderTodos() {
+        const todos = loadTodos();
+        list.innerHTML = '';
+        todos.forEach((todo, index) => {
+            const li = document.createElement('li');
+            const isChecked = todo.done ? 'checked' : '';
+            const checkIcon = todo.done ? '<i class="fas fa-check"></i>' : '';
+            const doneClass = todo.done ? 'done' : '';
+
+            li.innerHTML = `
+                <button class="todo-btn ${isChecked}" data-idx="${index}">${checkIcon}</button>
+                <span class="todo-text ${doneClass}">${escapeHtml(todo.text)}</span>
+                <button class="todo-btn" data-del="${index}"><i class="fas fa-trash-alt"></i></button>
+            `;
+            list.appendChild(li);
+        });
+
+        list.querySelectorAll('[data-idx]').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const todos = loadTodos();
+                todos[this.dataset.idx].done = !todos[this.dataset.idx].done;
+                saveTodos(todos);
+                renderTodos();
+            });
+        });
+
+        list.querySelectorAll('[data-del]').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const todos = loadTodos();
+                todos.splice(this.dataset.del, 1);
+                saveTodos(todos);
+                renderTodos();
+            });
+        });
+    }
+
+    function escapeHtml(text) {
+        const d = document.createElement('div');
+        d.textContent = text;
+        return d.innerHTML;
+    }
+
+    function addTodo() {
+        const text = input.value.trim();
+        if (!text) return;
+        const todos = loadTodos();
+        todos.push({ text, done: false });
+        saveTodos(todos);
+        renderTodos();
+        input.value = '';
+    }
+
+    addBtn.addEventListener('click', addTodo);
+    input.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') addTodo();
+    });
+
+    openBtn.addEventListener('click', function() {
+        panel.classList.add('open');
+        openBtn.classList.add('hidden');
+    });
+
+    toggleBtn.addEventListener('click', function() {
+        panel.classList.remove('open');
+        openBtn.classList.remove('hidden');
+    });
+
+    renderTodos();
+}
+
+// ============================================
+// NUEVO: LIGHTBOX - EXPANDIR IMÁGENES
+// ============================================
+function setupLightbox() {
+    const overlay = document.getElementById('lightboxOverlay');
+    const closeBtn = document.getElementById('lightboxClose');
+    const imgEl = document.getElementById('lightboxImg');
+    const captionEl = document.getElementById('lightboxCaption');
+
+    document.querySelectorAll('.album-photo').forEach(photo => {
+        photo.addEventListener('click', function() {
+            const img = this.querySelector('img');
+            const captionDiv = this.querySelector('.album-caption');
+            const src = img.getAttribute('src');
+            const caption = captionDiv ? captionDiv.textContent : '';
+            imgEl.src = src;
+            imgEl.alt = caption;
+            captionEl.textContent = caption || '\u00A0';
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+    });
+
+    function closeLightbox() {
+        overlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    closeBtn.addEventListener('click', closeLightbox);
+    overlay.addEventListener('click', function(e) {
+        if (e.target === overlay) closeLightbox();
+    });
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeLightbox();
+    });
+}
+
+// ============================================
 // INICIALIZACIÓN
 // ============================================
 document.addEventListener('DOMContentLoaded', function() {
     console.log('🌾 Iniciando página Stardew Valley...');
     
-    // Configurar animación de flores (click para ocultar)
     setupFlowerAnimationClick();
-    
-    // Crear cielo estrellado (modo oscuro)
     createStars();
     
-    // Iniciar todas las funciones
     createParticles();
     updateTimer();
     updateTimer2();
@@ -615,12 +613,10 @@ document.addEventListener('DOMContentLoaded', function() {
     animateOnScroll();
     addTitleSparkles();
     
-    // Nuevas funcionalidades
-    setTimeout(setupLightbox, 200);
+    setTimeout(setupLightbox, 300);
     setupDarkMode();
     setupTodoPanel();
     
-    // Actualizar ambos timers cada segundo
     setInterval(() => {
         updateTimer();
         updateTimer2();

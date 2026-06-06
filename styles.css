@@ -33,6 +33,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    image-rendering: pixelated; /* Para mantener el estilo pixel art */
 }
 
 body {
@@ -700,22 +701,10 @@ body::before {
 .album-photo-frame {
     position: relative;
     overflow: hidden;
-    border: 2px solid var(--dirt-brown);
+    border: 2px solid var(--dirt-brown); /* Borde más delgado: 2px en vez de 3px */
     border-radius: 2px;
-    background: #f5f5f5;
-    min-height: 200px;
-    min-width: 100%;
-}
-
-.album-photo-frame img {
-    width: 100%;
-    height: auto;
-    min-height: 180px;
-    max-height: 300px;
-    object-fit: contain;
-    display: block;
-    transition: transform 0.3s ease;
-    image-rendering: auto;
+    background: #f5f5f5; /* Fondo claro para que se vean bien las fotos */
+    min-height: 200px; /* Altura mínima en vez de fija */
 }
 
 .album-photo-frame::after {
@@ -739,8 +728,18 @@ body::before {
     opacity: 1;
 }
 
-.album-photo:hover .album-photo-frame img {
-    transform: scale(1.05);
+.album-photo img {
+    width: 100%;
+    height: auto; /* Altura automática para mantener proporción */
+    max-height: 300px; /* Altura máxima para que no sean demasiado grandes */
+    object-fit: contain; /* Muestra la foto completa sin cortar */
+    display: block;
+    transition: transform 0.3s ease;
+    background: #f5f5f5; /* Fondo para fotos con transparencia */
+}
+
+.album-photo:hover img {
+    transform: scale(1.05); /* Zoom más sutil: 1.05 en vez de 1.1 */
 }
 
 .album-caption {
@@ -801,114 +800,60 @@ body::before {
 }
 
 /* ============================================
-   LIGHTBOX - EXPANSIÓN DE IMÁGENES
+   RESPONSIVE
    ============================================ */
-.lightbox-overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 10000;
-    background: rgba(0, 0, 0, 0.85);
-    backdrop-filter: blur(6px);
-    justify-content: center;
-    align-items: center;
-    animation: lightboxFadeIn 0.3s ease;
-}
-
-.lightbox-overlay.active {
-    display: flex;
-}
-
-@keyframes lightboxFadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-.lightbox-close {
-    position: absolute;
-    top: 20px;
-    right: 30px;
-    font-size: 3rem;
-    color: #fff;
-    background: none;
-    border: none;
-    cursor: pointer;
-    z-index: 10001;
-    font-family: 'Quicksand', sans-serif;
-    transition: transform 0.3s ease, color 0.3s ease;
-    text-shadow: 2px 2px 0 rgba(0,0,0,0.5);
-}
-
-.lightbox-close:hover {
-    transform: scale(1.2);
-    color: var(--soft-pink);
-}
-
-.lightbox-content {
-    max-width: 90vw;
-    max-height: 90vh;
-    animation: lightboxZoomIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-@keyframes lightboxZoomIn {
-    from {
-        opacity: 0;
-        transform: scale(0.5);
+@media (max-width: 600px) {
+    .pixel-title {
+        font-size: 0.9rem;
+        line-height: 1.6;
     }
-    to {
-        opacity: 1;
-        transform: scale(1);
+    
+    .card-header h2 {
+        font-size: 0.8rem;
     }
-}
-
-.lightbox-frame {
-    background: var(--wood-light);
-    border: 8px solid var(--wood-dark);
-    border-radius: 12px;
-    padding: 12px;
-    box-shadow:
-        0 0 40px rgba(0, 0, 0, 0.6),
-        inset 0 0 30px rgba(0, 0, 0, 0.1);
-    background-image:
-        repeating-linear-gradient(
-            90deg,
-            transparent,
-            transparent 10px,
-            rgba(0, 0, 0, 0.05) 10px,
-            rgba(0, 0, 0, 0.05) 11px
-        );
-}
-
-.lightbox-frame img {
-    display: block;
-    max-width: 80vw;
-    max-height: 70vh;
-    width: auto;
-    height: auto;
-    object-fit: contain;
-    border-radius: 4px;
-    margin: 0 auto;
-}
-
-.lightbox-caption {
-    margin-top: 15px;
-    padding: 12px 20px;
-    background: var(--bg-paper);
-    border: 4px solid var(--wood-dark);
-    border-radius: 8px;
-    text-align: center;
-    font-family: 'Quicksand', sans-serif;
-    font-weight: 700;
-    font-size: 1.1rem;
-    color: var(--text-dark);
-    box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.2);
+    
+    .timer-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .time-val {
+        font-size: 1.2rem;
+    }
+    
+    .photo-album {
+        grid-template-columns: 1fr;
+    }
+    
+    .timeline-container {
+        padding-left: 30px;
+    }
 }
 
 /* ============================================
-   DARK MODE
+   ANIMACIONES ADICIONALES
+   ============================================ */
+@keyframes shimmer {
+    0% {
+        background-position: -1000px 0;
+    }
+    100% {
+        background-position: 1000px 0;
+    }
+}
+
+.shimmer-effect {
+    animation: shimmer 3s infinite;
+    background: linear-gradient(
+        to right,
+        transparent 0%,
+        rgba(255, 255, 255, 0.3) 50%,
+        transparent 100%
+    );
+    background-size: 1000px 100%;
+}
+
+/* ============================================
+   NUEVO: DARK MODE TOGGLE
    ============================================ */
 .dark-toggle {
     position: fixed;
@@ -931,17 +876,15 @@ body::before {
 
 .dark-toggle:hover {
     transform: scale(1.1);
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
 }
 
 .toggle-icon {
     transition: transform 0.5s ease;
 }
 
-body.dark-mode .toggle-icon {
-    transform: rotate(360deg);
-}
-
+/* ============================================
+   NUEVO: DARK MODE
+   ============================================ */
 body.dark-mode {
     --wood-dark: #2C1810;
     --wood-light: #4A3228;
@@ -950,14 +893,11 @@ body.dark-mode {
     --text-dark: #E8D5B7;
     --text-light: #C4A882;
     --shadow-pixel: 4px 4px 0px rgba(0, 0, 0, 0.5);
+    background: #0B0B1A;
 }
 
 body.dark-mode::before {
     display: none;
-}
-
-body.dark-mode {
-    background: #0B0B1A;
 }
 
 body.dark-mode .stardew-title-box {
@@ -1000,7 +940,6 @@ body.dark-mode .time-box {
 
 body.dark-mode .time-val {
     color: #E8D5B7;
-    text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.5);
 }
 
 body.dark-mode .time-label {
@@ -1078,11 +1017,9 @@ body.dark-mode .dark-toggle {
     border-color: #2C1810;
 }
 
-/* Estrellas y luciérnagas modo oscuro */
-body.dark-mode .stars-container {
-    display: block;
-}
-
+/* ============================================
+   NUEVO: ESTRELLAS Y LUCIÉRNAGAS MODO OSCURO
+   ============================================ */
 .stars-container {
     display: none;
     position: fixed;
@@ -1093,10 +1030,10 @@ body.dark-mode .stars-container {
     z-index: 0;
     pointer-events: none;
     overflow: hidden;
-    background:
-        radial-gradient(ellipse at 20% 50%, rgba(10, 10, 40, 0.8) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 50%, rgba(10, 10, 40, 0.8) 0%, transparent 50%),
-        radial-gradient(ellipse at 50% 0%, rgba(20, 20, 60, 0.6) 0%, transparent 50%);
+}
+
+body.dark-mode .stars-container {
+    display: block;
 }
 
 .star {
@@ -1108,47 +1045,116 @@ body.dark-mode .stars-container {
 }
 
 @keyframes starTwinkle {
-    0%, 100% { opacity: var(--min-opacity); transform: scale(0.8); }
-    50% { opacity: var(--max-opacity); transform: scale(1.2); }
+    0%, 100% { opacity: var(--min-opacity); transform: scale(0.6); }
+    50% { opacity: var(--max-opacity); transform: scale(1); }
 }
 
 .firefly {
     position: absolute;
-    width: 6px;
-    height: 6px;
+    width: 5px;
+    height: 5px;
     border-radius: 50%;
     background: #aaff88;
-    box-shadow:
-        0 0 6px 2px rgba(170, 255, 136, 0.6),
-        0 0 20px 8px rgba(170, 255, 136, 0.2);
-    animation: fireflyFloat var(--fly-duration) ease-in-out infinite;
+    box-shadow: 0 0 6px 2px rgba(170, 255, 136, 0.6);
+    animation: fireflyFloat var(--fly-duration) linear infinite;
     animation-delay: var(--fly-delay);
     opacity: 0;
 }
 
 @keyframes fireflyFloat {
-    0%, 100% {
-        transform: translate(0, 0) scale(0.5);
-        opacity: 0;
-    }
-    10% {
-        opacity: 1;
-    }
-    50% {
-        transform: translate(var(--fly-x), var(--fly-y)) scale(1);
-        opacity: 1;
-    }
-    90% {
-        opacity: 0.8;
-    }
-    100% {
-        transform: translate(calc(var(--fly-x) * 1.5), calc(var(--fly-y) * 1.5)) scale(0.3);
-        opacity: 0;
-    }
+    0%, 100% { transform: translate(0, 0) scale(0.3); opacity: 0; }
+    15% { opacity: 0.9; }
+    50% { transform: translate(var(--fly-x), var(--fly-y)) scale(1); opacity: 0.9; }
+    85% { opacity: 0.7; }
 }
 
 /* ============================================
-   TO-DO LIST PANEL
+   NUEVO: LIGHTBOX
+   ============================================ */
+.lightbox-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+    background: rgba(0, 0, 0, 0.88);
+    backdrop-filter: blur(6px);
+    justify-content: center;
+    align-items: center;
+}
+
+.lightbox-overlay.active {
+    display: flex;
+}
+
+.lightbox-close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    font-size: 3rem;
+    color: #fff;
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 10001;
+    font-family: 'Quicksand', sans-serif;
+    text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
+    transition: transform 0.2s ease;
+}
+
+.lightbox-close:active {
+    transform: scale(1.2);
+}
+
+.lightbox-content {
+    max-width: 90vw;
+    max-height: 90vh;
+    animation: lightboxIn 0.3s ease;
+}
+
+@keyframes lightboxIn {
+    from { opacity: 0; transform: scale(0.7); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.lightbox-frame {
+    background: var(--wood-light);
+    border: 8px solid var(--wood-dark);
+    border-radius: 12px;
+    padding: 14px;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+}
+
+.lightbox-frame img {
+    display: block;
+    max-width: 80vw;
+    max-height: 70vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 4px;
+    margin: 0 auto;
+    image-rendering: auto;
+}
+
+.lightbox-caption {
+    margin-top: 12px;
+    padding: 12px 20px;
+    background: var(--bg-paper);
+    border: 4px solid var(--wood-dark);
+    border-radius: 8px;
+    text-align: center;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--text-dark);
+    box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* ============================================
+   NUEVO: TO-DO PANEL
    ============================================ */
 .todo-panel {
     position: fixed;
@@ -1160,7 +1166,7 @@ body.dark-mode .stars-container {
     background: var(--bg-paper);
     border-left: 6px solid var(--wood-dark);
     box-shadow: -6px 0 20px rgba(0, 0, 0, 0.3);
-    transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: right 0.35s ease;
     display: flex;
     flex-direction: column;
 }
@@ -1171,25 +1177,17 @@ body.dark-mode .stars-container {
 
 .todo-header {
     background: linear-gradient(to bottom, var(--wood-light), var(--wood-medium));
-    padding: 18px 20px;
+    padding: 16px 20px;
     border-bottom: 4px solid var(--wood-dark);
     display: flex;
     align-items: center;
     justify-content: space-between;
     flex-shrink: 0;
-    background-image:
-        repeating-linear-gradient(
-            90deg,
-            transparent,
-            transparent 8px,
-            rgba(0, 0, 0, 0.1) 8px,
-            rgba(0, 0, 0, 0.1) 9px
-        );
 }
 
 .todo-header h3 {
     font-family: 'Press Start 2P', cursive;
-    font-size: 0.7rem;
+    font-size: 0.65rem;
     color: var(--bg-paper);
     text-shadow: 2px 2px 0px var(--wood-dark);
     margin: 0;
@@ -1209,13 +1207,7 @@ body.dark-mode .stars-container {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s ease;
     font-size: 0.9rem;
-}
-
-.todo-toggle-btn:hover {
-    background: var(--bg-paper);
-    color: var(--wood-dark);
 }
 
 .todo-body {
@@ -1230,12 +1222,11 @@ body.dark-mode .stars-container {
 .todo-input-group {
     display: flex;
     gap: 8px;
-    flex-shrink: 0;
 }
 
 #todoInput {
     flex: 1;
-    padding: 10px 14px;
+    padding: 10px 12px;
     border: 3px solid var(--wood-medium);
     border-radius: 6px;
     font-family: 'Quicksand', sans-serif;
@@ -1243,7 +1234,6 @@ body.dark-mode .stars-container {
     background: #FFF;
     color: var(--text-dark);
     outline: none;
-    transition: border-color 0.3s ease;
 }
 
 #todoInput:focus {
@@ -1251,8 +1241,8 @@ body.dark-mode .stars-container {
 }
 
 #todoAddBtn {
-    width: 42px;
-    height: 42px;
+    width: 40px;
+    height: 40px;
     border: 3px solid var(--wood-medium);
     border-radius: 6px;
     background: var(--soft-blue);
@@ -1262,12 +1252,6 @@ body.dark-mode .stars-container {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s ease;
-}
-
-#todoAddBtn:hover {
-    background: var(--sky-blue);
-    transform: scale(1.05);
 }
 
 .todo-list {
@@ -1291,24 +1275,11 @@ body.dark-mode .stars-container {
     font-family: 'Quicksand', sans-serif;
     font-size: 0.85rem;
     color: var(--text-dark);
-    transition: all 0.3s ease;
-    animation: todoSlideIn 0.3s ease;
-}
-
-@keyframes todoSlideIn {
-    from {
-        opacity: 0;
-        transform: translateX(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
+    transition: all 0.2s ease;
 }
 
 .todo-list li:hover {
     background: #FFF8E7;
-    border-color: var(--soft-pink);
 }
 
 .todo-list li .todo-text {
@@ -1318,55 +1289,26 @@ body.dark-mode .stars-container {
 
 .todo-list li .todo-text.done {
     text-decoration: line-through;
-    opacity: 0.6;
+    opacity: 0.5;
 }
 
-.todo-list li .todo-check {
-    width: 22px;
-    height: 22px;
+.todo-list li .todo-btn {
+    width: 24px;
+    height: 24px;
     border: 2px solid var(--wood-light);
     border-radius: 4px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: none;
-    color: var(--grass-green);
     font-size: 0.7rem;
-    transition: all 0.3s ease;
     flex-shrink: 0;
-}
-
-.todo-list li .todo-check:hover {
-    background: var(--grass-green);
-    color: #fff;
-}
-
-.todo-list li .todo-check.checked {
-    background: var(--grass-green);
-    color: #fff;
-    border-color: var(--grass-green);
-}
-
-.todo-list li .todo-del {
-    width: 22px;
-    height: 22px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
     background: none;
-    color: var(--rose-accent);
-    font-size: 0.9rem;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
 }
 
-.todo-list li .todo-del:hover {
-    background: var(--rose-accent);
-    color: #fff;
+body.dark-mode .todo-list li .todo-btn {
+    border-color: #3D2317;
+    color: #E8D5B7;
 }
 
 .todo-open-btn {
@@ -1381,7 +1323,7 @@ body.dark-mode .stars-container {
     background: var(--wood-light);
     color: var(--bg-paper);
     cursor: pointer;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1391,7 +1333,6 @@ body.dark-mode .stars-container {
 
 .todo-open-btn:hover {
     transform: scale(1.1) rotate(10deg);
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
 }
 
 .todo-open-btn.hidden {
@@ -1399,9 +1340,8 @@ body.dark-mode .stars-container {
 }
 
 /* ============================================
-   RESPONSIVE MEJORADO
+   NUEVO: RESPONSIVE ADICIONAL
    ============================================ */
-/* Móviles pequeños */
 @media (max-width: 480px) {
     body {
         padding: 10px;
@@ -1413,7 +1353,7 @@ body.dark-mode .stars-container {
 
     .pixel-title {
         font-size: 0.7rem;
-        line-height: 1.5;
+        line-height: 1.4;
     }
 
     .stardew-title-box {
@@ -1423,29 +1363,10 @@ body.dark-mode .stars-container {
     .subtitle-box {
         font-size: 0.7rem;
         padding: 6px 12px;
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-
-    .card-header h2 {
-        font-size: 0.65rem;
-    }
-
-    .card-header {
-        padding: 12px 10px;
     }
 
     .card-content {
         padding: 15px;
-    }
-
-    .timer-grid {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 8px;
-    }
-
-    .time-box {
-        padding: 10px 6px;
     }
 
     .time-val {
@@ -1457,29 +1378,12 @@ body.dark-mode .stars-container {
     }
 
     .photo-album {
-        grid-template-columns: 1fr;
         gap: 15px;
         padding: 5px;
     }
 
-    .timeline-container {
-        padding-left: 25px;
-    }
-
-    .timeline-content {
-        padding: 10px 12px;
-    }
-
     .timeline-info h3 {
         font-size: 0.85rem;
-    }
-
-    .timeline-date {
-        font-size: 0.5rem;
-    }
-
-    .album-caption {
-        font-size: 0.75rem;
     }
 
     .dark-toggle {
@@ -1495,18 +1399,13 @@ body.dark-mode .stars-container {
         right: -300px;
     }
 
-    .lightbox-frame img {
-        max-width: 95vw;
-        max-height: 60vh;
-    }
-
     .lightbox-content {
         max-width: 95vw;
     }
 
-    .lightbox-caption {
-        font-size: 0.9rem;
-        padding: 10px 14px;
+    .lightbox-frame img {
+        max-width: 90vw;
+        max-height: 60vh;
     }
 
     .lightbox-close {
@@ -1514,92 +1413,10 @@ body.dark-mode .stars-container {
         right: 15px;
         font-size: 2.2rem;
     }
-
-    .stardew-footer {
-        margin-top: 30px;
-        margin-bottom: 10px;
-    }
-
-    .footer-content {
-        padding: 12px 15px;
-        flex-wrap: wrap;
-    }
-
-    .footer-content p {
-        font-size: 0.8rem;
-    }
 }
 
-/* Tablets y móviles grandes */
 @media (min-width: 481px) and (max-width: 768px) {
-    body {
-        padding: 15px;
-    }
-
-    .main-container {
-        max-width: 100%;
-    }
-
-    .pixel-title {
-        font-size: 1rem;
-    }
-
-    .card-header h2 {
-        font-size: 0.85rem;
-    }
-
-    .timer-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
-
     .photo-album {
         grid-template-columns: repeat(2, 1fr);
-        gap: 20px;
     }
-
-    .dark-toggle {
-        top: 15px;
-        right: 15px;
-    }
-}
-
-/* Escritorio pequeño */
-@media (min-width: 769px) and (max-width: 1024px) {
-    .photo-album {
-        grid-template-columns: repeat(3, 1fr);
-    }
-}
-
-/* Escritorio grande */
-@media (min-width: 1200px) {
-    .main-container {
-        max-width: 800px;
-    }
-
-    .photo-album {
-        grid-template-columns: repeat(3, 1fr);
-    }
-}
-
-/* ============================================
-   ANIMACIONES ADICIONALES
-   ============================================ */
-@keyframes shimmer {
-    0% {
-        background-position: -1000px 0;
-    }
-    100% {
-        background-position: 1000px 0;
-    }
-}
-
-.shimmer-effect {
-    animation: shimmer 3s infinite;
-    background: linear-gradient(
-        to right,
-        transparent 0%,
-        rgba(255, 255, 255, 0.3) 50%,
-        transparent 100%
-    );
-    background-size: 1000px 100%;
 }
