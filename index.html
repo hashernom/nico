@@ -95,6 +95,10 @@
                 <button id="todoAddBtn"><i class="fas fa-plus"></i></button>
             </div>
             <ul id="todoList" class="todo-list"></ul>
+            <div class="todo-footer">
+                <span id="todoCount">0 items</span>
+                <button id="todoClearDone">Limpiar <i class="fas fa-eraser"></i></button>
+            </div>
         </div>
     </div>
 
@@ -103,11 +107,14 @@
     <!-- Lightbox -->
     <div class="lightbox-overlay" id="lightboxOverlay">
         <button class="lightbox-close" id="lightboxClose">&times;</button>
+        <button class="lightbox-nav lightbox-prev" id="lightboxPrev"><i class="fas fa-chevron-left"></i></button>
+        <button class="lightbox-nav lightbox-next" id="lightboxNext"><i class="fas fa-chevron-right"></i></button>
         <div class="lightbox-content">
             <div class="lightbox-frame">
                 <img id="lightboxImg" src="" alt="">
             </div>
             <div class="lightbox-caption" id="lightboxCaption"></div>
+            <div class="lightbox-counter" id="lightboxCounter"></div>
         </div>
     </div>
 

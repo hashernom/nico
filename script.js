@@ -444,6 +444,16 @@ function createStars() {
         firefly.style.setProperty('--fly-y', (-200 + Math.random() * 400) + 'px');
         container.appendChild(firefly);
     }
+
+    for (let i = 0; i < 5; i++) {
+        const shoot = document.createElement('div');
+        shoot.className = 'shooting-star';
+        shoot.style.left = Math.random() * 80 + '%';
+        shoot.style.top = Math.random() * 40 + '%';
+        shoot.style.setProperty('--shoot-duration', 3 + Math.random() * 4 + 's');
+        shoot.style.setProperty('--shoot-delay', Math.random() * 15 + 's');
+        container.appendChild(shoot);
+    }
 }
 
 // ============================================
@@ -476,6 +486,8 @@ function setupTodoPanel() {
     const input = document.getElementById('todoInput');
     const addBtn = document.getElementById('todoAddBtn');
     const list = document.getElementById('todoList');
+    const countEl = document.getElementById('todoCount');
+    const clearDoneBtn = document.getElementById('todoClearDone');
 
     function loadTodos() {
         const saved = localStorage.getItem('todos');
@@ -502,6 +514,10 @@ function setupTodoPanel() {
             `;
             list.appendChild(li);
         });
+
+        const remaining = todos.filter(t => !t.done).length;
+        const total = todos.length;
+        countEl.textContent = total === 0 ? '0 items' : remaining + '/' + total + ' pendientes';
 
         list.querySelectorAll('[data-idx]').forEach(btn => {
             btn.addEventListener('click', function() {
@@ -543,6 +559,12 @@ function setupTodoPanel() {
         if (e.key === 'Enter') addTodo();
     });
 
+    clearDoneBtn.addEventListener('click', function() {
+        const todos = loadTodos().filter(t => !t.done);
+        saveTodos(todos);
+        renderTodos();
+    });
+
     openBtn.addEventListener('click', function() {
         panel.classList.add('open');
         openBtn.classList.add('hidden');
@@ -562,34 +584,66 @@ function setupTodoPanel() {
 function setupLightbox() {
     const overlay = document.getElementById('lightboxOverlay');
     const closeBtn = document.getElementById('lightboxClose');
+    const prevBtn = document.getElementById('lightboxPrev');
+    const nextBtn = document.getElementById('lightboxNext');
     const imgEl = document.getElementById('lightboxImg');
     const captionEl = document.getElementById('lightboxCaption');
+    const counterEl = document.getElementById('lightboxCounter');
+    const photos = document.querySelectorAll('.album-photo');
+    let currentIndex = -1;
 
-    document.querySelectorAll('.album-photo').forEach(photo => {
-        photo.addEventListener('click', function() {
-            const img = this.querySelector('img');
-            const captionDiv = this.querySelector('.album-caption');
-            const src = img.getAttribute('src');
-            const caption = captionDiv ? captionDiv.textContent : '';
-            imgEl.src = src;
-            imgEl.alt = caption;
-            captionEl.textContent = caption || '\u00A0';
-            overlay.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        });
-    });
+    function openLightbox(index) {
+        currentIndex = index;
+        const photo = photos[index];
+        const img = photo.querySelector('img');
+        const captionDiv = photo.querySelector('.album-caption');
+        imgEl.src = img.getAttribute('src');
+        imgEl.alt = captionDiv ? captionDiv.textContent : '';
+        captionEl.textContent = captionDiv ? (captionDiv.textContent || '\u00A0') : '\u00A0';
+        counterEl.textContent = (index + 1) + ' / ' + photos.length;
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function navigate(delta) {
+        let newIndex = currentIndex + delta;
+        if (newIndex < 0) newIndex = photos.length - 1;
+        if (newIndex >= photos.length) newIndex = 0;
+        openLightbox(newIndex);
+    }
 
     function closeLightbox() {
         overlay.classList.remove('active');
         document.body.style.overflow = '';
+        currentIndex = -1;
     }
 
+    photos.forEach((photo, index) => {
+        photo.addEventListener('click', function(e) {
+            if (e.target.closest('.todo-btn')) return;
+            openLightbox(index);
+        });
+    });
+
+    prevBtn.addEventListener('click', function(e) { e.stopPropagation(); navigate(-1); });
+    nextBtn.addEventListener('click', function(e) { e.stopPropagation(); navigate(1); });
     closeBtn.addEventListener('click', closeLightbox);
     overlay.addEventListener('click', function(e) {
         if (e.target === overlay) closeLightbox();
     });
     document.addEventListener('keydown', function(e) {
+        if (!overlay.classList.contains('active')) return;
         if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowLeft') navigate(-1);
+        if (e.key === 'ArrowRight') navigate(1);
+    });
+
+    // Swipe support
+    let touchStartX = 0;
+    overlay.addEventListener('touchstart', function(e) { touchStartX = e.touches[0].clientX; });
+    overlay.addEventListener('touchend', function(e) {
+        const diff = touchStartX - e.changedTouches[0].clientX;
+        if (Math.abs(diff) > 60) navigate(diff > 0 ? 1 : -1);
     });
 }
 
