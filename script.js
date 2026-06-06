@@ -625,8 +625,10 @@ function setupLightbox() {
         });
     });
 
-    prevBtn.addEventListener('click', function(e) { e.stopPropagation(); navigate(-1); });
-    nextBtn.addEventListener('click', function(e) { e.stopPropagation(); navigate(1); });
+    prevBtn.addEventListener('click', function(e) { navigate(-1); });
+    nextBtn.addEventListener('click', function(e) { navigate(1); });
+    prevBtn.addEventListener('touchstart', function(e) { e.preventDefault(); navigate(-1); });
+    nextBtn.addEventListener('touchstart', function(e) { e.preventDefault(); navigate(1); });
     closeBtn.addEventListener('click', closeLightbox);
     overlay.addEventListener('click', function(e) {
         if (e.target === overlay) closeLightbox();

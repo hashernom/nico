@@ -859,14 +859,15 @@ body::before {
    NUEVO: DARK MODE
    ============================================ */
 body.dark-mode {
-    --wood-dark: #2C1810;
-    --wood-light: #4A3228;
-    --wood-medium: #3D2317;
-    --bg-paper: #1A1A2E;
-    --text-dark: #E8D5B7;
-    --text-light: #C4A882;
-    --shadow-pixel: 4px 4px 0px rgba(0, 0, 0, 0.5);
-    background: #0B0B1A;
+    --wood-dark: #1a0f0a;
+    --wood-light: #2d1812;
+    --wood-medium: #24120d;
+    --bg-paper: #131a28;
+    --text-dark: #e8d5b7;
+    --text-light: #b8a58a;
+    --shadow-pixel: 4px 4px 0px rgba(0, 0, 0, 0.6);
+    background: linear-gradient(180deg, #0a0e17 0%, #0d0f1a 100%);
+    background-attachment: fixed;
 }
 
 body.dark-mode::before {
@@ -874,120 +875,148 @@ body.dark-mode::before {
 }
 
 body.dark-mode .stardew-title-box {
-    border-color: #2C1810;
+    border-color: #1a0f0a;
 }
 
 body.dark-mode .pixel-title {
-    text-shadow: 3px 3px 0px #1a0f0a, -1px -1px 0px rgba(255, 255, 255, 0.1);
+    text-shadow: 3px 3px 0px #0a0503, -1px -1px 0px rgba(255, 255, 255, 0.08);
 }
 
 body.dark-mode .subtitle-box {
-    background: #16213E;
-    border-color: #2C1810;
-    color: #E8D5B7;
+    background: #0f1522;
+    border-color: #1a0f0a;
+    color: #e8d5b7;
 }
 
 body.dark-mode .stardew-card {
-    border-color: #2C1810;
-    background: #1A1A2E;
+    border-color: #1a0f0a;
+    background: #131a28;
     box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.6);
 }
 
 body.dark-mode .card-header {
-    background: linear-gradient(to bottom, #4A3228, #3D2317);
-    border-bottom-color: #2C1810;
+    background: linear-gradient(to bottom, #2d1812, #24120d);
+    border-bottom-color: #1a0f0a;
 }
 
 body.dark-mode .card-header h2 {
-    text-shadow: 2px 2px 0px #1a0f0a;
+    text-shadow: 2px 2px 0px #0a0503;
 }
 
 body.dark-mode .card-footer {
-    background: linear-gradient(to bottom, #3D2317, #2C1810);
+    background: linear-gradient(to bottom, #24120d, #1a0f0a);
 }
 
 body.dark-mode .time-box {
-    background: linear-gradient(to bottom, #2A2A4A, #1A1A2E);
-    border-color: #2C1810;
+    background: linear-gradient(to bottom, #1a2235, #131a28);
+    border-color: #1a0f0a;
+    box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.05), 2px 2px 0px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-mode .time-box::before {
+    background: #e8a0b0;
+    border-color: #1a0f0a;
 }
 
 body.dark-mode .time-val {
-    color: #E8D5B7;
+    color: #e8d5b7;
 }
 
 body.dark-mode .time-label {
-    color: #C4A882;
+    color: #b8a58a;
 }
 
 body.dark-mode .timeline-content {
-    background: linear-gradient(to right, #1E1E3A, #1A1A2E);
-    border-color: #2C1810;
-    border-left-color: #4A3228;
+    background: linear-gradient(to right, #161e30, #131a28);
+    border-color: #1a0f0a;
+    border-left-color: #2d1812;
 }
 
 body.dark-mode .timeline-info h3 {
-    color: #E8D5B7;
+    color: #e8d5b7;
 }
 
 body.dark-mode .album-photo {
-    background: #1E1E3A;
-    border-color: #2C1810;
+    background: #101724;
+    border-color: #1a0f0a;
+}
+
+body.dark-mode .album-photo img {
+    border-color: #24120d;
+    background: #0a0e17;
 }
 
 body.dark-mode .album-caption {
-    background: #16213E;
-    border-color: #3D2317;
-    color: #E8D5B7;
+    background: #0f1522;
+    border-color: #24120d;
+    color: #e8d5b7;
+}
+
+body.dark-mode .stardew-footer {
+    border-color: #1a0f0a;
 }
 
 body.dark-mode .footer-content {
-    border-color: #2C1810;
+    border-color: #1a0f0a;
 }
 
 body.dark-mode .footer-content p {
-    text-shadow: 2px 2px 0px #1a0f0a;
+    text-shadow: 2px 2px 0px #0a0503;
 }
 
 body.dark-mode .lightbox-frame {
-    border-color: #2C1810;
-    background: #4A3228;
+    border-color: #1a0f0a;
+    background: #2d1812;
 }
 
 body.dark-mode .lightbox-caption {
-    background: #1A1A2E;
-    border-color: #2C1810;
-    color: #E8D5B7;
+    background: #131a28;
+    border-color: #1a0f0a;
+    color: #e8d5b7;
 }
 
 body.dark-mode .todo-panel {
-    background: #1A1A2E;
-    border-color: #2C1810;
+    background: #131a28;
+    border-color: #1a0f0a;
 }
 
 body.dark-mode .todo-header {
-    background: linear-gradient(to bottom, #4A3228, #3D2317);
-    border-bottom-color: #2C1810;
+    background: linear-gradient(to bottom, #2d1812, #24120d);
+    border-bottom-color: #1a0f0a;
 }
 
 body.dark-mode .todo-list li {
-    background: #16213E;
-    border-color: #3D2317;
-    color: #E8D5B7;
+    background: #0f1522;
+    border-color: #24120d;
+    color: #e8d5b7;
 }
 
 body.dark-mode .todo-list li:hover {
-    background: #1E2A4A;
+    background: #16202f;
+}
+
+body.dark-mode .todo-footer {
+    border-top-color: rgba(255, 255, 255, 0.08);
+}
+
+body.dark-mode #todoCount {
+    color: #b8a58a;
 }
 
 body.dark-mode #todoInput {
-    background: #16213E;
-    border-color: #3D2317;
-    color: #E8D5B7;
+    background: #0f1522;
+    border-color: #24120d;
+    color: #e8d5b7;
 }
 
 body.dark-mode .dark-toggle {
-    background: #1A1A2E;
-    border-color: #2C1810;
+    background: #131a28;
+    border-color: #1a0f0a;
+}
+
+body.dark-mode .todo-open-btn {
+    border-color: #1a0f0a;
+    background: #2d1812;
 }
 
 /* ============================================
@@ -1108,31 +1137,30 @@ body.dark-mode .stars-container {
 
 .lightbox-nav {
     position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
+    top: 0;
+    bottom: 0;
     z-index: 10001;
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(4px);
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    color: #fff;
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
     width: 50px;
-    height: 50px;
-    border-radius: 50%;
     cursor: pointer;
-    font-size: 1.3rem;
+    font-size: 2rem;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all 0.3s ease;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .lightbox-nav:hover {
-    background: rgba(255, 255, 255, 0.3);
-    transform: translateY(-50%) scale(1.1);
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
 }
 
-.lightbox-prev { left: 20px; }
-.lightbox-next { right: 20px; }
+.lightbox-prev { left: 0; }
+.lightbox-next { right: 0; }
 
 .lightbox-counter {
     margin-top: 8px;
@@ -1487,13 +1515,9 @@ body.dark-mode .todo-footer {
     }
 
     .lightbox-nav {
-        width: 36px;
-        height: 36px;
-        font-size: 1rem;
+        width: 40px;
+        font-size: 1.5rem;
     }
-
-    .lightbox-prev { left: 8px; }
-    .lightbox-next { right: 8px; }
 
     .todo-open-btn {
         width: 48px;
