@@ -204,7 +204,7 @@ function renderGallery() {
         html += `
         <div class="album-photo" style="animation-delay: ${index * 0.2}s">
             <div class="album-photo-frame">
-                <img src="${photo.url}" alt="${photo.caption}">
+                <img src="${photo.url}" alt="${photo.caption}" loading="lazy">
             </div>
             <div class="album-caption">${photo.caption}</div>
         </div>
@@ -227,8 +227,19 @@ function addPhotoClickEffects() {
     
     console.log('🎯 Agregando efectos de click a', photos.length, 'fotos');
     
-    photos.forEach(photo => {
+    photos.forEach((photo, index) => {
         photo.style.cursor = 'pointer';
+        
+        photo.addEventListener('click', function(e) {
+            console.log('✨ Click en foto', index + 1);
+            
+            createHeartBurst(e.clientX, e.clientY);
+            
+            this.classList.add('photo-shake');
+            setTimeout(() => {
+                this.classList.remove('photo-shake');
+            }, 500);
+        });
     });
 }
 
@@ -242,15 +253,7 @@ function setupLightbox() {
     const captionEl = document.getElementById('lightboxCaption');
 
     document.querySelectorAll('.album-photo').forEach(photo => {
-        photo.addEventListener('click', function(e) {
-            // Heart burst
-            createHeartBurst(e.clientX, e.clientY);
-
-            // Shake effect
-            this.classList.add('photo-shake');
-            setTimeout(() => this.classList.remove('photo-shake'), 500);
-
-            // Lightbox open
+        photo.addEventListener('click', function() {
             const img = this.querySelector('img');
             const captionDiv = this.querySelector('.album-caption');
             const src = img.getAttribute('src');
