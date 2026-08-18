@@ -386,12 +386,11 @@ function setupFlowerAnimationClick() {
         flowerAnimation.classList.add('hidden');
         
         // Mostrar contenido principal y partículas usando clases CSS
+        // (se mantiene "initial-hidden" para que las reglas .initial-hidden.show sigan aplicando la transición)
         if (mainContainer) {
-            mainContainer.classList.remove('initial-hidden');
             mainContainer.classList.add('show');
         }
         if (particlesContainer) {
-            particlesContainer.classList.remove('initial-hidden');
             particlesContainer.classList.add('show');
         }
         

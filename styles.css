@@ -434,7 +434,6 @@ body::before {
 .main-container.initial-hidden {
     visibility: hidden;
     opacity: 0;
-    display: flex;
 }
 
 .main-container.initial-hidden.show {
@@ -451,17 +450,6 @@ body::before {
 #particles.initial-hidden.show {
     visibility: visible;
     opacity: 1;
-}
-
-/* Asegurar que el contenido principal esté por encima */
-.main-container {
-    position: relative;
-    z-index: 3;
-}
-
-/* Partículas por encima de la animación */
-.particles-container {
-    z-index: 2;
 }
 
 .time-box:hover {
@@ -998,10 +986,6 @@ body.dark-mode .todo-list li:hover {
     background: #16202f;
 }
 
-body.dark-mode .todo-footer {
-    border-top-color: rgba(255, 255, 255, 0.08);
-}
-
 body.dark-mode #todoCount {
     color: #b8a58a;
 }
@@ -1155,25 +1139,6 @@ body.dark-mode .stars-container {
 
 .lightbox-close:hover {
     transform: scale(1.2) rotate(90deg);
-}
-
-.lightbox-nav {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    z-index: 10001;
-    background: none;
-    border: none;
-    color: rgba(255, 255, 255, 0.7);
-    width: 50px;
-    cursor: pointer;
-    font-size: 2rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-    touch-action: manipulation;
-    -webkit-tap-highlight-color: transparent;
 }
 
 .lightbox-nav:hover {
