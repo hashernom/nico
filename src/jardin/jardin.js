@@ -72,6 +72,15 @@ function plantarFlores() {
         flor.addEventListener('click', () => abrirSeccion(seccion, flor));
         cantero.appendChild(flor);
     });
+
+    // Solo se ve en mobile (CSS): ahí el cantero es un grid de verdad y
+    // esto entra como último item, después de la última flor. En
+    // escritorio el cantero es posicionamiento libre, no grid, así que acá
+    // no pinta nada de todos modos.
+    const nota = document.createElement('p');
+    nota.className = 'jardin-nota-final';
+    nota.textContent = 'con mucho amor para Nico';
+    cantero.appendChild(nota);
 }
 
 // --- Abrir y cerrar ---------------------------------------------------

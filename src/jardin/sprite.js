@@ -60,6 +60,12 @@ export const PALETAS = {
     verde: {
         claro: '#DEF9EC', base: '#A8E6CF', oscuro: '#6FBF9B', borde: '#2C6B52',
         centroClaro: '#FFE9A8', centroBase: '#F5C752', centroBorde: '#9C6B1E'
+    },
+    // No la usa ninguna de las 6 secciones (esas ya están decididas): es
+    // para las flores chiquitas decorativas del suelo, que pedían más rojo.
+    roja: {
+        claro: '#FFC2C2', base: '#E8636B', oscuro: '#C23B47', borde: '#7A222B',
+        centroClaro: '#FFE9A8', centroBase: '#F5C752', centroBorde: '#9C6B1E'
     }
 };
 

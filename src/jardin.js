@@ -1,5 +1,5 @@
-// Entrada del jardín (Fase 2).
-// El sitio de scroll sigue vivo en index.html / main.js mientras esto se arma.
+// Entrada del jardín: la versión oficial del sitio (index.html).
+// El sitio de scroll original queda preservado en clasico.html / main.js.
 
 import './styles/base.css';
 import './styles/coop.css';
@@ -17,6 +17,8 @@ import { setupModoOscuro } from './features/decorativo.js';
 import { setupJardin } from './jardin/jardin.js';
 import { setupIntroJardin } from './jardin/intro-jardin.js';
 import { setupAmbiente } from './jardin/ambiente.js';
+import { setupDecoracion } from './jardin/decoracion.js';
+import { setupColinas } from './jardin/colinas.js';
 
 async function iniciar() {
     // Nada de esto depende de la red: se pinta de inmediato.
@@ -24,6 +26,8 @@ async function iniciar() {
     setupTimers();
     setupLightbox();
     setupJardin();
+    setupColinas();
+    setupDecoracion();
     setupAmbiente();
     setupIntroJardin();
 
