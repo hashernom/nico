@@ -1,0 +1,347 @@
+/* ============================================
+   CONTROLES CO-OP: login, formularios, estados
+   Sigue la paleta y el lenguaje visual de base.css
+   ============================================ */
+
+/* --- Utilidades --- */
+.oculto {
+    display: none !important;
+}
+
+/* Elementos que antes tenían estilos inline en JS */
+.corazon-burst {
+    position: fixed;
+    font-size: 2rem;
+    pointer-events: none;
+    z-index: 99999;
+    user-select: none;
+}
+
+.brillo-titulo {
+    position: absolute;
+    font-size: 1rem;
+    pointer-events: none;
+}
+
+.timer-espera {
+    width: 100%;
+    text-align: center;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    padding: 20px;
+}
+
+/* --- Botón de sesión --- */
+.auth-btn {
+    position: fixed;
+    top: 20px;
+    right: 76px;
+    width: 46px;
+    height: 46px;
+    z-index: 5000;
+    background: linear-gradient(to bottom, var(--wood-light), var(--wood-medium));
+    border: 4px solid var(--wood-dark);
+    border-radius: 10px;
+    color: var(--bg-paper);
+    font-size: 1.1rem;
+    cursor: pointer;
+    box-shadow: var(--shadow-pixel);
+    transition: transform 0.2s ease;
+    touch-action: manipulation;
+}
+
+.auth-btn:hover {
+    transform: translateY(-2px);
+}
+
+body.con-sesion .auth-btn {
+    background: linear-gradient(to bottom, var(--grass-green), #6d9c37);
+}
+
+/* --- Modal de login --- */
+.auth-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 10500;
+    background: rgba(0, 0, 0, 0.75);
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.auth-modal.active {
+    display: flex;
+}
+
+.auth-caja {
+    background: var(--bg-paper);
+    border: 6px solid var(--wood-dark);
+    border-radius: 12px;
+    box-shadow: var(--shadow-pixel);
+    padding: 24px;
+    width: 100%;
+    max-width: 340px;
+    position: relative;
+}
+
+.auth-caja h3 {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.7rem;
+    color: var(--wood-dark);
+    margin-bottom: 18px;
+    text-align: center;
+    line-height: 1.6;
+}
+
+.auth-caja label {
+    display: block;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--text-light);
+    margin-bottom: 4px;
+}
+
+.auth-caja input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 14px;
+    border: 3px solid var(--wood-dark);
+    border-radius: 6px;
+    background: #fff;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 0.95rem;
+    color: var(--text-dark);
+}
+
+.auth-caja input:focus {
+    outline: 3px solid var(--soft-blue);
+    outline-offset: 1px;
+}
+
+.auth-caja button[type='submit'] {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(to bottom, var(--grass-green), #6d9c37);
+    border: 3px solid var(--wood-dark);
+    border-radius: 8px;
+    color: #fff;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.6rem;
+    cursor: pointer;
+    box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
+}
+
+.auth-caja button[type='submit']:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+.auth-cerrar {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    background: none;
+    border: none;
+    font-size: 1.6rem;
+    color: var(--wood-dark);
+    cursor: pointer;
+    line-height: 1;
+}
+
+.auth-error {
+    color: #c0392b;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-align: center;
+    margin-top: 10px;
+    min-height: 1.2em;
+}
+
+/* --- Formularios de alta (foto / evento) --- */
+.form-coop {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    margin-top: 16px;
+    padding: 14px;
+    background: rgba(255, 255, 255, 0.45);
+    border: 3px dashed var(--wood-light);
+    border-radius: 10px;
+}
+
+.form-coop input[type='text'],
+.form-coop input[type='date'],
+.form-coop input[type='file'] {
+    flex: 1 1 140px;
+    min-width: 0;
+    padding: 9px;
+    border: 3px solid var(--wood-dark);
+    border-radius: 6px;
+    background: #fff;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 0.9rem;
+    color: var(--text-dark);
+}
+
+.form-coop input:focus {
+    outline: 3px solid var(--soft-blue);
+    outline-offset: 1px;
+}
+
+.form-coop button {
+    flex: 0 0 auto;
+    padding: 10px 16px;
+    background: linear-gradient(to bottom, var(--soft-pink), var(--rose-accent));
+    border: 3px solid var(--wood-dark);
+    border-radius: 8px;
+    color: var(--text-dark);
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.55rem;
+    cursor: pointer;
+    box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.25);
+    touch-action: manipulation;
+}
+
+.form-coop button:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+.form-estado {
+    flex: 1 0 100%;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 700;
+    font-size: 0.82rem;
+    color: var(--text-light);
+    text-align: center;
+    min-height: 1.2em;
+}
+
+/* --- Botones de borrado --- */
+.foto-borrar,
+.evento-borrar {
+    background: rgba(192, 57, 43, 0.9);
+    border: 2px solid var(--wood-dark);
+    border-radius: 6px;
+    color: #fff;
+    cursor: pointer;
+    touch-action: manipulation;
+}
+
+.foto-borrar {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 30px;
+    height: 30px;
+    font-size: 0.8rem;
+    z-index: 5;
+}
+
+.evento-borrar {
+    margin-left: auto;
+    width: 30px;
+    height: 30px;
+    font-size: 0.75rem;
+    flex-shrink: 0;
+}
+
+.album-photo {
+    position: relative;
+}
+
+/* --- Estados vacíos / error --- */
+.galeria-vacia,
+.galeria-error {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 30px 10px;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 700;
+    color: var(--text-light);
+}
+
+/* --- Controles deshabilitados sin sesión --- */
+.todo-input-group input:disabled,
+.todo-input-group button:disabled,
+#todoClearDone:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* --- Modo oscuro --- */
+body.dark-mode .auth-caja {
+    background: #131a28;
+    border-color: #1a0f0a;
+}
+
+body.dark-mode .auth-caja h3 {
+    color: #f0e6d0;
+}
+
+body.dark-mode .auth-caja label {
+    color: #b8a58a;
+}
+
+body.dark-mode .auth-caja input,
+body.dark-mode .form-coop input {
+    background: #0d1420;
+    border-color: #24120d;
+    color: #e8d5b7;
+}
+
+body.dark-mode .auth-cerrar {
+    color: #f0e6d0;
+}
+
+body.dark-mode .form-coop {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: #3a2419;
+}
+
+body.dark-mode .form-estado,
+body.dark-mode .galeria-vacia,
+body.dark-mode .galeria-error {
+    color: #b8a58a;
+}
+
+/* --- Responsive --- */
+@media (max-width: 480px) {
+    .auth-btn {
+        top: 10px;
+        right: 58px;
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+
+    .form-coop button {
+        flex: 1 0 100%;
+    }
+}
+
+@media (max-width: 360px) {
+    .auth-btn {
+        top: 8px;
+        right: 48px;
+        width: 34px;
+        height: 34px;
+        font-size: 0.85rem;
+    }
+}
+
+/* Respeta a quien pidió menos movimiento */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

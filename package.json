@@ -1,0 +1,19 @@
+{
+  "name": "antologia-nico",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "migrar-fotos": "node scripts/migrar-fotos.mjs"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.58.0"
+  },
+  "devDependencies": {
+    "sharp": "^0.35.3",
+    "vite": "^7.1.5"
+  }
+}

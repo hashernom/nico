@@ -9,8 +9,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <link rel="stylesheet" href="styles.css?v=4">
-    <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
     <!-- Animación de orquídeas -->
@@ -82,6 +80,26 @@
     <button class="dark-toggle" id="darkToggle" aria-label="Modo oscuro">
         <span class="toggle-icon">🌙</span>
     </button>
+
+    <!-- Sesión (solo para editar; ver el sitio no requiere login) -->
+    <button class="auth-btn" id="authBtn" aria-label="Iniciar sesión"><i class="fas fa-lock"></i></button>
+
+    <div class="auth-modal" id="authModal">
+        <div class="auth-caja">
+            <button class="auth-cerrar" id="authCerrar" aria-label="Cerrar">&times;</button>
+            <h3>Entrar para editar</h3>
+            <form id="authForm">
+                <label for="authEmail">Email</label>
+                <input type="email" id="authEmail" autocomplete="email" required>
+
+                <label for="authPass">Contraseña</label>
+                <input type="password" id="authPass" autocomplete="current-password" required>
+
+                <button type="submit">Entrar</button>
+            </form>
+            <p class="auth-error" id="authError"></p>
+        </div>
+    </div>
 
     <!-- Panel To-Do List -->
     <div class="todo-panel" id="todoPanel">
@@ -183,6 +201,12 @@
                     <div class="timeline-line"></div>
                     <div id="checkpoints-list"></div>
                 </div>
+
+                <form class="form-coop oculto" id="eventoForm">
+                    <input type="text" id="eventoTitulo" placeholder="Nuevo evento..." maxlength="120" required>
+                    <input type="date" id="eventoFecha" aria-label="Fecha del evento">
+                    <button type="submit">Agregar</button>
+                </form>
             </div>
             
             <div class="card-footer"></div>
@@ -198,6 +222,14 @@
             
             <div class="card-content">
                 <div class="photo-album" id="gallery-grid"></div>
+
+                <form class="form-coop oculto" id="fotoForm">
+                    <input type="file" id="fotoArchivo" accept="image/*" aria-label="Elegir foto" required>
+                    <input type="text" id="fotoCaption" placeholder="Descripción..." maxlength="140">
+                    <input type="date" id="fotoFecha" aria-label="Fecha de la foto">
+                    <button type="submit">Subir</button>
+                    <p class="form-estado" id="fotoEstado"></p>
+                </form>
             </div>
             
             <div class="card-footer"></div>
@@ -213,6 +245,6 @@
         </footer>
     </main>
 
-    <script src="script.js?v=2"></script>
+    <script type="module" src="/src/main.js"></script>
 </body>
 </html>

@@ -44,7 +44,7 @@ body {
     overflow-x: hidden;
     transition: background 0.6s ease, color 0.6s ease;
     
-    background-image: url('img/fondo.jpg');
+    background-image: url('/img/fondo.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
