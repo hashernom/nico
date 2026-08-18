@@ -1,5 +1,7 @@
 import { supabase } from '../lib/supabase.js';
 import { haySesion, alCambiarSesion } from '../lib/auth.js';
+import { etiquetaAutor } from '../lib/autores.js';
+import { avisarSiHayNovedad, masReciente } from '../jardin/novedades.js';
 
 // Música: canciones con link y el porqué.
 // Cada una es un cassette pixel art; el botón abre el link afuera.
@@ -30,6 +32,7 @@ export async function setupMusica() {
         }
         canciones = data;
         pintar();
+        avisarSiHayNovedad('musica', masReciente(canciones));
     }
 
     function pintar() {
@@ -67,7 +70,8 @@ export async function setupMusica() {
 
         const titulo = document.createElement('h4');
         titulo.className = 'cassette-titulo';
-        titulo.textContent = cancion.title;
+        titulo.appendChild(document.createTextNode(cancion.title));
+        titulo.appendChild(etiquetaAutor(cancion.created_by));
         etiqueta.appendChild(titulo);
 
         if (cancion.note) {

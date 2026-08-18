@@ -19,6 +19,7 @@ import { setupIntroJardin } from './jardin/intro-jardin.js';
 import { setupAmbiente } from './jardin/ambiente.js';
 import { setupDecoracion } from './jardin/decoracion.js';
 import { setupColinas } from './jardin/colinas.js';
+import { inicializarPrimeraVez } from './jardin/novedades.js';
 
 async function iniciar() {
     // Nada de esto depende de la red: se pinta de inmediato.
@@ -30,6 +31,11 @@ async function iniciar() {
     setupDecoracion();
     setupAmbiente();
     setupIntroJardin();
+
+    // Antes de que lleguen los datos: si es la primera vez que este
+    // navegador ve el sistema de novedades, marca todo lo existente como
+    // "ya visto" para no prender las seis insignias de golpe.
+    inicializarPrimeraVez();
 
     // La sesión primero: los módulos de datos consultan haySesion() al pintarse.
     await setupAuth();

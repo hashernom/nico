@@ -1,5 +1,7 @@
 import { supabase } from '../lib/supabase.js';
 import { haySesion, alCambiarSesion } from '../lib/auth.js';
+import { etiquetaAutor } from '../lib/autores.js';
+import { avisarSiHayNovedad, masReciente } from '../jardin/novedades.js';
 
 // Cartas: notas con fecha que se escriben entre ellos.
 // Cada una es un sobre cerrado; al tocarlo se abre y despliega la hoja.
@@ -29,6 +31,7 @@ export async function setupCartas() {
         }
         cartas = data;
         pintar();
+        avisarSiHayNovedad('cartas', masReciente(cartas));
     }
 
     function pintar() {
@@ -67,6 +70,7 @@ export async function setupCartas() {
         const fecha = document.createElement('span');
         fecha.className = 'sobre-fecha';
         fecha.textContent = formatearFecha(carta.written_on);
+        fecha.appendChild(etiquetaAutor(carta.created_by));
 
         const pista = document.createElement('span');
         pista.className = 'sobre-pista';

@@ -1,3 +1,22 @@
 [build]
   command = "npm run build"
   publish = "dist"
+
+# El HTML nunca se cachea sin revalidar: si no, un navegador puede quedarse
+# sirviendo un index.html viejo que apunta a bundles con hash que Netlify ya
+# no tiene (porque un deploy nuevo los reemplazó). "no-cache" no es "no
+# guardar nada": el navegador igual guarda una copia, pero SIEMPRE le
+# pregunta al servidor si sigue vigente antes de usarla.
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "no-cache, must-revalidate"
+
+# Los assets de Vite sí llevan hash en el nombre (index-B1TPECkK.js): un
+# cambio en el contenido siempre produce un nombre de archivo distinto, así
+# que cachearlos "para siempre" es seguro y no hay riesgo de servir algo
+# viejo con ese nombre.
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

@@ -11,6 +11,7 @@
 
 import { crearFlorSVG } from './sprite.js';
 import { SECCIONES } from './secciones.js';
+import { marcarVisto, setSeccionAbierta } from './novedades.js';
 
 const sinMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -60,6 +61,13 @@ function plantarFlores() {
         const sprite = document.createElement('span');
         sprite.className = 'flor-sprite';
         sprite.appendChild(crearFlorSVG({ silueta: seccion.silueta, paleta: seccion.paleta }));
+
+        // Oculta por CSS salvo que la flor tenga la clase .flor--nueva
+        // (novedades.js la prende/apaga según haya o no contenido sin ver).
+        const insignia = document.createElement('span');
+        insignia.className = 'flor-badge';
+        insignia.setAttribute('aria-hidden', 'true');
+        sprite.appendChild(insignia);
 
         const cartel = document.createElement('span');
         cartel.className = 'flor-cartel';
@@ -118,6 +126,8 @@ function abrirSeccion(seccion, flor) {
     const { capa, panel, titulo, icono, cuerpo, mundo } = elementos;
 
     florAbierta = flor;
+    setSeccionAbierta(seccion.id);
+    marcarVisto(seccion.id);
 
     titulo.textContent = seccion.titulo;
     icono.textContent = seccion.icono;
@@ -166,6 +176,7 @@ function cerrarSeccion({ volverAtras = true } = {}) {
     document.body.classList.remove('panel-abierto');
     mundo?.removeAttribute('aria-hidden');
     soltarCamara();
+    setSeccionAbierta(null);
 
     if (volverAtras && history.state?.seccion) history.back();
 

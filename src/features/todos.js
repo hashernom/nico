@@ -1,5 +1,7 @@
 import { supabase } from '../lib/supabase.js';
 import { haySesion, alCambiarSesion } from '../lib/auth.js';
+import { etiquetaAutor } from '../lib/autores.js';
+import { avisarSiHayNovedad, masReciente } from '../jardin/novedades.js';
 
 // Antes vivía en localStorage: cada dispositivo veía una lista distinta.
 // Ahora es una sola lista en Supabase, sincronizada en vivo entre los dos.
@@ -31,6 +33,7 @@ export async function setupTodos() {
         }
         todos = data;
         pintar();
+        avisarSiHayNovedad('todos', masReciente(todos));
     }
 
     function pintar() {
@@ -48,7 +51,8 @@ export async function setupTodos() {
 
             const texto = document.createElement('span');
             texto.className = 'todo-text' + (todo.done ? ' done' : '');
-            texto.textContent = todo.text; // textContent = sin riesgo de HTML inyectado
+            texto.appendChild(document.createTextNode(todo.text)); // sin riesgo de HTML inyectado
+            texto.appendChild(etiquetaAutor(todo.created_by));
 
             const borrar = document.createElement('button');
             borrar.className = 'todo-btn';

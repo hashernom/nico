@@ -1,5 +1,7 @@
 import { supabase } from '../lib/supabase.js';
 import { haySesion, alCambiarSesion } from '../lib/auth.js';
+import { etiquetaAutor } from '../lib/autores.js';
+import { avisarSiHayNovedad, masReciente } from '../jardin/novedades.js';
 
 // Timeline de checkpoints. Antes estaba hardcodeado en script.js.
 
@@ -25,6 +27,7 @@ export async function setupEventos() {
         }
         eventos = data;
         pintar();
+        avisarSiHayNovedad('eventos', masReciente(eventos));
     }
 
     function pintar() {
@@ -49,6 +52,7 @@ export async function setupEventos() {
             const fecha = document.createElement('span');
             fecha.className = 'timeline-date';
             fecha.textContent = evento.happened_on ?? 'sin fecha';
+            fecha.appendChild(etiquetaAutor(evento.created_by));
 
             info.append(titulo, fecha);
             contenido.appendChild(info);

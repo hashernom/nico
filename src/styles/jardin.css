@@ -660,6 +660,43 @@ body.dark-mode .jardin-mariposas {
     font-size: 0.7rem;
 }
 
+/* Insignia de "hay algo nuevo": novedades.js prende/apaga .flor--nueva en
+   la flor según haya contenido sin ver desde la última visita a esa
+   sección. Oculta por defecto — no un dot vacío detrás de la flor. */
+.flor-badge {
+    position: absolute;
+    top: -2px;
+    right: 6px;
+    width: 11px;
+    height: 11px;
+    background: #FF5C7A;
+    border: 2px solid var(--wood-dark);
+    border-radius: 50%;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.55);
+    opacity: 0;
+    transform: scale(0.5);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    z-index: 6;
+    pointer-events: none;
+}
+
+.flor--nueva .flor-badge {
+    opacity: 1;
+    transform: scale(1);
+    animation: pulso-insignia 1.6s ease-in-out infinite;
+}
+
+@keyframes pulso-insignia {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.25); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .flor--nueva .flor-badge {
+        animation: none;
+    }
+}
+
 .flor:hover .flor-cartel,
 .flor:focus-visible .flor-cartel {
     opacity: 1;
@@ -919,6 +956,56 @@ body.dark-mode .jardin-mariposas {
     color: var(--wood-dark);
     margin: 4px 0 14px;
     text-align: center;
+}
+
+/* Etiqueta de autor: quién agregó el ítem, Nico o Santi. Compartida por
+   las 5 secciones con datos (galería, eventos, to-do, cartas, música). Los
+   ítems migrados antes de la Fase 1 no tienen autor conocido (created_by
+   quedó null a propósito) y simplemente no la muestran. */
+.autor-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    margin-left: 6px;
+    padding: 1px 6px;
+    background: rgba(255, 255, 255, 0.55);
+    border: 2px solid var(--wood-dark);
+    border-radius: 20px;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 700;
+    font-size: 0.6rem;
+    color: var(--text-light);
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+/* Donde hay más aire (galería, to-do) el tag puede ser un poco más grande. */
+.album-caption .autor-tag,
+.todo-text .autor-tag {
+    padding: 2px 7px;
+    font-size: 0.68rem;
+}
+
+.autor-tag::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--autor-color, var(--soft-blue));
+}
+
+.autor-tag--nico {
+    --autor-color: var(--soft-pink);
+}
+
+.autor-tag--santi {
+    --autor-color: var(--soft-blue);
+}
+
+body.dark-mode .autor-tag {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: #0d1420;
+    color: #b8a58a;
 }
 
 .seccion-sub:not(:first-child) {

@@ -1,6 +1,8 @@
 import { supabase } from '../lib/supabase.js';
 import { haySesion, alCambiarSesion } from '../lib/auth.js';
 import { comprimirImagen, nombreUnico, formatearPeso } from '../lib/imagen.js';
+import { etiquetaAutor } from '../lib/autores.js';
+import { avisarSiHayNovedad, masReciente } from '../jardin/novedades.js';
 import { explosionDeCorazones } from './decorativo.js';
 import { abrirLightbox } from './lightbox.js';
 
@@ -40,6 +42,7 @@ export async function setupGaleria() {
         }
         fotos = data;
         pintar();
+        avisarSiHayNovedad('galeria', masReciente(fotos));
     }
 
     function pintar() {
@@ -67,7 +70,8 @@ export async function setupGaleria() {
 
             const caption = document.createElement('div');
             caption.className = 'album-caption';
-            caption.textContent = foto.caption;
+            caption.appendChild(document.createTextNode(foto.caption));
+            caption.appendChild(etiquetaAutor(foto.created_by));
 
             contenedor.append(img, caption);
 
