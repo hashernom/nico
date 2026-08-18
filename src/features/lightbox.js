@@ -39,7 +39,13 @@ export function setupLightbox() {
 
     document.addEventListener('keydown', (e) => {
         if (!overlay.classList.contains('active')) return;
-        if (e.key === 'Escape') cerrarLightbox();
+        if (e.key === 'Escape') {
+            // Marca para quien escuche después: este Escape ya tiene dueño.
+            // El jardín también cierra con Escape y los dos handlers viven en
+            // document, así que no alcanza con mirar si el lightbox está abierto.
+            e.tomadoPorLightbox = true;
+            cerrarLightbox();
+        }
         if (e.key === 'ArrowLeft') navegar(-1);
         if (e.key === 'ArrowRight') navegar(1);
     });

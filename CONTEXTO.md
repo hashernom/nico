@@ -4,7 +4,7 @@
 > sobre todo la sección "FASE 2 — El jardín de flores". Hay decisiones de diseño ya tomadas con el
 > usuario que parecen arbitrarias y no lo son. Cambiarlas sin preguntar arruina el proyecto.
 
-Última actualización: 18 de agosto de 2026.
+Última actualización: 18 de agosto de 2026 (Fase 2 en construcción en `feat/jardin`).
 
 ---
 
@@ -36,6 +36,7 @@ subir fotos y compartir la to-do list sin tocar código.
 | `main` | Versión original, datos hardcodeados en `script.js` | GitHub Pages |
 | `rework` | **Rama de trabajo actual.** Vite + Supabase (Fase 1) | Netlify |
 | `feat/supabase-coop` | Rama donde se hizo la Fase 1, ya mergeada a `rework` | — |
+| `feat/jardin` | **Fase 2 en construcción.** El jardín, en paralelo al sitio de scroll | todavía sin desplegar |
 
 **El usuario pidió explícitamente dejar `main` y GitHub Pages funcionando.** No los toques.
 Todo el trabajo nuevo va sobre `rework`.
@@ -161,6 +162,83 @@ apaga GitHub Pages (por ahora el usuario quiere las dos versiones vivas).
 
 **Esta es la parte que importa. Todo lo de abajo se decidió con el usuario pregunta por pregunta.
 No son sugerencias: son decisiones tomadas.**
+
+## Estado: ESQUELETO COMPLETO, FALTA PULIDO VISUAL 🌱
+
+Está todo construido y funcionando en la rama `feat/jardin`, **en paralelo** al sitio de scroll:
+el jardín vive en `jardin.html` y el sitio de siempre sigue intacto en `index.html`. Vite quedó
+configurado como multipágina y las dos compilan.
+
+Lo que ya anda, verificado contra el sitio corriendo:
+
+- Las seis flores se plantan, abren su panel, y las seis secciones traen datos reales
+  (27 fotos, 13 eventos, y las tablas nuevas respondiendo).
+- Intro de floración, transición de cámara, zoom sobre la flor, panel que crece desde ella.
+- Cartas y Música: UI nueva completa con alta, borrado y realtime.
+- Modo oscuro cubierto en toda la escena y el panel.
+- Responsive verificado a 360×640, 375×812 y desktop: las seis flores entran sin scroll
+  horizontal y los seis paneles entran en pantalla.
+- Teclado: cada flor es un `<button>` con `aria-label`; Escape cierra; el botón "atrás"
+  del celular vuelve al jardín en vez de salir del sitio.
+
+**Lo que falta es mirarlo con ojos humanos.** El agente que lo construyó no pudo tomar
+capturas de pantalla (el panel del navegador no estaba abierto), así que verificó geometría,
+datos y accesibilidad por código, y las flores rasterizándolas con `sharp`. Nadie vio todavía
+la página entera renderizada. Antes de mergear a `rework`: abrir `jardin.html`, recorrerla en
+celular de verdad, y ajustar lo que se vea feo.
+
+Archivos nuevos:
+
+```
+jardin.html               entrada paralela (el sitio viejo sigue en index.html)
+src/jardin.js             orquesta el init del jardín
+src/jardin/
+  sprite.js               genera las flores pixel art en SVG
+  secciones.js            las 6 flores: forma, paleta, ícono, posición
+  jardin.js               cantero, cámara y panel
+  intro-jardin.js         la floración de entrada
+src/features/cartas.js    tabla letters
+src/features/musica.js    tabla songs
+src/styles/jardin.css     todo lo visual del jardín
+```
+
+### Decisiones que se tomaron durante la construcción
+
+- **Tres siluetas × seis paletas** (el usuario eligió esto sobre "una sola forma" y sobre
+  "seis especies distintas"). Las tres formas salen de `SILUETAS` en `sprite.js`.
+- **Hay dos maneras de definir una silueta**: curva rosa (`tipo: 'rosa'`) y pétalos como
+  discos (`tipo: 'discos'`). La curva sola no alcanzaba: por más que se ajusten los números
+  siempre termina en punta y la flor se lee como un destello. Los discos dan el pétalo
+  redondo del pixel art clásico. Si vas a agregar una flor, mirá los dos modos antes.
+- **La flor verde es menta, no verde hoja.** Un verde pasto sobre un cantero de pasto
+  desaparece. Se probó y se cambió por eso, no por gusto.
+- **Cartas = sobres que se abren** y **Música = cassettes con link**, ambas elegidas por
+  el usuario. Música **no** embebe iframes de Spotify/YouTube a propósito: rompen la
+  estética y meten scripts de terceros.
+- `sprite.js` arma el SVG **como string** y recién después lo parsea. Es para que el
+  generador ande también en Node y se puedan rasterizar las flores sin levantar el sitio.
+  Si lo volvés a `createElementNS`, perdés esa posibilidad.
+
+### Bugs encontrados y arreglados en el camino
+
+1. **El panel se quedaba invisible en pestañas en segundo plano.** Su aparición dependía de
+   un `requestAnimationFrame`, que no dispara si la pestaña no está componiendo frames. Es
+   exactamente el mismo bug que ya había tenido la animación de bienvenida en la Fase 1.
+   Ahora el estado de reposo del panel es **visible** y la entrada es una animación CSS:
+   si la animación no corre, el panel igual se ve. **No lo vuelvas a atar a un rAF.**
+2. **Escape cerraba el lightbox y el panel juntos.** Los dos escuchan `keydown` en
+   `document` y el lightbox corre primero, así que la guarda "¿hay lightbox abierto?" ya lo
+   veía cerrado. Se resolvió marcando el evento (`e.tomadoPorLightbox`) **y** mirando el
+   estado, para que funcione sin importar el orden de registro.
+3. En móvil las flores empujaban la tercera fila fuera de pantalla. Se achicaron a 108px
+   (96px bajo 360px) y se le dio más alto al cantero.
+
+### Lo que queda por hacer
+
+- Revisión visual real en celular y desktop, en claro y en oscuro.
+- Probar con sesión iniciada: subir foto, agregar evento, escribir carta, agregar canción.
+  (Sigue sin poder verificarse automáticamente: hace falta la cuenta de Nicole.)
+- Decidir cuándo `jardin.html` pasa a ser la home. Hasta entonces el sitio de scroll manda.
 
 ## La idea
 

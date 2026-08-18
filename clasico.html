@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>niconiconiconico</title>
+    
+    <!-- Fuentes Pixel Art -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+</head>
+<body>
+    <!-- Animación de orquídeas -->
+    <div class="flower-animation">
+        <div class="night"></div>
+        <div class="flowers">
+        <div class="flower flower--1">
+            <div class="flower__line">
+                <div class="flower__line__leaf flower__line__leaf--1"></div>
+                <div class="flower__line__leaf flower__line__leaf--2"></div>
+                <div class="flower__line__leaf flower__line__leaf--3"></div>
+                <div class="flower__line__leaf flower__line__leaf--4"></div>
+                <div class="flower__line__leaf flower__line__leaf--5"></div>
+                <div class="flower__line__leaf flower__line__leaf--6"></div>
+            </div>
+            <div class="flower__leafs flower__leafs--1">
+                <div class="flower__leaf flower__leaf--1"></div>
+                <div class="flower__leaf flower__leaf--2"></div>
+                <div class="flower__leaf flower__leaf--3"></div>
+                <div class="flower__leaf flower__leaf--4"></div>
+            </div>
+            <div class="flower__white-circle"></div>
+            <div class="flower__light flower__light--1"></div>
+            <div class="flower__light flower__light--2"></div>
+            <div class="flower__light flower__light--3"></div>
+            <div class="flower__light flower__light--4"></div>
+            <div class="flower__light flower__light--5"></div>
+            <div class="flower__light flower__light--6"></div>
+            <div class="flower__light flower__light--7"></div>
+            <div class="flower__light flower__light--8"></div>
+        </div>
+        <div class="flower flower--2">
+            <div class="flower__line">
+                <div class="flower__line__leaf flower__line__leaf--1"></div>
+                <div class="flower__line__leaf flower__line__leaf--2"></div>
+                <div class="flower__line__leaf flower__line__leaf--3"></div>
+                <div class="flower__line__leaf flower__line__leaf--4"></div>
+            </div>
+            <div class="flower__leafs flower__leafs--2">
+                <div class="flower__leaf flower__leaf--1"></div>
+                <div class="flower__leaf flower__leaf--2"></div>
+                <div class="flower__leaf flower__leaf--3"></div>
+                <div class="flower__leaf flower__leaf--4"></div>
+            </div>
+            <div class="flower__white-circle"></div>
+        </div>
+        <div class="flower flower--3">
+            <div class="flower__line">
+                <div class="flower__line__leaf flower__line__leaf--1"></div>
+                <div class="flower__line__leaf flower__line__leaf--2"></div>
+                <div class="flower__line__leaf flower__line__leaf--3"></div>
+                <div class="flower__line__leaf flower__line__leaf--4"></div>
+            </div>
+            <div class="flower__leafs flower__leafs--3">
+                <div class="flower__leaf flower__leaf--1"></div>
+                <div class="flower__leaf flower__leaf--2"></div>
+                <div class="flower__leaf flower__leaf--3"></div>
+                <div class="flower__leaf flower__leaf--4"></div>
+            </div>
+            <div class="flower__white-circle"></div>
+        </div>
+        </div>
+    </div>
+
+    <!-- Partículas de fondo -->
+    <div class="particles-container initial-hidden" id="particles"></div>
+
+    <!-- Toggle modo oscuro -->
+    <button class="dark-toggle" id="darkToggle" aria-label="Modo oscuro">
+        <span class="toggle-icon">🌙</span>
+    </button>
+
+    <!-- Sesión (solo para editar; ver el sitio no requiere login) -->
+    <button class="auth-btn" id="authBtn" aria-label="Iniciar sesión"><i class="fas fa-lock"></i></button>
+
+    <div class="auth-modal" id="authModal">
+        <div class="auth-caja">
+            <button class="auth-cerrar" id="authCerrar" aria-label="Cerrar">&times;</button>
+            <h3>Entrar para editar</h3>
+            <form id="authForm">
+                <label for="authEmail">Email</label>
+                <input type="email" id="authEmail" autocomplete="email" required>
+
+                <label for="authPass">Contraseña</label>
+                <input type="password" id="authPass" autocomplete="current-password" required>
+
+                <button type="submit">Entrar</button>
+            </form>
+            <p class="auth-error" id="authError"></p>
+        </div>
+    </div>
+
+    <!-- Panel To-Do List -->
+    <div class="todo-panel" id="todoPanel">
+        <div class="todo-header">
+            <h3><i class="fas fa-check-double"></i> To-Do</h3>
+            <button class="todo-toggle-btn" id="todoToggleBtn" aria-label="Cerrar"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="todo-body">
+            <div class="todo-input-group">
+                <input type="text" id="todoInput" placeholder="Nueva tarea..." maxlength="100">
+                <button id="todoAddBtn"><i class="fas fa-plus"></i></button>
+            </div>
+            <ul id="todoList" class="todo-list"></ul>
+            <div class="todo-footer">
+                <span id="todoCount">0 items</span>
+                <button id="todoClearDone">Limpiar <i class="fas fa-eraser"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <button class="todo-open-btn" id="todoOpenBtn" aria-label="Abrir To-Do"><i class="fas fa-list"></i></button>
+
+    <!-- Lightbox -->
+    <div class="lightbox-overlay" id="lightboxOverlay">
+        <button class="lightbox-close" id="lightboxClose">&times;</button>
+        <button class="lightbox-nav lightbox-prev" id="lightboxPrev"><i class="fas fa-chevron-left"></i></button>
+        <button class="lightbox-nav lightbox-next" id="lightboxNext"><i class="fas fa-chevron-right"></i></button>
+        <div class="lightbox-content">
+            <div class="lightbox-frame">
+                <img id="lightboxImg" src="" alt="">
+            </div>
+            <div class="lightbox-caption" id="lightboxCaption"></div>
+            <div class="lightbox-counter" id="lightboxCounter"></div>
+        </div>
+    </div>
+
+    <main class="main-container initial-hidden">
+        
+        <!-- Hero con estilo Stardew -->
+        <header class="hero-section">
+            <div class="stardew-title-box">
+                <div class="corner-deco top-left"></div>
+                <div class="corner-deco top-right"></div>
+                <div class="corner-deco bottom-left"></div>
+                <div class="corner-deco bottom-right"></div>
+                
+                <div class="pixel-hearts">
+                    <span class="pixel-heart">❤️</span>
+                </div>
+                
+                <h1 class="pixel-title">Antologia de nuestros momentos :p</h1>
+                <div class="subtitle-box">
+                    <span class="pixel-icon">🌸</span>
+                    <span>Desde el 4 de Abril, 2025</span>
+                    <span class="pixel-icon">🌸</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Timer Card Estilo Stardew -->
+        <section class="stardew-card timer-card">
+            <div class="card-header">
+                <div class="header-border"></div>
+                <h2>Tiempo desde que nos conocimos</h2>
+                <div class="header-border"></div>
+            </div>
+            
+            <div class="card-content">
+                <div id="timer" class="timer-grid"></div>
+            </div>
+            
+            <div class="card-footer"></div>
+        </section>
+
+        <section class="stardew-card timer-card">
+            <div class="card-header">
+                <div class="header-border"></div>
+                <h2>Tiempo de casados</h2>
+                <div class="header-border"></div>
+            </div>
+            
+            <div class="card-content">
+                <div id="timer2" class="timer-grid"></div>
+            </div>
+            
+            <div class="card-footer"></div>
+        </section>
+
+        <!-- Timeline Estilo Stardew -->
+        <section class="stardew-card timeline-card">
+            <div class="card-header">
+                <div class="header-border"></div>
+                <h2>Checkpoint bar</h2>
+                <div class="header-border"></div>
+            </div>
+            
+            <div class="card-content">
+                <div class="timeline-container">
+                    <div class="timeline-line"></div>
+                    <div id="checkpoints-list"></div>
+                </div>
+
+                <form class="form-coop oculto" id="eventoForm">
+                    <input type="text" id="eventoTitulo" placeholder="Nuevo evento..." maxlength="120" required>
+                    <input type="date" id="eventoFecha" aria-label="Fecha del evento">
+                    <button type="submit">Agregar</button>
+                </form>
+            </div>
+            
+            <div class="card-footer"></div>
+        </section>
+
+        <!-- Galería Álbum de Recuerdos -->
+        <section class="stardew-card gallery-card">
+            <div class="card-header">
+                <div class="header-border"></div>
+                <h2>📖 Galeria (us)</h2>
+                <div class="header-border"></div>
+            </div>
+            
+            <div class="card-content">
+                <div class="photo-album" id="gallery-grid"></div>
+
+                <form class="form-coop oculto" id="fotoForm">
+                    <input type="file" id="fotoArchivo" accept="image/*" aria-label="Elegir foto" required>
+                    <input type="text" id="fotoCaption" placeholder="Descripción..." maxlength="140">
+                    <input type="date" id="fotoFecha" aria-label="Fecha de la foto">
+                    <button type="submit">Subir</button>
+                    <p class="form-estado" id="fotoEstado"></p>
+                </form>
+            </div>
+            
+            <div class="card-footer"></div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="stardew-footer">
+            <div class="footer-content">
+                <span class="pixel-icon"></span>
+                <p>Hecho con ❤️ para nicole</p>
+                <span class="pixel-icon"></span>
+            </div>
+        </footer>
+    </main>
+
+    <script type="module" src="/src/main.js"></script>
+</body>
+</html>

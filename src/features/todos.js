@@ -105,14 +105,19 @@ export async function setupTodos() {
     });
     limpiarBtn.addEventListener('click', limpiarHechos);
 
-    abrirBtn.addEventListener('click', () => {
-        panel.classList.add('open');
-        abrirBtn.classList.add('hidden');
-    });
-    cerrarBtn.addEventListener('click', () => {
-        panel.classList.remove('open');
-        abrirBtn.classList.remove('hidden');
-    });
+    // En el sitio de scroll la lista vive en un panel flotante que se abre y
+    // cierra. En el jardín va dentro del panel de madera y no hace falta:
+    // por eso los botones son opcionales.
+    if (abrirBtn && cerrarBtn) {
+        abrirBtn.addEventListener('click', () => {
+            panel.classList.add('open');
+            abrirBtn.classList.add('hidden');
+        });
+        cerrarBtn.addEventListener('click', () => {
+            panel.classList.remove('open');
+            abrirBtn.classList.remove('hidden');
+        });
+    }
 
     // Los controles de escritura aparecen solo con sesión iniciada.
     alCambiarSesion(() => {
