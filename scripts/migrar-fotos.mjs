@@ -1,5 +1,6 @@
-// Migración única: sube las fotos históricas de img/ a Supabase Storage
-// y crea sus filas en la tabla photos, conservando los captions originales.
+// Migración única: sube las fotos históricas de img/ a Supabase Storage y
+// carga los checkpoints del timeline, todo tal como estaba hardcodeado en
+// el script.js original.
 //
 // Uso:
 //   SUPABASE_SERVICE_KEY=<service_role> npm run migrar-fotos
@@ -48,6 +49,24 @@ const FOTOS = [
     { archivo: 'img24.jpeg', caption: 'te amo amor' },
     { archivo: 'img25.jpeg', caption: 'lit el mejor regalo del mundo v2.0' },
     { archivo: 'img26.jpeg', caption: 'mi cumpleeeee', fecha: '2026-05-24' }
+];
+
+// Checkpoints tal como estaban hardcodeados en script.js. "fecha: null" es
+// a propósito: "Serenata de cumpleaños 18 de nico" nunca tuvo fecha registrada.
+const EVENTOS = [
+    { title: 'Primer contacto', fecha: '2025-04-04' },
+    { title: 'Primera Cita', fecha: '2025-04-10' },
+    { title: 'Conocí a tus papás', fecha: '2026-01-24' },
+    { title: 'Primer pico', fecha: '2026-01-24' },
+    { title: 'Primer dia en ocaña', fecha: '2026-02-14' },
+    { title: 'Cena familiar', fecha: '2026-02-20' },
+    { title: 'nobios alaberga', fecha: '2026-02-21' },
+    { title: 'primera date de cine', fecha: '2026-03-18' },
+    { title: 'primer mes', fecha: '2026-03-21' },
+    { title: 'el mejo regalo del mundo', fecha: '2026-03-21' },
+    { title: 'Santiago arrives ocaña once again', fecha: '2026-03-28' },
+    { title: 'Serenata de cumpeaños 18 de nico', fecha: null },
+    { title: 'Pumple santi', fecha: '2026-05-24' }
 ];
 
 const url = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL;
@@ -129,7 +148,29 @@ async function migrar() {
     console.log(`Peso: ${mb(pesoOriginal)} MB → ${mb(pesoFinal)} MB`);
 }
 
-migrar().catch((err) => {
+async function migrarEventos() {
+    const { count } = await supabase.from('events').select('*', { count: 'exact', head: true });
+    if (count > 0) {
+        console.log(`Ya hay ${count} eventos en la base. Nada que migrar.`);
+        return;
+    }
+
+    const filas = EVENTOS.map((e) => ({ title: e.title, happened_on: e.fecha }));
+    const { error } = await supabase.from('events').insert(filas);
+
+    if (error) {
+        console.error('Error migrando eventos:', error.message);
+        return;
+    }
+    console.log(`${filas.length}/${EVENTOS.length} eventos migrados.`);
+}
+
+async function main() {
+    await migrar();
+    await migrarEventos();
+}
+
+main().catch((err) => {
     console.error('Falló la migración:', err);
     process.exit(1);
 });
