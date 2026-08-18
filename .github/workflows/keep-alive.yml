@@ -1,0 +1,25 @@
+name: Mantener Supabase despierto
+
+# Los proyectos free de Supabase se pausan tras ~7 dias sin actividad y el
+# sitio quedaria caido hasta restaurarlo a mano. Un request diario lo evita.
+
+on:
+  schedule:
+    - cron: '17 14 * * *' # todos los dias 14:17 UTC
+  workflow_dispatch: # tambien se puede correr a mano desde la pestana Actions
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Consultar la base
+        run: |
+          codigo=$(curl -s -o /dev/null -w '%{http_code}' \
+            -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
+            "${{ secrets.SUPABASE_URL }}/rest/v1/todos?select=id&limit=1")
+
+          echo "Respuesta: $codigo"
+          if [ "$codigo" != "200" ]; then
+            echo "::error::Supabase respondio $codigo (se esperaba 200)"
+            exit 1
+          fi
