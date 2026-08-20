@@ -3,6 +3,7 @@ import { haySesion, alCambiarSesion } from '../lib/auth.js';
 import { comprimirImagen, nombreUnico, formatearPeso } from '../lib/imagen.js';
 import { etiquetaAutor } from '../lib/autores.js';
 import { avisarSiHayNovedad, masReciente } from '../jardin/novedades.js';
+import { conReintentos, suscribirEnVivo, pintarError } from '../lib/vivo.js';
 import { explosionDeCorazones } from './decorativo.js';
 import { abrirLightbox } from './lightbox.js';
 
@@ -29,15 +30,17 @@ export async function setupGaleria() {
     if (!grid) return;
 
     async function cargar() {
-        const { data, error } = await supabase
-            .from('photos')
-            .select('*')
-            .order('sort_index', { ascending: true })
-            .order('created_at', { ascending: true });
+        const { data, error } = await conReintentos(() =>
+            supabase
+                .from('photos')
+                .select('*')
+                .order('sort_index', { ascending: true })
+                .order('created_at', { ascending: true })
+        );
 
         if (error) {
-            grid.innerHTML = '<p class="galeria-error">No se pudieron cargar las fotos 😢</p>';
             console.error('Error cargando fotos:', error.message);
+            pintarError(grid, 'No se pudieron cargar las fotos 😢', cargar);
             return;
         }
         fotos = data;
@@ -100,13 +103,21 @@ export async function setupGaleria() {
     async function eliminar(foto) {
         if (!haySesion()) return;
 
+        const previas = fotos;
+        fotos = fotos.filter((f) => f.id !== foto.id);
+        pintar();
+
         const { error: errorStorage } = await supabase.storage
             .from(BUCKET)
             .remove([foto.storage_path]);
         if (errorStorage) console.error('Error borrando archivo:', errorStorage.message);
 
         const { error } = await supabase.from('photos').delete().eq('id', foto.id);
-        if (error) console.error('Error borrando foto:', error.message);
+        if (error) {
+            console.error('Error borrando foto:', error.message);
+            fotos = previas;
+            pintar();
+        }
     }
 
     form?.addEventListener('submit', async (e) => {
@@ -133,13 +144,22 @@ export async function setupGaleria() {
 
             if (errorSubida) throw errorSubida;
 
-            const { error: errorFila } = await supabase.from('photos').insert({
-                storage_path: ruta,
-                caption: inputCaption.value.trim(),
-                taken_on: inputFecha.value || null
-            });
+            const { data, error: errorFila } = await supabase
+                .from('photos')
+                .insert({
+                    storage_path: ruta,
+                    caption: inputCaption.value.trim(),
+                    taken_on: inputFecha.value || null
+                })
+                .select()
+                .single();
 
             if (errorFila) throw errorFila;
+
+            // No hace falta esperar el eco de realtime para verla: ya se tiene
+            // la fila real (con su id) devuelta por el insert.
+            fotos = [...fotos, data];
+            pintar();
 
             form.reset();
             estado.textContent = '¡Foto subida! 💕';
@@ -161,8 +181,5 @@ export async function setupGaleria() {
 
     await cargar();
 
-    supabase
-        .channel('fotos-vivo')
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'photos' }, cargar)
-        .subscribe();
+    suscribirEnVivo('photos', cargar);
 }

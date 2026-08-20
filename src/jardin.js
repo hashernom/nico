@@ -37,10 +37,12 @@ async function iniciar() {
     // "ya visto" para no prender las seis insignias de golpe.
     inicializarPrimeraVez();
 
-    // La sesión primero: los módulos de datos consultan haySesion() al pintarse.
-    await setupAuth();
-
+    // Los datos son de lectura pública: no hace falta esperar a que resuelva
+    // la sesión para pedirlos. Cada módulo ya se suscribe con
+    // alCambiarSesion() y se vuelve a pintar solo cuando la sesión llega
+    // (antes esta espera serializaba el camino crítico sin necesidad).
     await Promise.all([
+        setupAuth(),
         setupGaleria(),
         setupEventos(),
         setupTodos(),

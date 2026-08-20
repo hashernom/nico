@@ -16,7 +16,7 @@
 //  central entre las dos columnas.
 // ============================================================
 
-import { crearFlorSVG, SILUETAS, PALETAS } from './sprite.js';
+import { crearFlorIMG, SILUETAS, PALETAS } from './sprite.js';
 import { SECCIONES } from './secciones.js';
 
 const sinMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -24,13 +24,23 @@ const sinMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)').matc
 const SILUETA_KEYS = Object.keys(SILUETAS);
 const PALETA_KEYS = Object.keys(PALETAS);
 
+// Mismo corte que el CSS (jardin.css) para decidir escritorio vs mobile.
+const ES_MOVIL = window.matchMedia('(max-width: 600px)');
+
 export function setupDecoracion() {
     const cantero = document.querySelector('.cantero');
     const pasto = document.querySelector('.pasto');
     if (!cantero) return;
 
-    cantero.prepend(crearSuelo('decor-suelo', puntosLibresDesktop(22, 8)));
-    cantero.prepend(crearSuelo('decor-suelo-movil', puntosLibresMovil(16)));
+    // Un solo juego de decoración, el que corresponda al viewport actual.
+    // Antes se armaban los dos siempre y el CSS ocultaba el que no tocaba:
+    // eso hacía que el celular construyera (y mantuviera en memoria) también
+    // las ~2.100 flores de escritorio que jamás iba a mostrar.
+    if (ES_MOVIL.matches) {
+        cantero.prepend(crearSuelo('decor-suelo-movil', puntosLibresMovil(16)));
+    } else {
+        cantero.prepend(crearSuelo('decor-suelo', puntosLibresDesktop(22, 8)));
+    }
 
     // Los arbustos van dentro de .pasto, no de .colinas: .pasto es hermano
     // posterior sin z-index propio y tapa el borde inferior de .colinas por
@@ -192,7 +202,9 @@ function crearElementoSuelo(tipo, [x, y], indice) {
         el.className = 'decor-flor';
         const { silueta, paleta } = COMBOS_FLOR[cursorFlor % COMBOS_FLOR.length];
         cursorFlor++;
-        el.appendChild(crearFlorSVG({ silueta, paleta }));
+        // Imagen plana: estas flores nunca florecen, no necesitan un <rect>
+        // del DOM por píxel.
+        el.appendChild(crearFlorIMG({ silueta, paleta }));
         return el;
     }
 

@@ -9,7 +9,7 @@
 //  pétalos rotados es ilegible en un celular de 360px.)
 // ============================================================
 
-import { crearFlorSVG } from './sprite.js';
+import { crearFlorSVG, crearFlorIMG, duracionFloracion } from './sprite.js';
 import { SECCIONES } from './secciones.js';
 import { marcarVisto, setSeccionAbierta } from './novedades.js';
 
@@ -42,6 +42,7 @@ export function setupJardin() {
 
 function plantarFlores() {
     const { cantero } = elementos;
+    const plantadas = [];
 
     SECCIONES.forEach((seccion, indice) => {
         const flor = document.createElement('button');
@@ -79,7 +80,10 @@ function plantarFlores() {
         flor.append(sprite, cartel);
         flor.addEventListener('click', () => abrirSeccion(seccion, flor));
         cantero.appendChild(flor);
+        plantadas.push({ sprite, seccion, indice });
     });
+
+    elementos.plantadas = plantadas;
 
     // Solo se ve en mobile (CSS): ahí el cantero es un grid de verdad y
     // esto entra como último item, después de la última flor. En
@@ -207,11 +211,39 @@ function soltarCamara() {
 
 /** Abre el jardín cuando termina la intro. */
 export function mostrarJardin() {
-    const { escena, cantero } = elementos ?? {};
+    const { escena, cantero, plantadas } = elementos ?? {};
     if (!escena) return;
 
     escena.removeAttribute('aria-hidden');
     escena.classList.add('visible');
     // La clase dispara la floración escalonada de las seis flores.
     cantero?.classList.add('floreciendo');
+
+    programarAplanado(plantadas);
+}
+
+// Una vez que cada flor terminó de brotar píxel a píxel, se cambia su <svg>
+// animado (~190 <rect>) por una imagen plana con el mismo dibujo: un solo
+// nodo del DOM en vez de 190. No se nota el cambio porque ya está abierta
+// del todo. Con prefers-reduced-motion no hay nada que esperar: se planta
+// directamente la versión plana.
+function programarAplanado(plantadas) {
+    if (!plantadas?.length) return;
+
+    if (sinMovimiento) {
+        plantadas.forEach(({ sprite, seccion }) => aplanarFlor(sprite, seccion));
+        return;
+    }
+
+    const base = duracionFloracion() + 150; // margen sobre la duración real
+    plantadas.forEach(({ sprite, seccion, indice }) => {
+        // Mismo cálculo que --flor-retraso en jardin.css: calc(var(--orden) * 90ms).
+        setTimeout(() => aplanarFlor(sprite, seccion), base + indice * 90);
+    });
+}
+
+function aplanarFlor(sprite, seccion) {
+    const svgViejo = sprite.querySelector('svg.flor-svg');
+    if (!svgViejo) return; // ya se aplanó, o la sección cambió de por medio
+    sprite.replaceChild(crearFlorIMG({ silueta: seccion.silueta, paleta: seccion.paleta }), svgViejo);
 }
