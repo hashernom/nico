@@ -239,8 +239,18 @@ function ordenDe(celdas, x, y) {
  * @param {string} opciones.paleta   clave de PALETAS
  * @param {boolean} opciones.tallo   si false, recorta el SVG a la cabeza
  * @param {number} opciones.pasoMs   milisegundos entre "anillos" de floración
+ * @param {boolean} opciones.animado si false, omite los --px-delay: la flor
+ *        va a usarse como imagen plana (ver florDataURI), donde esos
+ *        atributos no sirven de nada — el navegador rasteriza el SVG una
+ *        sola vez, no puede animar el contenido de un <img>.
  */
-export function florSVG({ silueta = 'margarita', paleta = 'rosa', tallo = true, pasoMs = 55 } = {}) {
+export function florSVG({
+    silueta = 'margarita',
+    paleta = 'rosa',
+    tallo = true,
+    pasoMs = 55,
+    animado = true
+} = {}) {
     const forma = SILUETAS[silueta] ?? SILUETAS.margarita;
     const colores = PALETAS[paleta] ?? PALETAS.rosa;
     const celdas = construirGrilla(forma);
@@ -254,28 +264,56 @@ export function florSVG({ silueta = 'margarita', paleta = 'rosa', tallo = true, 
             const color = colorDe(celdas, x, y, forma, colores);
             if (!color) continue;
 
-            const orden = ordenDe(celdas, x, y);
-            if (orden > maxOrden) maxOrden = orden;
-
             // 1.02 en vez de 1: mata las costuras de medio píxel al escalar.
-            partes.push(
-                `<rect x="${x}" y="${y}" width="1.02" height="1.02" ` +
-                `fill="${color}" style="--px-delay:${orden * pasoMs}ms"/>`
-            );
+            if (animado) {
+                const orden = ordenDe(celdas, x, y);
+                if (orden > maxOrden) maxOrden = orden;
+                partes.push(
+                    `<rect x="${x}" y="${y}" width="1.02" height="1.02" ` +
+                    `fill="${color}" style="--px-delay:${orden * pasoMs}ms"/>`
+                );
+            } else {
+                partes.push(`<rect x="${x}" y="${y}" width="1.02" height="1.02" fill="${color}"/>`);
+            }
         }
     }
 
+    const estilo = animado ? ` style="--px-total:${(maxOrden + 1) * pasoMs}ms"` : '';
+
     return (
         `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${ANCHO} ${alto}" ` +
-        `class="flor-svg" shape-rendering="crispEdges" aria-hidden="true" focusable="false" ` +
-        `style="--px-total:${(maxOrden + 1) * pasoMs}ms">${partes.join('')}</svg>`
+        `width="${ANCHO}" height="${alto}" ` +
+        `class="flor-svg" shape-rendering="crispEdges" aria-hidden="true" focusable="false"${estilo}>` +
+        `${partes.join('')}</svg>`
     );
 }
 
-/** La misma flor, ya como elemento listo para insertar en el DOM. */
+/** La misma flor, ya como elemento listo para insertar en el DOM: un <svg>
+ * con un <rect> por píxel, para animar el florecer píxel por píxel. */
 export function crearFlorSVG(opciones) {
     const doc = new DOMParser().parseFromString(florSVG(opciones), 'image/svg+xml');
     return document.importNode(doc.documentElement, true);
+}
+
+/**
+ * La misma flor pero ya abierta y aplastada a un solo nodo: un <img> con
+ * el SVG incrustado como data-URI. Mismo pixel art (`image-rendering:
+ * pixelated` la mantiene nítida), pero sin un <rect> del DOM por píxel.
+ * Para todo lo que no necesita animar el florecer: la decoración del
+ * suelo, y las flores de sección una vez que ya terminaron de abrirse.
+ */
+export function florDataURI(opciones) {
+    const svg = florSVG({ ...opciones, animado: false });
+    return `data:image/svg+xml,${encodeURIComponent(svg)}`;
+}
+
+export function crearFlorIMG(opciones) {
+    const img = document.createElement('img');
+    img.className = 'flor-svg';
+    img.src = florDataURI(opciones);
+    img.alt = '';
+    img.setAttribute('aria-hidden', 'true');
+    return img;
 }
 
 /** Cuánto tarda una flor en abrirse del todo, para encadenar la transición. */

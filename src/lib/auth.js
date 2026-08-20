@@ -9,6 +9,12 @@ export function haySesion() {
     return sesion !== null;
 }
 
+/** El uuid del usuario logueado, o null. Para etiquetar como propio un
+ * item recién creado antes de que llegue confirmado desde el servidor. */
+export function usuarioActual() {
+    return sesion?.user.id ?? null;
+}
+
 export function alCambiarSesion(callback) {
     suscriptores.add(callback);
     callback(sesion); // estado actual, para que el módulo se pinte de entrada

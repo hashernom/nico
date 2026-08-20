@@ -1,7 +1,8 @@
 import { supabase } from '../lib/supabase.js';
-import { haySesion, alCambiarSesion } from '../lib/auth.js';
+import { haySesion, alCambiarSesion, usuarioActual } from '../lib/auth.js';
 import { etiquetaAutor } from '../lib/autores.js';
 import { avisarSiHayNovedad, masReciente } from '../jardin/novedades.js';
+import { conReintentos, suscribirEnVivo, pintarError } from '../lib/vivo.js';
 
 // Timeline de checkpoints. Antes estaba hardcodeado en script.js.
 
@@ -16,18 +17,30 @@ export async function setupEventos() {
     if (!lista) return;
 
     async function cargar() {
-        const { data, error } = await supabase
-            .from('events')
-            .select('*')
-            .order('happened_on', { ascending: true, nullsFirst: false });
+        const { data, error } = await conReintentos(() =>
+            supabase
+                .from('events')
+                .select('*')
+                .order('happened_on', { ascending: true, nullsFirst: false })
+        );
 
         if (error) {
             console.error('Error cargando eventos:', error.message);
+            pintarError(lista, 'No se pudieron cargar los eventos 😢', cargar);
             return;
         }
         eventos = data;
         pintar();
         avisarSiHayNovedad('eventos', masReciente(eventos));
+    }
+
+    // Mismo orden que la consulta de arriba: fecha ascendente, sin fecha al final.
+    function ordenar(items) {
+        return [...items].sort((a, b) => {
+            if (!a.happened_on) return 1;
+            if (!b.happened_on) return -1;
+            return a.happened_on.localeCompare(b.happened_on);
+        });
     }
 
     function pintar() {
@@ -73,8 +86,17 @@ export async function setupEventos() {
 
     async function eliminar(evento) {
         if (!haySesion()) return;
+
+        const previos = eventos;
+        eventos = eventos.filter((e) => e.id !== evento.id);
+        pintar();
+
         const { error } = await supabase.from('events').delete().eq('id', evento.id);
-        if (error) console.error('Error borrando evento:', error.message);
+        if (error) {
+            console.error('Error borrando evento:', error.message);
+            eventos = previos;
+            pintar();
+        }
     }
 
     form?.addEventListener('submit', async (e) => {
@@ -83,17 +105,34 @@ export async function setupEventos() {
 
         const title = inputTitulo.value.trim();
         if (!title) return;
+        const happened_on = inputFecha.value || null;
 
-        const { error } = await supabase.from('events').insert({
+        form.reset();
+        const temporal = {
+            id: `temp-${Date.now()}`,
             title,
-            happened_on: inputFecha.value || null
-        });
+            happened_on,
+            created_by: usuarioActual(),
+            _optimista: true
+        };
+        eventos = ordenar([...eventos, temporal]);
+        pintar();
+
+        const { data, error } = await supabase
+            .from('events')
+            .insert({ title, happened_on })
+            .select()
+            .single();
 
         if (error) {
             console.error('Error agregando evento:', error.message);
+            eventos = eventos.filter((ev) => ev.id !== temporal.id);
+            pintar();
             return;
         }
-        form.reset();
+
+        eventos = ordenar(eventos.map((ev) => (ev.id === temporal.id ? data : ev)));
+        pintar();
     });
 
     alCambiarSesion(() => {
@@ -103,8 +142,5 @@ export async function setupEventos() {
 
     await cargar();
 
-    supabase
-        .channel('eventos-vivo')
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'events' }, cargar)
-        .subscribe();
+    suscribirEnVivo('events', cargar);
 }

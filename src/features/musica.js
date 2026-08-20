@@ -1,7 +1,8 @@
 import { supabase } from '../lib/supabase.js';
-import { haySesion, alCambiarSesion } from '../lib/auth.js';
+import { haySesion, alCambiarSesion, usuarioActual } from '../lib/auth.js';
 import { etiquetaAutor } from '../lib/autores.js';
 import { avisarSiHayNovedad, masReciente } from '../jardin/novedades.js';
+import { conReintentos, suscribirEnVivo, pintarError } from '../lib/vivo.js';
 
 // Música: canciones con link y el porqué.
 // Cada una es un cassette pixel art; el botón abre el link afuera.
@@ -20,14 +21,13 @@ export async function setupMusica() {
     if (!lista) return;
 
     async function cargar() {
-        const { data, error } = await supabase
-            .from('songs')
-            .select('*')
-            .order('created_at', { ascending: true });
+        const { data, error } = await conReintentos(() =>
+            supabase.from('songs').select('*').order('created_at', { ascending: true })
+        );
 
         if (error) {
-            lista.innerHTML = '<p class="galeria-error">No se pudo cargar la música 😢</p>';
             console.error('Error cargando canciones:', error.message);
+            pintarError(lista, 'No se pudo cargar la música 😢', cargar);
             return;
         }
         canciones = data;
@@ -109,8 +109,17 @@ export async function setupMusica() {
 
     async function eliminar(cancion) {
         if (!haySesion()) return;
+
+        const previas = canciones;
+        canciones = canciones.filter((c) => c.id !== cancion.id);
+        pintar();
+
         const { error } = await supabase.from('songs').delete().eq('id', cancion.id);
-        if (error) console.error('Error borrando canción:', error.message);
+        if (error) {
+            console.error('Error borrando canción:', error.message);
+            canciones = previas;
+            pintar();
+        }
     }
 
     form?.addEventListener('submit', async (e) => {
@@ -125,25 +134,41 @@ export async function setupMusica() {
             estado.textContent = 'El link tiene que empezar con http:// o https://';
             return;
         }
+        const note = inputNota.value.trim() || null;
 
         const boton = form.querySelector('button[type="submit"]');
         boton.disabled = true;
+        form.reset();
 
-        const { error } = await supabase.from('songs').insert({
+        const temporal = {
+            id: `temp-${Date.now()}`,
             title,
             url: url || null,
-            note: inputNota.value.trim() || null
-        });
+            note,
+            created_by: usuarioActual(),
+            _optimista: true
+        };
+        canciones = [...canciones, temporal];
+        pintar();
+
+        const { data, error } = await supabase
+            .from('songs')
+            .insert({ title, url: url || null, note })
+            .select()
+            .single();
 
         boton.disabled = false;
 
         if (error) {
             estado.textContent = `Error: ${error.message}`;
             console.error('Error agregando canción:', error.message);
+            canciones = canciones.filter((c) => c.id !== temporal.id);
+            pintar();
             return;
         }
 
-        form.reset();
+        canciones = canciones.map((c) => (c.id === temporal.id ? data : c));
+        pintar();
         estado.textContent = '¡Canción agregada! 🎵';
         setTimeout(() => {
             estado.textContent = '';
@@ -157,10 +182,7 @@ export async function setupMusica() {
 
     await cargar();
 
-    supabase
-        .channel('musica-vivo')
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'songs' }, cargar)
-        .subscribe();
+    suscribirEnVivo('songs', cargar);
 }
 
 // Solo http(s). Un `javascript:` guardado en la tabla no debería poder

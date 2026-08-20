@@ -1,7 +1,8 @@
 import { supabase } from '../lib/supabase.js';
-import { haySesion, alCambiarSesion } from '../lib/auth.js';
+import { haySesion, alCambiarSesion, usuarioActual } from '../lib/auth.js';
 import { etiquetaAutor } from '../lib/autores.js';
 import { avisarSiHayNovedad, masReciente } from '../jardin/novedades.js';
+import { conReintentos, suscribirEnVivo, pintarError } from '../lib/vivo.js';
 
 // Cartas: notas con fecha que se escriben entre ellos.
 // Cada una es un sobre cerrado; al tocarlo se abre y despliega la hoja.
@@ -18,20 +19,31 @@ export async function setupCartas() {
     if (!lista) return;
 
     async function cargar() {
-        const { data, error } = await supabase
-            .from('letters')
-            .select('*')
-            .order('written_on', { ascending: false, nullsFirst: false })
-            .order('created_at', { ascending: false });
+        const { data, error } = await conReintentos(() =>
+            supabase
+                .from('letters')
+                .select('*')
+                .order('written_on', { ascending: false, nullsFirst: false })
+                .order('created_at', { ascending: false })
+        );
 
         if (error) {
-            lista.innerHTML = '<p class="galeria-error">No se pudieron cargar las cartas 😢</p>';
             console.error('Error cargando cartas:', error.message);
+            pintarError(lista, 'No se pudieron cargar las cartas 😢', cargar);
             return;
         }
         cartas = data;
         pintar();
         avisarSiHayNovedad('cartas', masReciente(cartas));
+    }
+
+    // Mismo orden que la consulta: fecha descendente, sin fecha al final.
+    function ordenar(items) {
+        return [...items].sort((a, b) => {
+            if (!a.written_on) return 1;
+            if (!b.written_on) return -1;
+            return b.written_on.localeCompare(a.written_on);
+        });
     }
 
     function pintar() {
@@ -109,8 +121,17 @@ export async function setupCartas() {
 
     async function eliminar(carta) {
         if (!haySesion()) return;
+
+        const previas = cartas;
+        cartas = cartas.filter((c) => c.id !== carta.id);
+        pintar();
+
         const { error } = await supabase.from('letters').delete().eq('id', carta.id);
-        if (error) console.error('Error borrando carta:', error.message);
+        if (error) {
+            console.error('Error borrando carta:', error.message);
+            cartas = previas;
+            pintar();
+        }
     }
 
     form?.addEventListener('submit', async (e) => {
@@ -119,24 +140,40 @@ export async function setupCartas() {
 
         const body = inputTexto.value.trim();
         if (!body) return;
+        const written_on = inputFecha.value || null;
 
         const boton = form.querySelector('button[type="submit"]');
         boton.disabled = true;
+        form.reset();
 
-        const { error } = await supabase.from('letters').insert({
+        const temporal = {
+            id: `temp-${Date.now()}`,
             body,
-            written_on: inputFecha.value || null
-        });
+            written_on,
+            created_by: usuarioActual(),
+            _optimista: true
+        };
+        cartas = ordenar([...cartas, temporal]);
+        pintar();
+
+        const { data, error } = await supabase
+            .from('letters')
+            .insert({ body, written_on })
+            .select()
+            .single();
 
         boton.disabled = false;
 
         if (error) {
             estado.textContent = `Error: ${error.message}`;
             console.error('Error agregando carta:', error.message);
+            cartas = cartas.filter((c) => c.id !== temporal.id);
+            pintar();
             return;
         }
 
-        form.reset();
+        cartas = ordenar(cartas.map((c) => (c.id === temporal.id ? data : c)));
+        pintar();
         estado.textContent = '¡Carta guardada! 💌';
         setTimeout(() => {
             estado.textContent = '';
@@ -150,10 +187,7 @@ export async function setupCartas() {
 
     await cargar();
 
-    supabase
-        .channel('cartas-vivo')
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'letters' }, cargar)
-        .subscribe();
+    suscribirEnVivo('letters', cargar);
 }
 
 function formatearFecha(iso) {
