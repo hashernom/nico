@@ -8,10 +8,14 @@ import { abrirLightbox } from './lightbox.js';
 
 const BUCKET = 'fotos';
 
-let fotos = [];
+let fotos = [];        // orden del álbum: sort_index, inamovible para lo viejo
+let fotosVista = [];   // lo que se está mostrando ahora (puede estar reordenado)
+let ordenActual = 'album';
 
 export function fotosActuales() {
-    return fotos;
+    // El lightbox navega por índice sobre esto: tiene que ser SIEMPRE el
+    // mismo orden que se ve en la grilla, no el orden "de base".
+    return fotosVista;
 }
 
 export function urlPublica(storagePath) {
@@ -25,6 +29,7 @@ export async function setupGaleria() {
     const inputCaption = document.getElementById('fotoCaption');
     const inputFecha = document.getElementById('fotoFecha');
     const estado = document.getElementById('fotoEstado');
+    const botonesOrden = document.querySelectorAll('#galeriaOrden .galeria-orden-btn');
 
     if (!grid) return;
 
@@ -41,14 +46,28 @@ export async function setupGaleria() {
             return;
         }
         fotos = data;
-        pintar();
+        aplicarOrden();
         avisarSiHayNovedad('galeria', masReciente(fotos));
+    }
+
+    // "Álbum" es el orden de sort_index (fotos viejas fijas, nuevas al
+    // final); los otros dos son una vista de solo lectura por fecha, no
+    // tocan sort_index ni el orden de base.
+    function aplicarOrden() {
+        if (ordenActual === 'nuevas') {
+            fotosVista = [...fotos].sort((a, b) => b.created_at.localeCompare(a.created_at));
+        } else if (ordenActual === 'viejas') {
+            fotosVista = [...fotos].sort((a, b) => a.created_at.localeCompare(b.created_at));
+        } else {
+            fotosVista = fotos;
+        }
+        pintar();
     }
 
     function pintar() {
         grid.innerHTML = '';
 
-        if (fotos.length === 0) {
+        if (fotosVista.length === 0) {
             const vacio = document.createElement('p');
             vacio.className = 'galeria-vacia';
             vacio.textContent = haySesion()
@@ -58,7 +77,7 @@ export async function setupGaleria() {
             return;
         }
 
-        fotos.forEach((foto, indice) => {
+        fotosVista.forEach((foto, indice) => {
             const contenedor = document.createElement('div');
             contenedor.className = 'album-photo';
             contenedor.style.animationDelay = `${indice * 0.05}s`;
@@ -133,10 +152,16 @@ export async function setupGaleria() {
 
             if (errorSubida) throw errorSubida;
 
+            // sort_index por defecto en la tabla es 0: si no se manda uno
+            // explícito acá, la foto nueva empata con la primera del álbum
+            // viejo y termina mezclada al principio en vez de al final.
+            const proximoIndice = fotos.reduce((max, f) => Math.max(max, f.sort_index), -1) + 1;
+
             const { error: errorFila } = await supabase.from('photos').insert({
                 storage_path: ruta,
                 caption: inputCaption.value.trim(),
-                taken_on: inputFecha.value || null
+                taken_on: inputFecha.value || null,
+                sort_index: proximoIndice
             });
 
             if (errorFila) throw errorFila;
@@ -157,6 +182,16 @@ export async function setupGaleria() {
     alCambiarSesion(() => {
         form?.classList.toggle('oculto', !haySesion());
         pintar();
+    });
+
+    botonesOrden.forEach((boton) => {
+        boton.addEventListener('click', () => {
+            if (boton.classList.contains('activo')) return;
+            botonesOrden.forEach((b) => b.classList.remove('activo'));
+            boton.classList.add('activo');
+            ordenActual = boton.dataset.orden;
+            aplicarOrden();
+        });
     });
 
     await cargar();

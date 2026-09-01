@@ -547,6 +547,124 @@ body.dark-mode .jardin-mariposas {
 }
 
 /* ============================================================
+   WIDGETS DE ESQUINA: presencia en vivo y visitas del mes
+   La esquina derecha ya tiene sesión + modo oscuro; esto va a la
+   izquierda, con los mismos offsets que esos dos botones para que las
+   cuatro cosas respiren igual en cualquier tamaño de pantalla.
+   ============================================================ */
+
+.widgets-izquierda {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 4000;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    pointer-events: none;
+}
+
+.presencia-aviso {
+    padding: 6px 10px;
+    background: var(--bg-paper);
+    border: 3px solid var(--wood-dark);
+    border-radius: 10px;
+    box-shadow: var(--shadow-pixel);
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 700;
+    font-size: 0.72rem;
+    color: var(--text-dark);
+    white-space: nowrap;
+    opacity: 0;
+    transform: translateY(-6px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.presencia-aviso.visible {
+    opacity: 1;
+    transform: translateY(0);
+    animation: latir-presencia 2.4s ease-in-out infinite;
+}
+
+@keyframes latir-presencia {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(0) scale(1.04); }
+}
+
+.visitas-widget {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 6px 8px;
+    background: var(--bg-paper);
+    border: 3px solid var(--wood-dark);
+    border-radius: 10px;
+    box-shadow: var(--shadow-pixel);
+    cursor: default;
+}
+
+.visitas-fila {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.visitas-nombre {
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 700;
+    font-size: 0.62rem;
+    color: var(--text-light);
+    min-width: 38px;
+    line-height: 1;
+}
+
+.visitas-barra {
+    display: flex;
+    gap: 2px;
+}
+
+.visitas-segmento {
+    width: 8px;
+    height: 14px;
+    background: rgba(0, 0, 0, 0.12);
+    border: 1px solid var(--wood-dark);
+    border-radius: 1px;
+}
+
+/* Un color de barra por persona, espejando los de .autor-tag: Nico rosa,
+   Santi celeste. Así se lee de un vistazo de quién es cada barra. */
+.visitas-fila--nico .visitas-segmento.lleno {
+    background: linear-gradient(to bottom, var(--soft-pink), var(--rose-accent));
+}
+
+.visitas-fila--santi .visitas-segmento.lleno {
+    background: linear-gradient(to bottom, var(--soft-blue), var(--sky-blue));
+}
+
+body.dark-mode .presencia-aviso,
+body.dark-mode .visitas-widget {
+    background: #1a2233;
+    border-color: #0d1420;
+    color: #f0e6d0;
+}
+
+body.dark-mode .visitas-nombre {
+    color: #b8a58a;
+}
+
+body.dark-mode .visitas-segmento {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: #0d1420;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .presencia-aviso.visible {
+        animation: none;
+    }
+}
+
+/* ============================================================
    LAS FLORES
    Los pétalos son navegación: se iluminan y muestran su cartel.
    ============================================================ */
@@ -1015,6 +1133,45 @@ body.dark-mode .autor-tag {
 /* La galería dentro del panel no necesita el ancho del sitio de scroll. */
 .panel-cuerpo .photo-album {
     grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+}
+
+/* Selector de orden: "Álbum" es sort_index (fotos viejas fijas, nuevas al
+   final); los otros dos son una vista por fecha, de solo lectura. */
+.galeria-orden {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+}
+
+.galeria-orden-btn {
+    padding: 6px 10px;
+    background: rgba(255, 255, 255, 0.5);
+    border: 2px solid var(--wood-dark);
+    border-radius: 20px;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 700;
+    font-size: 0.75rem;
+    color: var(--text-light);
+    cursor: pointer;
+    touch-action: manipulation;
+}
+
+.galeria-orden-btn.activo {
+    background: linear-gradient(to bottom, var(--soft-pink), var(--rose-accent));
+    color: var(--text-dark);
+}
+
+body.dark-mode .galeria-orden-btn {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: #0d1420;
+    color: #b8a58a;
+}
+
+body.dark-mode .galeria-orden-btn.activo {
+    background: linear-gradient(to bottom, #6d3f4a, #4a2a32);
+    color: #f0e6d0;
 }
 
 .panel-cuerpo .todo-en-panel .todo-input-group {
@@ -1610,6 +1767,29 @@ body.dark-mode .panel-cuerpo .todo-en-panel .todo-input-group input {
     .intro-pista {
         font-size: 0.5rem;
     }
+
+    /* Mismos offsets que coop.css le da a .auth-btn/.dark-toggle en esta
+       misma media query, del otro lado de la pantalla. */
+    .widgets-izquierda {
+        top: 10px;
+        left: 10px;
+        gap: 6px;
+    }
+
+    .presencia-aviso {
+        font-size: 0.62rem;
+        padding: 5px 8px;
+    }
+
+    .visitas-segmento {
+        width: 6px;
+        height: 11px;
+    }
+
+    .visitas-nombre {
+        font-size: 0.56rem;
+        min-width: 32px;
+    }
 }
 
 @media (max-width: 360px) {
@@ -1625,6 +1805,20 @@ body.dark-mode .panel-cuerpo .todo-en-panel .todo-input-group input {
 
     .jardin-cabecera {
         padding: 0 44px;
+    }
+
+    .widgets-izquierda {
+        top: 8px;
+        left: 8px;
+    }
+
+    /* A este ancho, con la presencia visible, "Nico está en el jardín
+       ahora" no entra en una sola línea sin invadir el título. Se permite
+       envolver en dos, en vez de desbordar. */
+    .presencia-aviso {
+        white-space: normal;
+        max-width: 128px;
+        line-height: 1.3;
     }
 }
 

@@ -19,3 +19,7 @@ Thumbs.db
 
 # Local Netlify folder
 .netlify
+
+# Caché local del Supabase CLI (proyecto vinculado, versiones, pooler URL).
+# Se regenera solo con `supabase link` / `supabase db push`; no es código.
+supabase/.temp/

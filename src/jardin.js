@@ -20,6 +20,8 @@ import { setupAmbiente } from './jardin/ambiente.js';
 import { setupDecoracion } from './jardin/decoracion.js';
 import { setupColinas } from './jardin/colinas.js';
 import { inicializarPrimeraVez } from './jardin/novedades.js';
+import { setupVisitas } from './jardin/visitas.js';
+import { setupPresencia } from './lib/presencia.js';
 
 async function iniciar() {
     // Nada de esto depende de la red: se pinta de inmediato.
@@ -39,6 +41,11 @@ async function iniciar() {
 
     // La sesión primero: los módulos de datos consultan haySesion() al pintarse.
     await setupAuth();
+
+    setupPresencia();
+    // Después de la sesión también: registra la visita solo si hay login
+    // y pinta las barras con el conteo compartido de la tabla visitas.
+    setupVisitas();
 
     await Promise.all([
         setupGaleria(),

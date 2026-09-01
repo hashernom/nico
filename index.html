@@ -35,6 +35,10 @@
     </div>
 
     <!-- ============ CONTROLES FLOTANTES ============ -->
+    <!-- Esquina libre (la derecha ya tiene sesión + modo oscuro): presencia
+         en vivo y la barra de visitas del mes se apilan acá. -->
+    <div class="widgets-izquierda" id="widgetsIzquierda"></div>
+
     <button class="dark-toggle" id="darkToggle" aria-label="Modo oscuro">
         <span class="toggle-icon">🌙</span>
     </button>
@@ -82,6 +86,12 @@
 
                 <!-- ---------- GALERÍA ---------- -->
                 <section class="seccion" data-seccion="galeria" hidden>
+                    <div class="galeria-orden" id="galeriaOrden" role="group" aria-label="Ordenar fotos">
+                        <button type="button" class="galeria-orden-btn activo" data-orden="album">Álbum</button>
+                        <button type="button" class="galeria-orden-btn" data-orden="nuevas">Más nuevas</button>
+                        <button type="button" class="galeria-orden-btn" data-orden="viejas">Más viejas</button>
+                    </div>
+
                     <div class="photo-album" id="gallery-grid"></div>
 
                     <form class="form-coop oculto" id="fotoForm">
