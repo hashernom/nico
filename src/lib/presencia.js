@@ -4,10 +4,9 @@
 //  mismo mecanismo (canales) que ya usan los módulos de datos para las
 //  actualizaciones en vivo, así que no suma infraestructura nueva.
 //
-//  No hace falta estar logueado para aparecer: cualquier visita cuenta
-//  como presencia, pero solo se puede poner NOMBRE a una presencia que
-//  coincide con una de las dos cuentas conocidas (autores.js). Alguien
-//  de visita sin sesión simplemente aparece como "alguien más".
+//  El aviso sale SOLO por Nico o Santi (las dos cuentas de autores.js).
+//  Una visita anónima no dispara nada: la gracia es enterarse de que está
+//  el otro, no de que hay alguien mirando.
 // ============================================================
 
 import { supabase } from './supabase.js';
@@ -63,25 +62,18 @@ function actualizarAviso() {
         .filter(([clave]) => clave !== CLAVE_PESTANIA)
         .flatMap(([, presencias]) => presencias);
 
-    if (otrasPestanias.length === 0) {
+    // Varias pestañas de la misma persona (celular + compu) cuentan una
+    // sola vez: lo que importa es QUIÉN está, no cuántas conexiones tiene.
+    // Solo se avisa por Nico y Santi: una visita anónima no dispara nada,
+    // el aviso es para saber que está el otro, no que hay alguien mirando.
+    const nombres = [...new Set(otrasPestanias.map((p) => nombreAutor(p.uuid)).filter(Boolean))];
+
+    if (nombres.length === 0) {
         elementoAviso.classList.remove('visible');
         return;
     }
 
-    // Varias pestañas de la misma persona (celular + compu) cuentan una
-    // sola vez: lo que importa es QUIÉN está, no cuántas conexiones tiene.
-    const nombres = [...new Set(otrasPestanias.map((p) => nombreAutor(p.uuid)).filter(Boolean))];
-    const hayAnonimos = otrasPestanias.some((p) => !nombreAutor(p.uuid));
-
-    let texto;
-    if (nombres.length > 0) {
-        texto = `🌸 ${nombres.join(' y ')} está${nombres.length > 1 ? 'n' : ''} en el jardín ahora`;
-    } else if (hayAnonimos) {
-        texto = '👀 alguien más está mirando el jardín ahora';
-    } else {
-        return;
-    }
-
-    elementoAviso.textContent = texto;
+    elementoAviso.textContent =
+        `🌸 ${nombres.join(' y ')} está${nombres.length > 1 ? 'n' : ''} en el jardín ahora`;
     elementoAviso.classList.add('visible');
 }
