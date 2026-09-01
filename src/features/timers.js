@@ -1,6 +1,9 @@
 // Fechas fijas: se cambian casi nunca, no vale la pena una tabla para esto.
 const FECHA_INICIO = new Date(2025, 3, 4, 0, 0);   // 4 de abril 2025
-const FECHA_CASADOS = new Date(2026, 1, 21, 0, 0); // 21 de febrero 2026
+
+// El de casados queda pausado en cero a propósito (pedido explícito):
+// FECHA_CASADOS se conserva sin usar para el día que se retome.
+// const FECHA_CASADOS = new Date(2026, 1, 21, 0, 0); // 21 de febrero 2026
 
 const DIAS_POR_MES = 30.44;
 
@@ -54,9 +57,11 @@ export function setupTimers() {
     const timer2 = document.getElementById('timer2');
     if (!timer1 || !timer2) return;
 
+    // Pausado en cero: se pinta una sola vez, no entra al intervalo de abajo.
+    timer2.innerHTML = cajasHTML({ meses: 0, dias: 0, horas: 0, minutos: 0, segundos: 0 });
+
     function actualizar() {
         pintarContador(timer1, FECHA_INICIO);
-        pintarContador(timer2, FECHA_CASADOS);
     }
 
     actualizar();

@@ -39,15 +39,20 @@ async function iniciar() {
     // "ya visto" para no prender las seis insignias de golpe.
     inicializarPrimeraVez();
 
-    // La sesión primero: los módulos de datos consultan haySesion() al pintarse.
-    await setupAuth();
-
+    // Presencia y visitas tampoco esperan a la sesión: los dos se suscriben
+    // con alCambiarSesion(), que dispara de entrada con el estado actual y
+    // de nuevo cuando la sesión resuelve. Presencia se re-anuncia con la
+    // identidad correcta y visitas registra recién ahí (tiene su propio
+    // flag para no contar dos veces).
     setupPresencia();
-    // Después de la sesión también: registra la visita solo si hay login
-    // y pinta las barras con el conteo compartido de la tabla visitas.
     setupVisitas();
 
+    // Los datos son de lectura pública: no hace falta esperar a que resuelva
+    // la sesión para pedirlos. Cada módulo ya se suscribe con
+    // alCambiarSesion() y se vuelve a pintar solo cuando la sesión llega
+    // (antes esta espera serializaba el camino crítico sin necesidad).
     await Promise.all([
+        setupAuth(),
         setupGaleria(),
         setupEventos(),
         setupTodos(),
