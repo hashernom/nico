@@ -4,9 +4,13 @@
 // una grilla perfecta parece una tabla, no un patio. En pantallas chicas el
 // CSS los ignora y los objetos pasan a un grid de dos columnas.
 //
+// El Sombrero Seleccionador solo está si `sombreroVisible` (ver src/config.js).
+//
 // `icono` es una clase de Font Awesome (ya cargado en la página).
 
-export const SECCIONES = [
+import { sombreroVisible } from '../config.js';
+
+const TODAS = [
     { id: 'tiempo', titulo: 'Tiempo', leyenda: 'Cuánto llevamos', icono: 'fa-hourglass-half', objeto: 'reloj', x: 14, y: 26 },
     { id: 'galeria', titulo: 'Galería', leyenda: 'Nuestras fotos', icono: 'fa-image', objeto: 'retrato', x: 39, y: 12 },
     { id: 'eventos', titulo: 'Eventos', leyenda: 'Los checkpoints', icono: 'fa-map-location-dot', objeto: 'mapa', x: 66, y: 24 },
@@ -15,6 +19,8 @@ export const SECCIONES = [
     { id: 'musica', titulo: 'Música', leyenda: 'Canciones nuestras', icono: 'fa-music', objeto: 'libro', x: 24, y: 70 },
     { id: 'sombrero', titulo: 'Sombrero', leyenda: '¿A qué casa pertenecemos?', icono: 'fa-hat-wizard', objeto: 'sombrero', x: 41, y: 91 }
 ];
+
+export const SECCIONES = TODAS.filter((s) => s.id !== 'sombrero' || sombreroVisible);
 
 export function seccionPorId(id) {
     return SECCIONES.find((s) => s.id === id) ?? null;

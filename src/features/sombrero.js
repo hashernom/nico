@@ -491,8 +491,19 @@ function reinicio() {
 // --- Arranque ---------------------------------------------------------------------------------------
 
 export function setupSombrero() {
-    raiz = document.getElementById('sombreroEscena');
-    if (!raiz) return;
+    // La sección no está en el HTML: se crea acá, así mientras el sombrero
+    // esté oculto no hay rastro de él en la página (ver src/config.js).
+    const cuerpo = document.getElementById('panelCuerpo');
+    if (!cuerpo) return;
+    const seccion = document.createElement('section');
+    seccion.className = 'seccion';
+    seccion.dataset.seccion = 'sombrero';
+    seccion.hidden = true;
+    raiz = document.createElement('div');
+    raiz.className = 'sombrero-escena';
+    raiz.id = 'sombreroEscena';
+    seccion.appendChild(raiz);
+    cuerpo.appendChild(seccion);
 
     cargarCasas();
     suscribirEnVivo('casas', cargarCasas);

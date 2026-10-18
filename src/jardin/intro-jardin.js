@@ -11,6 +11,7 @@ import { crearObjetoSVG, OBJETOS, duracionAparicion } from './sprite.js';
 import { crearLechuza } from './criaturas.js';
 import { mostrarJardin } from './jardin.js';
 import { sonar } from '../lib/sonido.js';
+import { SECCIONES } from './secciones.js';
 
 const CLAVE_SESION = 'jardin-intro-vista';
 const RETRASO_ENTRE_FLORES = 260;
@@ -65,7 +66,8 @@ export function setupIntroJardin() {
     }
 
     function materializarObjetos() {
-        const objetos = Object.keys(OBJETOS);
+        // Solo los objetos de las secciones visibles (el sombrero puede estar oculto).
+        const objetos = SECCIONES.map((s) => s.objeto).filter((o) => o in OBJETOS);
 
         objetos.forEach((objeto, indice) => {
             const tallo = document.createElement('div');

@@ -16,6 +16,7 @@
   Se cargan DESPUÉS de base/jardin/coop y ganan por orden. Los nombres de clase viejos (`.flor`, `.cassette`, `.stardew-card`...) se conservaron a propósito.
 - **Tipografías** autoalojadas en `public/fonts` (Cinzel, Cinzel Decorative, EB Garamond) y Font Awesome desde npm: ya no hay CDN ni Google Fonts.
 - **Responsive**: verificado en 320, 360, 375, 412, 430, 820 (tablet) y 844×390 (horizontal), con áreas seguras de iPhone.
+- **Sombrero Seleccionador: OCULTO (es una sorpresa).** Para activarlo: `src/config.js` → `SOMBRERO_ACTIVO = true`. Para probarlo sin publicar: abrir el sitio con `?sombrero`. Oculto no deja rastro: ni objeto, ni sección en el HTML, ni pedidos a la base.
 - **Sombrero Seleccionador** (7º objeto, `features/sombrero.js` + `sombrero-datos.js`): test real de 12 preguntas
   más una final que desempata, con sombrero animado, veredicto y resultado por usuario. Las preguntas y pesos
   están en `sombrero-datos.js`. La casa de cada persona vive en la tabla `casas` de Supabase (una fila por usuario,

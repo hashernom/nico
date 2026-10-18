@@ -30,6 +30,7 @@ import { inicializarPrimeraVez } from './jardin/novedades.js';
 import { setupVisitas } from './jardin/visitas.js';
 import { setupPresencia } from './lib/presencia.js';
 import { setupSombrero } from './features/sombrero.js';
+import { sombreroVisible } from './config.js';
 import { setupSonido } from './lib/sonido.js';
 import { setupMapa } from './features/mapa.js';
 import { setupLechuza } from './features/lechuza.js';
@@ -74,7 +75,7 @@ async function iniciar() {
         setupTodos(),
         setupCartas(),
         setupMusica(),
-        setupSombrero()
+        sombreroVisible ? setupSombrero() : null
     ]);
 }
 
