@@ -1,8 +1,9 @@
 // ============================================================
-//  COLINAS DEL FONDO
+//  COLINAS DEL FONDO Y CASTILLO
 //  Antes esto era una banda rectangular con un degradé adentro: se veía
 //  como lo que era, un rectángulo verde cruzando la pantalla. Ahora son
-//  siluetas de verdad, con la loma recortada contra el cielo.
+//  siluetas de verdad, con la loma recortada contra el cielo, y entre la
+//  colina lejana y la media asoma el castillo.
 //
 //  Mismo criterio que las flores: pixel art generado en código, nada de
 //  PNGs. El perfil sale de una suma de senos cuantizada a la grilla de
@@ -30,8 +31,8 @@ const CAPAS = [
             { k: 1, amp: 6, fase: 0.6 },
             { k: 3, amp: 2.5, fase: 2.1 }
         ],
-        dia: { relleno: '#7FA85C', borde: '#95BE72' },
-        noche: { relleno: '#33492a', borde: '#3f5734' }
+        dia: { relleno: '#4F6E5A', borde: '#69896F' },
+        noche: { relleno: '#1B2B3A', borde: '#26394B' }
     },
     {
         clase: 'colina-capa colina-capa--media',
@@ -41,8 +42,8 @@ const CAPAS = [
             { k: 2, amp: 5, fase: 3.4 },
             { k: 5, amp: 1.8, fase: 0.9 }
         ],
-        dia: { relleno: '#6B9648', borde: '#80AC5B' },
-        noche: { relleno: '#2b3f23', borde: '#354c2b' }
+        dia: { relleno: '#3F6A4C', borde: '#57845F' },
+        noche: { relleno: '#15281F', borde: '#1E3629' }
     },
     {
         clase: 'colina-capa colina-capa--cercana',
@@ -52,8 +53,8 @@ const CAPAS = [
             { k: 3, amp: 4, fase: 1.7 },
             { k: 7, amp: 1.4, fase: 2.8 }
         ],
-        dia: { relleno: '#5A8038', borde: '#6E9446' },
-        noche: { relleno: '#22331c', borde: '#2b3f23' }
+        dia: { relleno: '#2F5A3E', borde: '#46754F' },
+        noche: { relleno: '#0F1F17', borde: '#17291F' }
     }
 ];
 
@@ -61,7 +62,11 @@ export function setupColinas() {
     const colinas = document.querySelector('.colinas');
     if (!colinas) return;
 
-    CAPAS.forEach((capa) => {
+    CAPAS.forEach((capa, indice) => {
+        // El castillo va detrás de la colina media y la cercana, delante de
+        // la lejana: así las lomas le tapan la base y se lo ve "asentado".
+        if (indice === 1) colinas.appendChild(crearCastillo());
+
         const alturas = perfil(capa);
         const el = document.createElement('div');
         el.className = capa.clase;
@@ -122,4 +127,83 @@ function rect(x, y, ancho, alto, color) {
     // El +0.02 de ancho tapa las costuras de medio píxel entre columnas
     // vecinas cuando el navegador escala el tile.
     return `<rect x="${x}" y="${y}" width="${ancho + 0.02}" height="${alto}" fill="${color}"/>`;
+}
+
+
+// --- Castillo ------------------------------------------------------------
+// Una silueta de torres con techos puntiagudos y ventanas encendidas. Se
+// dibuja en una grilla de píxeles igual que las colinas, así que escala sin
+// borronear. Las ventanas son lo único que no se apaga de noche.
+
+const CASTILLO_ANCHO = 72;
+const CASTILLO_ALTO = 40;
+const CASTILLO_ESCALA = 4;
+
+// x = columna izquierda, ancho IMPAR (el techo termina en punta de 1 px).
+const TORRES = [
+    { x: 6, ancho: 7, alto: 24, techo: 10 },
+    { x: 20, ancho: 5, alto: 20, techo: 8 },
+    { x: 33, ancho: 9, alto: 29, techo: 12 },
+    { x: 50, ancho: 5, alto: 19, techo: 8 },
+    { x: 59, ancho: 7, alto: 22, techo: 9 }
+];
+const SALON = { x: 12, ancho: 48, alto: 13 };
+
+const COLORES_CASTILLO = {
+    dia: { cuerpo: '#3C3566', techo: '#2A2350', ventana: '#FFD9A0' },
+    noche: { cuerpo: '#171D40', techo: '#0E1230', ventana: '#FFD66B' }
+};
+
+function crearCastillo() {
+    const el = document.createElement('div');
+    el.className = 'castillo';
+    el.setAttribute('aria-hidden', 'true');
+    el.style.setProperty('--castillo-dia', castilloURI(COLORES_CASTILLO.dia));
+    el.style.setProperty('--castillo-noche', castilloURI(COLORES_CASTILLO.noche));
+    return el;
+}
+
+function castilloURI({ cuerpo, techo, ventana }) {
+    const base = CASTILLO_ALTO;
+    const rects = [];
+
+    // Salón central con almenas.
+    rects.push(rect(SALON.x, base - SALON.alto, SALON.ancho, SALON.alto, cuerpo));
+    for (let x = SALON.x; x < SALON.x + SALON.ancho; x += 4) {
+        rects.push(rect(x, base - SALON.alto - 1, 2, 1, cuerpo));
+    }
+
+    TORRES.forEach((torre, i) => {
+        const cima = base - torre.alto;
+        rects.push(rect(torre.x, cima, torre.ancho, torre.alto, cuerpo));
+
+        // Techo: una pirámide escalonada, 1 px de voladizo a cada lado.
+        const anchoBase = torre.ancho + 2;
+        for (let fila = 0; fila < torre.techo; fila++) {
+            const recorte = Math.floor((fila * ((anchoBase + 1) / 2)) / torre.techo);
+            const ancho = Math.max(1, anchoBase - 2 * recorte);
+            const x = torre.x - 1 + recorte;
+            rects.push(rect(x, cima - 1 - fila, ancho, 1, techo));
+        }
+
+        // Ventanas: alternadas a distinta altura para que no parezcan una tabla.
+        for (let y = cima + 3 + (i % 2) * 2; y < base - 4; y += 6) {
+            rects.push(rect(torre.x + Math.floor(torre.ancho / 2), y, 1, 2, ventana));
+        }
+    });
+
+    // Ventanas del salón.
+    for (let x = SALON.x + 3; x < SALON.x + SALON.ancho - 2; x += 5) {
+        if (TORRES.some((t) => x >= t.x - 1 && x <= t.x + t.ancho)) continue;
+        rects.push(rect(x, base - SALON.alto + 4, 1, 3, ventana));
+    }
+
+    const svg =
+        `<svg xmlns="http://www.w3.org/2000/svg" ` +
+        `width="${CASTILLO_ANCHO * CASTILLO_ESCALA}" height="${CASTILLO_ALTO * CASTILLO_ESCALA}" ` +
+        `viewBox="0 0 ${CASTILLO_ANCHO} ${CASTILLO_ALTO}" shape-rendering="crispEdges">` +
+        rects.join('') +
+        `</svg>`;
+
+    return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
 }

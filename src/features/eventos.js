@@ -26,7 +26,7 @@ export async function setupEventos() {
 
         if (error) {
             console.error('Error cargando eventos:', error.message);
-            pintarError(lista, 'No se pudieron cargar los eventos 😢', cargar);
+            pintarError(lista, 'No se pudieron cargar los eventos', cargar);
             return;
         }
         eventos = data;

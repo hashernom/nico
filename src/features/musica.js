@@ -27,7 +27,7 @@ export async function setupMusica() {
 
         if (error) {
             console.error('Error cargando canciones:', error.message);
-            pintarError(lista, 'No se pudo cargar la música 😢', cargar);
+            pintarError(lista, 'No se pudo cargar la música', cargar);
             return;
         }
         canciones = data;
@@ -42,7 +42,7 @@ export async function setupMusica() {
             const vacio = document.createElement('p');
             vacio.className = 'galeria-vacia';
             vacio.textContent = haySesion()
-                ? 'Todavía no hay canciones. Agregá la primera 🎵'
+                ? 'Todavía no hay canciones. Agregá la primera'
                 : 'Todavía no hay canciones.';
             lista.appendChild(vacio);
             return;
@@ -169,7 +169,7 @@ export async function setupMusica() {
 
         canciones = canciones.map((c) => (c.id === temporal.id ? data : c));
         pintar();
-        estado.textContent = '¡Canción agregada! 🎵';
+        estado.textContent = '¡Canción agregada!';
         setTimeout(() => {
             estado.textContent = '';
         }, 3000);

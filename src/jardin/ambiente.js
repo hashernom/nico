@@ -1,8 +1,8 @@
 // ============================================================
-//  AMBIENTE: nubes, luna, estrellas, luciérnagas
-//  Puro adorno del jardín, no toca datos. Los dos juegos de elementos
-//  (día y noche) se generan una sola vez y conviven en el DOM: el CSS
-//  decide cuál se ve según body.dark-mode, así togglear el modo oscuro
+//  AMBIENTE: nubes, luna, estrellas, velas flotantes, luces fatuas
+//  Puro adorno de los terrenos, no toca datos. Los dos juegos de elementos
+//  (Lumos y Nox) se generan una sola vez y conviven en el DOM: el CSS
+//  decide cuál se ve según body.dark-mode, así togglear el modo
 //  no tiene que volver a crear nada.
 // ============================================================
 
@@ -15,7 +15,37 @@ export function setupAmbiente() {
 
     crearNubes(cielo);
     crearNoche(cielo);
+    crearVelas(document.getElementById('mundo'));
     if (pasto) crearLuciernagas(pasto);
+}
+
+// --- Velas flotantes ------------------------------------------------------
+// El techo del Gran Comedor, pero al aire libre: velas que cuelgan sin
+// cuerda sobre el castillo. Con movimiento reducido quedan quietas.
+
+const VELAS = 9;
+
+function crearVelas(mundo) {
+    if (!mundo) return;
+
+    const contenedor = document.createElement('div');
+    contenedor.className = 'jardin-velas';
+    contenedor.setAttribute('aria-hidden', 'true');
+
+    for (let i = 0; i < VELAS; i++) {
+        const vela = document.createElement('div');
+        vela.className = 'jardin-vela';
+        // Repartidas en abanico para que ninguna caiga sobre el título
+        // (los primeros ~12% de alto) ni se amontonen en una zona.
+        vela.style.left = `${((i + 0.5) / VELAS) * 100 + (Math.random() - 0.5) * 4}%`;
+        vela.style.top = `${14 + Math.random() * 20}%`;
+        vela.style.setProperty('--bob', `${6 + Math.random() * 5}s`);
+        vela.style.setProperty('--bob-delay', `${-Math.random() * 8}s`);
+        vela.style.setProperty('--flick', `${0.8 + Math.random() * 0.8}s`);
+        contenedor.appendChild(vela);
+    }
+
+    mundo.appendChild(contenedor);
 }
 
 // --- Día: nubes ---------------------------------------------------------
@@ -71,7 +101,7 @@ function crearNoche(cielo) {
         estrella.style.height = `${tam}px`;
         estrella.style.left = `${Math.random() * 96}%`;
         // Se deja el 30% inferior del cielo libre de estrellas: es donde
-        // se recortan las colinas, y ahí quedarían tapadas de todos modos.
+        // se recortan las colinas y el castillo, y ahí quedarían tapadas de todos modos.
         estrella.style.top = `${Math.random() * 70}%`;
         estrella.style.setProperty('--duration', `${2 + Math.random() * 4}s`);
         estrella.style.setProperty('--delay', `${Math.random() * 5}s`);
@@ -83,7 +113,7 @@ function crearNoche(cielo) {
     cielo.appendChild(contenedor);
 }
 
-// --- Noche: luciérnagas sobre el pasto -----------------------------------
+// --- Noche: luces fatuas sobre el pasto ----------------------------------
 
 function crearLuciernagas(pasto) {
     // Igual que en el resto del sitio: con movimiento reducido, no se

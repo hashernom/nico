@@ -5,7 +5,7 @@ const key = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 if (!url || !key) {
     console.error(
-        '⚠️ Faltan VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY. ' +
+        'Faltan VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY. ' +
         'Revisá .env.local (local) o las variables de entorno en Vercel (producción).'
     );
 }

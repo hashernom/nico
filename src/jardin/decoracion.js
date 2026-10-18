@@ -1,8 +1,9 @@
 // ============================================================
 //  DECORACIÓN DEL SUELO
-//  El cantero solo tenía las 6 flores interactivas: mucho pasto plano
-//  alrededor. Esto sparcea flores chiquitas (mismo generador de sprite.js,
-//  a menor escala), matas de pasto, piedras y arbustos en el horizonte.
+//  El cantero solo tenía los 6 objetos interactivos: mucho pasto plano
+//  alrededor. Esto esparce setas y cristales chiquitos (mismo generador
+//  de sprite.js, a menor escala), matas de pasto, piedras y arbustos en
+//  el horizonte.
 //  Todo puramente decorativo: pointer-events:none y detrás de las flores
 //  reales en el z-index, para que nunca compita con el click.
 //
@@ -16,13 +17,10 @@
 //  central entre las dos columnas.
 // ============================================================
 
-import { crearFlorIMG, SILUETAS, PALETAS } from './sprite.js';
+import { crearDecorIMG, TIPOS_DECOR } from './sprite.js';
 import { SECCIONES } from './secciones.js';
 
 const sinMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-const SILUETA_KEYS = Object.keys(SILUETAS);
-const PALETA_KEYS = Object.keys(PALETAS);
 
 // Mismo corte que el CSS (jardin.css) para decidir escritorio vs mobile.
 const ES_MOVIL = window.matchMedia('(max-width: 600px)');
@@ -163,26 +161,20 @@ function distancia(x1, y1, x2, y2) {
 }
 
 // --- Elementos del suelo -------------------------------------------------
-// Flores chiquitas: mismo generador que las 6 principales, pero con una
-// paleta extra ('roja') que ninguna de las 6 secciones usa — esas ya están
-// decididas, esto es solo para variedad en el suelo.
+// Setas y cristales chiquitos: mismo estilo que los 6 objetos principales,
+// solo para variedad en el suelo.
 //
 // Piedras: cuatro siluetas dibujadas a mano en CSS (redonda, angular,
-// plana, en par) × cuatro tonos de gris/tierra, para que el suelo no se
-// vea como el mismo guijarro clonado.
+// plana, en par) × cuatro tonos de piedra de castillo, para que el suelo
+// no se vea como el mismo guijarro clonado.
 
 const FORMAS_PIEDRA = ['a', 'b', 'c', 'd'];
-const TONOS_PIEDRA = ['#9B9488', '#8B9598', '#A98F73', '#7E8B7A'];
+const TONOS_PIEDRA = ['#6A708C', '#565D7A', '#7A7F96', '#4E5672'];
 
 let cursorFlor = 0;
-// Rojo y violeta pedidos explícitamente por el usuario: van una vez en la
-// lista base (como cualquier otro color) y una segunda vez en el refuerzo,
-// así que en promedio aparecen el doble de seguido que celeste/amarilla/etc.
-const combosBase = SILUETA_KEYS.flatMap((silueta) => PALETA_KEYS.map((paleta) => ({ silueta, paleta })));
-const combosRefuerzo = SILUETA_KEYS.flatMap((silueta) =>
-    ['roja', 'violeta'].map((paleta) => ({ silueta, paleta }))
-);
-const COMBOS_FLOR = mezclar([...combosBase, ...combosRefuerzo]);
+// Cada tipo aparece dos veces en el mazo: así hay variedad sin que un solo
+// color domine el suelo.
+const COMBOS_FLOR = mezclar([...TIPOS_DECOR, ...TIPOS_DECOR]);
 
 let cursorPiedra = 0;
 const COMBOS_PIEDRA = mezclar(
@@ -200,11 +192,11 @@ function crearElementoSuelo(tipo, [x, y], indice) {
 
     if (tipo === 'flor') {
         el.className = 'decor-flor';
-        const { silueta, paleta } = COMBOS_FLOR[cursorFlor % COMBOS_FLOR.length];
+        const tipo = COMBOS_FLOR[cursorFlor % COMBOS_FLOR.length];
         cursorFlor++;
-        // Imagen plana: estas flores nunca florecen, no necesitan un <rect>
+        // Imagen plana: estos sprites nunca se animan, no necesitan un <rect>
         // del DOM por píxel.
-        el.appendChild(crearFlorIMG({ silueta, paleta }));
+        el.appendChild(crearDecorIMG(tipo));
         return el;
     }
 
@@ -241,11 +233,12 @@ function crearArbustos(pasto) {
     pasto.appendChild(contenedor);
 }
 
-// --- Mariposas de día -----------------------------------------------------
-// La contraparte de las luciérnagas nocturnas: revolotean solo con luz de
-// día. Conviven todo el tiempo en el DOM, el CSS decide cuál se ve.
+// --- Snitchs doradas (modo Lumos) ----------------------------------------
+// La contraparte de las luces nocturnas: revolotean solo con luz. Conviven
+// todo el tiempo en el DOM, el CSS decide cuál se ve. Los nombres de clase
+// (`mariposa`) se conservan del diseño anterior.
 
-const COLORES_ALA = ['#FFB7C5', '#A8D8EA', '#FFD45E', '#C4A2E6'];
+const COLORES_ALA = ['#FFF3C4', '#FFFFFF', '#FFE89A', '#F7E3A8'];
 
 function crearMariposas(pasto) {
     if (sinMovimiento) return;

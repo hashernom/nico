@@ -29,7 +29,7 @@ export async function setupCartas() {
 
         if (error) {
             console.error('Error cargando cartas:', error.message);
-            pintarError(lista, 'No se pudieron cargar las cartas 😢', cargar);
+            pintarError(lista, 'No se pudieron cargar las cartas', cargar);
             return;
         }
         cartas = data;
@@ -53,7 +53,7 @@ export async function setupCartas() {
             const vacio = document.createElement('p');
             vacio.className = 'galeria-vacia';
             vacio.textContent = haySesion()
-                ? 'Todavía no hay cartas. Escribí la primera 💌'
+                ? 'Todavía no hay cartas. Escribí la primera'
                 : 'Todavía no hay cartas.';
             lista.appendChild(vacio);
             return;
@@ -76,7 +76,6 @@ export async function setupCartas() {
 
         const sello = document.createElement('span');
         sello.className = 'sobre-sello';
-        sello.textContent = '💗';
         sello.setAttribute('aria-hidden', 'true');
 
         const fecha = document.createElement('span');
@@ -174,7 +173,7 @@ export async function setupCartas() {
 
         cartas = ordenar(cartas.map((c) => (c.id === temporal.id ? data : c)));
         pintar();
-        estado.textContent = '¡Carta guardada! 💌';
+        estado.textContent = '¡Carta guardada!';
         setTimeout(() => {
             estado.textContent = '';
         }, 3000);

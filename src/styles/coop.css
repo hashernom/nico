@@ -26,7 +26,7 @@
 .timer-espera {
     width: 100%;
     text-align: center;
-    font-family: 'Quicksand', sans-serif;
+    font-family: var(--font-cuerpo);
     font-weight: 700;
     font-size: 1rem;
     padding: 20px;
@@ -86,8 +86,8 @@ body.con-sesion .auth-btn {
     position: relative;
 }
 
-.auth-caja h3 {
-    font-family: 'Press Start 2P', cursive;
+.auth-caja h2 {
+    font-family: var(--font-titulo);
     font-size: 0.7rem;
     color: var(--wood-dark);
     margin-bottom: 18px;
@@ -97,7 +97,7 @@ body.con-sesion .auth-btn {
 
 .auth-caja label {
     display: block;
-    font-family: 'Quicksand', sans-serif;
+    font-family: var(--font-cuerpo);
     font-weight: 700;
     font-size: 0.85rem;
     color: var(--text-light);
@@ -111,7 +111,7 @@ body.con-sesion .auth-btn {
     border: 3px solid var(--wood-dark);
     border-radius: 6px;
     background: #fff;
-    font-family: 'Quicksand', sans-serif;
+    font-family: var(--font-cuerpo);
     font-size: 0.95rem;
     color: var(--text-dark);
 }
@@ -128,7 +128,7 @@ body.con-sesion .auth-btn {
     border: 3px solid var(--wood-dark);
     border-radius: 8px;
     color: #fff;
-    font-family: 'Press Start 2P', cursive;
+    font-family: var(--font-titulo);
     font-size: 0.6rem;
     cursor: pointer;
     box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
@@ -153,7 +153,7 @@ body.con-sesion .auth-btn {
 
 .auth-error {
     color: #c0392b;
-    font-family: 'Quicksand', sans-serif;
+    font-family: var(--font-cuerpo);
     font-weight: 700;
     font-size: 0.85rem;
     text-align: center;
@@ -183,7 +183,7 @@ body.con-sesion .auth-btn {
     border: 3px solid var(--wood-dark);
     border-radius: 6px;
     background: #fff;
-    font-family: 'Quicksand', sans-serif;
+    font-family: var(--font-cuerpo);
     font-size: 0.9rem;
     color: var(--text-dark);
 }
@@ -200,7 +200,7 @@ body.con-sesion .auth-btn {
     border: 3px solid var(--wood-dark);
     border-radius: 8px;
     color: var(--text-dark);
-    font-family: 'Press Start 2P', cursive;
+    font-family: var(--font-titulo);
     font-size: 0.55rem;
     cursor: pointer;
     box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.25);
@@ -214,7 +214,7 @@ body.con-sesion .auth-btn {
 
 .form-estado {
     flex: 1 0 100%;
-    font-family: 'Quicksand', sans-serif;
+    font-family: var(--font-cuerpo);
     font-weight: 700;
     font-size: 0.82rem;
     color: var(--text-light);
@@ -261,7 +261,7 @@ body.con-sesion .auth-btn {
     grid-column: 1 / -1;
     text-align: center;
     padding: 30px 10px;
-    font-family: 'Quicksand', sans-serif;
+    font-family: var(--font-cuerpo);
     font-weight: 700;
     color: var(--text-light);
 }
@@ -273,7 +273,7 @@ body.con-sesion .auth-btn {
     border: 3px solid var(--wood-dark);
     border-radius: 8px;
     color: var(--text-dark);
-    font-family: 'Quicksand', sans-serif;
+    font-family: var(--font-cuerpo);
     font-weight: 700;
     font-size: 0.85rem;
     cursor: pointer;
@@ -299,7 +299,7 @@ body.dark-mode .auth-caja {
     border-color: #1a0f0a;
 }
 
-body.dark-mode .auth-caja h3 {
+body.dark-mode .auth-caja h2 {
     color: #f0e6d0;
 }
 

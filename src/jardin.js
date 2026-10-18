@@ -1,9 +1,13 @@
 // Entrada del jardín: la versión oficial del sitio (index.html).
 // El sitio de scroll original queda preservado en clasico.html / main.js.
 
+import '@fortawesome/fontawesome-free/css/fontawesome.min.css';
+import '@fortawesome/fontawesome-free/css/solid.min.css';
 import './styles/base.css';
 import './styles/coop.css';
 import './styles/jardin.css';
+import './styles/hogwarts.css';
+import './styles/hogwarts-jardin.css';
 
 import { setupAuth } from './lib/auth.js';
 import { setupTimers } from './features/timers.js';

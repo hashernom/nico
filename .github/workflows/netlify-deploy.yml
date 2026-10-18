@@ -1,0 +1,56 @@
+name: Deploy a Netlify
+
+# Por defecto publica una versión de PRUEBA (no toca producción):
+#   - al hacer push a la rama harry-potter  -> https://harry-potter--antologia-nico.netlify.app
+#   - a mano desde Actions > "Deploy a Netlify" > Run workflow
+# Para publicar en PRODUCCIÓN (antologia-nico.netlify.app) hay que lanzarlo a mano
+# y marcar "produccion". Nunca ocurre solo.
+#
+# Requiere un secret en GitHub (Settings > Secrets and variables > Actions):
+#   NETLIFY_AUTH_TOKEN  -> Netlify > User settings > Applications > Personal access tokens
+# Las variables VITE_SUPABASE_* ya están cargadas en el sitio de Netlify: el build
+# las toma de ahí porque el CLI está enlazado al sitio por NETLIFY_SITE_ID.
+
+on:
+  push:
+    branches: [harry-potter]
+  workflow_dispatch:
+    inputs:
+      produccion:
+        description: 'Publicar en PRODUCCIÓN (antologia-nico.netlify.app)'
+        type: boolean
+        default: false
+
+concurrency:
+  group: netlify-deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+      NETLIFY_SITE_ID: d4c73213-1297-4fac-8716-9cf979f578a0
+    steps:
+      - name: Falta el token de Netlify
+        if: env.NETLIFY_AUTH_TOKEN == ''
+        run: |
+          echo "::error::Falta el secret NETLIFY_AUTH_TOKEN. Crealo en Netlify (User settings > Applications > Personal access tokens) y cargalo en GitHub (Settings > Secrets and variables > Actions)."
+          exit 1
+
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Deploy de prueba
+        if: ${{ !(github.event_name == 'workflow_dispatch' && inputs.produccion) }}
+        run: npx --yes netlify-cli@latest deploy --build --alias "${GITHUB_REF_NAME//\//-}" --message "$GITHUB_SHA"
+
+      - name: Deploy a producción
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.produccion }}
+        run: npx --yes netlify-cli@latest deploy --build --prod --message "$GITHUB_SHA"

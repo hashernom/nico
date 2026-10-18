@@ -1,10 +1,10 @@
 // ============================================================
-//  INTRO: las flores floreciendo
-//  Seis flores pixeladas de distinto color se abren píxel por píxel.
-//  Al tocar, la cámara sube y aparece el jardín aéreo.
+//  INTRO: los objetos mágicos apareciendo
+//  Seis objetos pixelados se materializan píxel por píxel sobre sus
+//  pedestales. Al tocar, la cámara sube y aparecen los terrenos.
 // ============================================================
 
-import { crearFlorSVG, PALETAS, SILUETAS, duracionFloracion } from './sprite.js';
+import { crearObjetoSVG, OBJETOS, duracionAparicion } from './sprite.js';
 import { mostrarJardin } from './jardin.js';
 
 const CLAVE_SESION = 'jardin-intro-vista';
@@ -30,22 +30,19 @@ export function setupIntroJardin() {
 
     const contenedor = document.getElementById('introFlores');
     const pista = document.getElementById('introPista');
-    const paletas = Object.keys(PALETAS);
-    const siluetas = Object.keys(SILUETAS);
+    const objetos = Object.keys(OBJETOS);
 
-    paletas.forEach((paleta, indice) => {
+    objetos.forEach((objeto, indice) => {
         const tallo = document.createElement('div');
         tallo.className = 'intro-flor';
         // Alturas alternadas: una hilera pareja parece un cerco, no un cantero.
         tallo.style.setProperty('--alto', indice % 2 === 0 ? '78%' : '100%');
         tallo.style.setProperty('--flor-retraso', `${indice * RETRASO_ENTRE_FLORES}ms`);
-        tallo.appendChild(
-            crearFlorSVG({ paleta, silueta: siluetas[indice % siluetas.length] })
-        );
+        tallo.appendChild(crearObjetoSVG({ objeto }));
         contenedor.appendChild(tallo);
     });
 
-    const total = duracionFloracion() + (paletas.length - 1) * RETRASO_ENTRE_FLORES;
+    const total = duracionAparicion() + (objetos.length - 1) * RETRASO_ENTRE_FLORES;
     const avisar = setTimeout(() => pista?.classList.add('visible'), total);
 
     let saliendo = false;
@@ -71,5 +68,5 @@ export function setupIntroJardin() {
     });
     intro.tabIndex = 0;
     intro.setAttribute('role', 'button');
-    intro.setAttribute('aria-label', 'Entrar al jardín');
+    intro.setAttribute('aria-label', 'Entrar al castillo');
 }

@@ -1,6 +1,9 @@
+import '@fortawesome/fontawesome-free/css/fontawesome.min.css';
+import '@fortawesome/fontawesome-free/css/solid.min.css';
 import './styles/base.css';
-import './styles/flores.css';
 import './styles/coop.css';
+import './styles/hogwarts.css';
+import './styles/hogwarts-clasico.css';
 
 import { setupAuth } from './lib/auth.js';
 import { setupIntro } from './features/intro.js';

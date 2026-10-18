@@ -1,9 +1,9 @@
-// Pantalla de bienvenida: las flores se ocultan al primer click y revelan el sitio.
+// Pantalla de bienvenida: la carta se cierra al primer click y revela el sitio.
 
 const sinMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 export function setupIntro() {
-    const flores = document.querySelector('.flower-animation');
+    const flores = document.querySelector('.carta-bienvenida');
     const principal = document.querySelector('.main-container');
     const particulas = document.getElementById('particles');
 
@@ -29,6 +29,11 @@ export function setupIntro() {
     }
 
     flores.addEventListener('click', revelar, { once: true });
-    flores.style.cursor = 'pointer';
-    flores.title = 'Haz click para continuar';
+    flores.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            revelar();
+        }
+    });
+    flores.focus({ preventScroll: true });
 }

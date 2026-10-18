@@ -1,0 +1,276 @@
+/* ============================================================
+   EDICIÓN HOGWARTS — la página clásica (clasico.html)
+   El sitio de scroll: carta de bienvenida con sello, cielo de noche
+   (o de crepúsculo en Lumos) y las mismas tarjetas, ahora de roble y
+   pergamino. Se carga después de hogwarts.css.
+   ============================================================ */
+
+body {
+    /* Antes: fondo.jpg fijo. En iOS `background-attachment: fixed` se ignora
+       y la imagen se estira; un degradé por scroll se ve igual en todos. */
+    background: linear-gradient(180deg, #2c2a5e 0%, #6b4f8f 38%, #c97d6b 78%, #e0946c 100%);
+    background-attachment: scroll;
+    background-repeat: no-repeat;
+}
+
+body::before {
+    display: none;
+}
+
+body.dark-mode {
+    background: linear-gradient(180deg, #060918 0%, #0e1738 55%, #16224a 100%);
+    background-attachment: scroll;
+}
+
+/* ---------------- Carta de bienvenida ---------------- */
+
+.carta-bienvenida {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: grid;
+    place-items: center;
+    padding: 24px 16px;
+    cursor: pointer;
+    background: radial-gradient(90% 80% at 50% 30%, #1b2048 0%, #0b0d1c 70%);
+    transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.4s;
+}
+
+.carta-bienvenida.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.carta {
+    position: relative;
+    z-index: 1;
+    width: min(100%, 460px);
+    padding: 40px 34px 30px;
+    color: var(--text-dark);
+    background:
+        radial-gradient(120% 90% at 20% 10%, rgba(255, 255, 255, 0.35), transparent 55%),
+        linear-gradient(170deg, #f1e3bd, #dfc895 70%, #cdb07a);
+    border-radius: 3px;
+    box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.8), 0 4px 10px rgba(0, 0, 0, 0.4), inset 0 -10px 40px rgba(122, 82, 28, 0.25);
+    transform: rotate(-1.2deg);
+    transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.7s ease 0.2s;
+}
+
+.carta-bienvenida.hidden .carta {
+    transform: translateY(-14vh) rotate(0deg) scale(1.06);
+    opacity: 0;
+}
+
+.carta-para {
+    margin-bottom: 14px;
+    font-family: var(--font-titulo);
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.04em;
+    color: #2f1d10;
+}
+
+.carta-cuerpo {
+    font-size: 1.2rem;
+    line-height: 1.5;
+    text-wrap: pretty;
+    color: #2f1d10;
+}
+
+.carta-cuerpo em {
+    font-weight: 500;
+}
+
+.carta-firma {
+    width: fit-content;
+    margin: 18px 0 0 auto;
+    font-style: italic;
+    font-size: 1.1rem;
+    color: #5a3f25;
+}
+
+.carta-pista {
+    margin-top: 16px;
+    text-align: center;
+    font-family: var(--font-titulo);
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #5a3f25;
+}
+
+.sello {
+    display: block;
+    width: 92px;
+    height: 92px;
+    margin: 24px auto 0;
+}
+
+.sello-cera {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 100%;
+    border-radius: 47% 53% 50% 50% / 52% 48% 52% 48%;
+    background: radial-gradient(circle at 35% 30%, #b8374a 0%, #8a1e2d 42%, #5c0f1b 100%);
+    box-shadow: 0 8px 14px rgba(40, 6, 12, 0.55), inset 0 3px 5px rgba(255, 190, 190, 0.35), inset 0 -5px 8px rgba(30, 0, 6, 0.6);
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+    animation: latir-sello 2.4s ease-in-out infinite;
+}
+
+.sello-marca {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 66px;
+    height: 66px;
+    border: 2px solid rgba(255, 205, 190, 0.5);
+    border-radius: 50%;
+    box-shadow: inset 0 2px 4px rgba(30, 0, 6, 0.55);
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 1.25rem;
+    color: #e8b9ad;
+    text-shadow: 0 -1px 0 rgba(30, 0, 6, 0.7), 0 1px 0 rgba(255, 190, 190, 0.25);
+}
+
+.sello-marca i {
+    margin: 0 1px;
+    font-style: normal;
+    opacity: 0.75;
+}
+
+.carta-bienvenida.hidden .sello-cera {
+    animation: none;
+    transform: scale(1.3) rotate(14deg);
+    opacity: 0;
+}
+
+@keyframes latir-sello {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.04); }
+}
+
+/* ---------------- Cabecera ---------------- */
+
+.pixel-title {
+    font-size: clamp(1.45rem, 6.2vw, 2.2rem);
+    line-height: 1.25;
+    color: var(--oro-claro);
+    text-wrap: balance;
+    text-shadow: 3px 3px 0 #1a0f08;
+}
+
+body.dark-mode .pixel-title {
+    color: var(--oro-claro);
+}
+
+.hero-sello {
+    width: 22px;
+    height: 22px;
+    margin: 0 auto 14px;
+    background: var(--oro-claro);
+    clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
+    animation: latir-sello 2.4s ease-in-out infinite;
+}
+
+.subtitle-box {
+    font-family: var(--font-titulo);
+    font-size: 0.82rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.timer-espera {
+    font-style: italic;
+    font-weight: 500;
+    font-size: 1.1rem;
+}
+
+/* ---------------- Galería: marcos dorados ---------------- */
+
+.album-photo {
+    background: linear-gradient(135deg, #f4d786 0%, #a97b27 24%, #e9c776 50%, #805a1b 76%, #d9ae55 100%);
+    border-color: #2b1a0e;
+}
+
+.album-photo > img {
+    border: 4px solid #170e07;
+    background: #170e07;
+}
+
+.album-caption {
+    background: linear-gradient(to bottom, #3a2814, #24170b);
+    border-color: var(--oro-oscuro);
+    color: #f2e3bd;
+}
+
+body.dark-mode .album-photo {
+    background: linear-gradient(135deg, #b38f35 0%, #6e4f17 24%, #a8832f 50%, #503811 76%, #8d6c26 100%);
+}
+
+body.dark-mode .album-caption {
+    background: linear-gradient(to bottom, #2a1d0f, #1a1109);
+    color: #f2e3bd;
+}
+
+/* ---------------- Móvil ---------------- */
+
+@media (max-width: 480px) {
+    .carta {
+        padding: 32px 22px 26px;
+    }
+
+    .sello {
+        width: 80px;
+        height: 80px;
+    }
+
+    .sello-marca {
+        width: 58px;
+        height: 58px;
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-height: 520px) and (orientation: landscape) {
+    .carta-bienvenida {
+        overflow-y: auto;
+        place-items: start center;
+    }
+
+    .carta {
+        padding: 20px 26px;
+    }
+
+    .sello {
+        width: 56px;
+        height: 56px;
+        margin-top: 10px;
+    }
+
+    .sello-marca {
+        width: 40px;
+        height: 40px;
+        font-size: 0.85rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .sello-cera,
+    .hero-sello {
+        animation: none;
+    }
+}
+
+/* La entrada del título ya no rebota: llega con un fundido corto. */
+@keyframes bounceIn {
+    0% {
+        transform: scale(0.96);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}

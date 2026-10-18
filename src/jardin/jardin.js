@@ -1,16 +1,16 @@
 // ============================================================
 //  EL JARDÍN
-//  Menú-jardín: seis flores repartidas sobre el pasto, cada una
-//  una sección. Al tocar una, la cámara hace zoom hacia ella y el
-//  panel de madera crece desde su centro.
+//  Menú-jardín: seis objetos mágicos repartidos sobre los terrenos del
+//  castillo, cada uno una sección. Al tocar uno, la cámara hace zoom
+//  hacia él y el panel de pergamino crece desde su centro.
 //
-//  Los pétalos son NAVEGACIÓN, no contenido: el contenido siempre
-//  va en el panel. (Decisión tomada con el usuario; texto sobre
-//  pétalos rotados es ilegible en un celular de 360px.)
+//  Los objetos son NAVEGACIÓN, no contenido: el contenido siempre
+//  va en el panel. (Decisión tomada con el usuario: texto sobre
+//  elementos del escenario es ilegible en un celular de 360px.)
 // ============================================================
 
-import { crearFlorSVG, crearFlorIMG, duracionFloracion } from './sprite.js';
-import { SECCIONES } from './secciones.js';
+import { crearObjetoSVG, crearObjetoIMG, duracionAparicion } from './sprite.js';
+import { SECCIONES, iconoHTML } from './secciones.js';
 import { marcarVisto, setSeccionAbierta } from './novedades.js';
 
 const sinMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -61,7 +61,7 @@ function plantarFlores() {
 
         const sprite = document.createElement('span');
         sprite.className = 'flor-sprite';
-        sprite.appendChild(crearFlorSVG({ silueta: seccion.silueta, paleta: seccion.paleta }));
+        sprite.appendChild(crearObjetoSVG({ objeto: seccion.objeto }));
 
         // Oculta por CSS salvo que la flor tenga la clase .flor--nueva
         // (novedades.js la prende/apaga según haya o no contenido sin ver).
@@ -73,7 +73,7 @@ function plantarFlores() {
         const cartel = document.createElement('span');
         cartel.className = 'flor-cartel';
         cartel.innerHTML =
-            `<span class="flor-icono" aria-hidden="true">${seccion.icono}</span>` +
+            `<span class="flor-icono" aria-hidden="true">${iconoHTML(seccion)}</span>` +
             `<span class="flor-nombre"></span>`;
         cartel.querySelector('.flor-nombre').textContent = seccion.titulo;
 
@@ -91,7 +91,7 @@ function plantarFlores() {
     // no pinta nada de todos modos.
     const nota = document.createElement('p');
     nota.className = 'jardin-nota-final';
-    nota.textContent = 'con mucho amor para Nico';
+    nota.textContent = 'travesura realizada, con mucho amor para Nico';
     cantero.appendChild(nota);
 }
 
@@ -134,8 +134,8 @@ function abrirSeccion(seccion, flor) {
     marcarVisto(seccion.id);
 
     titulo.textContent = seccion.titulo;
-    icono.textContent = seccion.icono;
-    panel.dataset.paleta = seccion.paleta;
+    icono.innerHTML = iconoHTML(seccion);
+    panel.dataset.seccion = seccion.id;
 
     cuerpo.querySelectorAll('.seccion').forEach((s) => {
         s.hidden = s.dataset.seccion !== seccion.id;
@@ -235,7 +235,7 @@ function programarAplanado(plantadas) {
         return;
     }
 
-    const base = duracionFloracion() + 150; // margen sobre la duración real
+    const base = duracionAparicion() + 150; // margen sobre la duración real
     plantadas.forEach(({ sprite, seccion, indice }) => {
         // Mismo cálculo que --flor-retraso en jardin.css: calc(var(--orden) * 90ms).
         setTimeout(() => aplanarFlor(sprite, seccion), base + indice * 90);
@@ -245,5 +245,5 @@ function programarAplanado(plantadas) {
 function aplanarFlor(sprite, seccion) {
     const svgViejo = sprite.querySelector('svg.flor-svg');
     if (!svgViejo) return; // ya se aplanó, o la sección cambió de por medio
-    sprite.replaceChild(crearFlorIMG({ silueta: seccion.silueta, paleta: seccion.paleta }), svgViejo);
+    sprite.replaceChild(crearObjetoIMG({ objeto: seccion.objeto }), svgViejo);
 }

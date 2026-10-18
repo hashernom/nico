@@ -1,0 +1,576 @@
+/* ============================================================
+   EDICIÓN HOGWARTS — el jardín (index.html)
+   Los terrenos del castillo de noche: cielo de medianoche, castillo
+   en el horizonte, velas flotantes y seis objetos mágicos sobre
+   pedestales. Se carga después de jardin.css y gana por orden, con
+   la misma especificidad. El modo oscuro es Nox (el de siempre) y
+   el claro es Lumos: el crepúsculo.
+   ============================================================ */
+
+.jardin-body {
+    background: var(--noche);
+}
+
+body.jardin-body.dark-mode {
+    background: var(--noche);
+}
+
+/* ---------------- Cielo ---------------- */
+
+.cielo {
+    background: linear-gradient(to bottom, #2c2a5e 0%, #6b4f8f 50%, #e0946c 100%);
+}
+
+body.dark-mode .cielo {
+    background: linear-gradient(to bottom, #060918 0%, #0e1738 55%, #1d2c58 100%);
+}
+
+.nube {
+    background: rgba(255, 224, 204, 0.55);
+}
+
+/* La luna no brilla con aureola: tiene cráteres y una cara iluminada. */
+.jardin-luna {
+    background: #f6ecc9;
+    box-shadow: inset -8px -5px 0 rgba(120, 100, 60, 0.18), inset 5px 8px 0 5px rgba(120, 100, 60, 0.1);
+}
+
+/* ---------------- Castillo y colinas ---------------- */
+
+.castillo {
+    position: absolute;
+    right: 5%;
+    bottom: 0;
+    height: 138%;
+    aspect-ratio: 72 / 40;
+    background-image: var(--castillo-dia);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    image-rendering: pixelated;
+    pointer-events: none;
+}
+
+body.dark-mode .castillo {
+    background-image: var(--castillo-noche);
+}
+
+/* ---------------- Pasto ---------------- */
+
+.pasto {
+    background-color: #2f5a3e;
+    border-top-color: #1b3626;
+}
+
+body.dark-mode .pasto {
+    background-color: #12261b;
+    border-top-color: #0a1610;
+}
+
+body.dark-mode .pasto::before {
+    background-image:
+        radial-gradient(ellipse 130px 45px at 50% 42%, rgba(2, 8, 5, 0.45), transparent 72%),
+        radial-gradient(ellipse 150px 55px at 92% 10%, rgba(2, 8, 5, 0.4), transparent 72%),
+        radial-gradient(ellipse 140px 50px at 4% 55%, rgba(30, 70, 50, 0.3), transparent 72%),
+        radial-gradient(ellipse 120px 45px at 78% 92%, rgba(2, 8, 5, 0.38), transparent 72%);
+}
+
+.decor-mata {
+    background: #3f7a55;
+}
+
+.decor-arbusto {
+    background: #1f4a37;
+}
+
+body.dark-mode .decor-mata {
+    background: #2a5a3f;
+}
+
+body.dark-mode .decor-arbusto {
+    background: #112d22;
+}
+
+/* Setas y cristales ya son sprites de noche: no hace falta oscurecerlos. */
+body.dark-mode .decor-suelo,
+body.dark-mode .decor-suelo-movil,
+body.dark-mode .decor-arbustos {
+    filter: brightness(0.8);
+}
+
+.decor-flor .flor-svg {
+    filter: drop-shadow(1px 2px 0 rgba(2, 6, 14, 0.45));
+}
+
+/* ---------------- Luces fatuas (antes luciérnagas) ---------------- */
+
+.jardin-luciernaga {
+    width: 4px;
+    height: 4px;
+    border-radius: 0;
+    background: #dbe9ff;
+    box-shadow: 2px 2px 0 rgba(110, 160, 255, 0.55);
+}
+
+/* ---------------- Snitchs doradas (Lumos) ---------------- */
+
+.jardin-mariposa {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #f2c14e;
+    box-shadow: 0 1px 0 #8a6320;
+}
+
+.jardin-mariposa::before,
+.jardin-mariposa::after {
+    top: 1px;
+    width: 8px;
+    height: 4px;
+    border-radius: 80% 20% 80% 20%;
+    box-shadow: none;
+}
+
+.jardin-mariposa::before {
+    left: -8px;
+}
+
+.jardin-mariposa::after {
+    right: -8px;
+}
+
+/* ---------------- Cabecera ---------------- */
+
+.jardin-titulo {
+    font-size: clamp(1.5rem, 6.4vw, 3rem);
+    line-height: 1.1;
+    color: var(--oro-claro);
+    text-shadow: 3px 3px 0 #1a0f08, 0 6px 14px rgba(0, 0, 0, 0.5);
+}
+
+.jardin-sub {
+    margin-top: 10px;
+    font-family: var(--font-titulo);
+    font-weight: 600;
+    font-size: 0.78rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: #f4e8c8;
+    text-shadow: 2px 2px 0 rgba(10, 6, 16, 0.85);
+}
+
+/* ---------------- Widgets de esquina ---------------- */
+
+.presencia-aviso,
+.visitas-widget {
+    border-color: var(--wood-dark);
+}
+
+.presencia-aviso {
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.visitas-nombre {
+    font-size: 0.74rem;
+}
+
+.visitas-fila--nico .visitas-segmento.lleno {
+    background: linear-gradient(to bottom, var(--oro-claro), var(--oro-oscuro));
+}
+
+.visitas-fila--santi .visitas-segmento.lleno {
+    background: linear-gradient(to bottom, #b6cdf0, #5f84c4);
+}
+
+body.dark-mode .presencia-aviso,
+body.dark-mode .visitas-widget {
+    background: #121733;
+    border-color: #05060f;
+}
+
+/* ---------------- Los objetos mágicos ---------------- */
+
+.flor-svg {
+    filter: drop-shadow(3px 4px 0 rgba(4, 6, 20, 0.55));
+}
+
+.flor-sprite::before {
+    background: radial-gradient(
+        ellipse at center,
+        rgba(2, 4, 14, 0.62) 0%,
+        rgba(2, 4, 14, 0.42) 45%,
+        transparent 72%
+    );
+}
+
+/* Resaltado de selección: contorno dorado de 1px en las cuatro direcciones,
+   no una aureola. Se lee como "este es el que vas a abrir". */
+.flor:hover .flor-svg,
+.flor:focus-visible .flor-svg {
+    filter: drop-shadow(3px 4px 0 rgba(4, 6, 20, 0.55))
+            drop-shadow(1.5px 0 0 var(--oro-claro))
+            drop-shadow(-1.5px 0 0 var(--oro-claro))
+            drop-shadow(0 1.5px 0 var(--oro-claro))
+            drop-shadow(0 -1.5px 0 var(--oro-claro))
+            brightness(1.08);
+}
+
+.flor:focus-visible .flor-cartel {
+    outline: 3px solid var(--oro-claro);
+}
+
+.flor-cartel {
+    gap: 7px;
+    padding: 5px 10px;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.flor-icono {
+    font-size: 0.78rem;
+    color: var(--borgona);
+}
+
+body.dark-mode .flor-cartel {
+    background: #121733;
+    border-color: #05060f;
+}
+
+body.dark-mode .flor-icono {
+    color: var(--oro);
+}
+
+.flor-badge {
+    background: #d23a56;
+    border-color: var(--wood-dark);
+    box-shadow: 0 0 0 2px var(--oro-claro);
+}
+
+/* ---------------- Intro ---------------- */
+
+.intro {
+    background: linear-gradient(to bottom, #060918 0%, #11193d 55%, #2a3866 100%);
+}
+
+.intro-tierra {
+    background-color: #272c48;
+    background-image:
+        repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.28) 0 2px, transparent 2px 36px),
+        repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.2) 0 2px, transparent 2px 22px);
+    border-top: 6px solid #12142a;
+}
+
+.intro .flor-svg,
+.intro-flor .flor-svg {
+    filter: drop-shadow(3px 4px 0 rgba(0, 0, 0, 0.5));
+}
+
+.intro-pista {
+    font-size: 0.95rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--oro-claro);
+}
+
+/* ---------------- Panel ---------------- */
+
+.panel-capa {
+    background: rgba(4, 5, 14, 0.72);
+}
+
+.panel-madera {
+    background: linear-gradient(to bottom, var(--wood-light), var(--wood-medium));
+    border-color: var(--wood-dark);
+}
+
+.panel-titulo {
+    font-size: 1.1rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.panel-icono {
+    color: var(--oro-claro);
+    font-size: 1.15rem;
+    width: 1.4rem;
+    text-align: center;
+}
+
+.panel-cuerpo {
+    background: var(--bg-paper);
+    border-color: var(--wood-dark);
+    box-shadow: inset 0 -12px 30px rgba(120, 80, 30, 0.22);
+}
+
+.seccion-sub {
+    font-size: 0.95rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+body.dark-mode .panel-madera {
+    background: linear-gradient(to bottom, #3a2413, #20110a);
+    border-color: #0a0603;
+}
+
+body.dark-mode .panel-cuerpo {
+    background: #10152e;
+    border-color: #0a0603;
+    box-shadow: none;
+}
+
+body.dark-mode .seccion-sub {
+    color: #e3c98a;
+}
+
+/* ---------------- Controles dentro del panel ---------------- */
+
+.autor-tag {
+    font-size: 0.74rem;
+    font-weight: 700;
+}
+
+.galeria-orden-btn {
+    font-size: 0.9rem;
+}
+
+.galeria-orden-btn.activo {
+    background: linear-gradient(to bottom, var(--oro-claro), var(--oro));
+    color: var(--wood-dark);
+}
+
+body.dark-mode .galeria-orden-btn.activo {
+    background: linear-gradient(to bottom, #7a5a1c, #523b10);
+    color: var(--oro-claro);
+}
+
+.panel-cuerpo #todoClearDone {
+    background: linear-gradient(to bottom, var(--oro-claro), var(--oro));
+    color: var(--wood-dark);
+    font-size: 0.9rem;
+}
+
+.panel-cuerpo .todo-en-panel .todo-input-group input,
+#cartaTexto,
+#cancionUrl,
+#cancionNota {
+    font-size: max(1rem, 16px);
+}
+
+/* ---------------- Cartas: sobres con lacre ---------------- */
+
+.sobre-frente {
+    background: linear-gradient(to bottom, #f6ecd0, var(--bg-paper));
+}
+
+.sobre-frente::before {
+    border-top-color: #d3bb82;
+}
+
+.sobre.abierto .sobre-frente::before {
+    border-top-color: #b79b5e;
+}
+
+.sobre-sello {
+    width: 26px;
+    height: 26px;
+    margin-top: 6px;
+    border-radius: 48% 52% 50% 50% / 52% 48% 52% 48%;
+    background: radial-gradient(circle at 35% 30%, #cf4a5f, var(--borgona) 55%, #50101c);
+    box-shadow: 0 2px 0 rgba(30, 6, 12, 0.5), inset 0 1px 1px rgba(255, 190, 190, 0.45);
+    font-size: 0;
+}
+
+.sobre-sello::after {
+    content: '';
+    position: absolute;
+    inset: 7px;
+    border: 1.5px solid rgba(255, 205, 190, 0.5);
+    border-radius: 50%;
+}
+
+.sobre-fecha {
+    font-size: 0.82rem;
+    letter-spacing: 0.1em;
+}
+
+.sobre-pista {
+    font-size: 0.8rem;
+}
+
+.sobre-texto {
+    font-size: 1.12rem;
+    font-style: italic;
+}
+
+body.dark-mode .sobre-frente {
+    background: linear-gradient(to bottom, #1d2447, #141a36);
+}
+
+body.dark-mode .sobre-frente::before {
+    border-top-color: #34406f;
+}
+
+/* ---------------- Música: libros de hechizos (antes cassettes) ---------------- */
+
+.cassette {
+    background: linear-gradient(to bottom, #36598a, #223a5e);
+    border-color: var(--wood-dark);
+    outline: 2px solid var(--oro-oscuro);
+    outline-offset: -8px;
+    padding: 18px 18px 16px;
+}
+
+.cassette-cuerpo {
+    display: none;
+}
+
+.cassette-etiqueta {
+    background: var(--bg-paper);
+    border-color: var(--wood-dark);
+}
+
+.cassette-titulo {
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+
+.cassette-nota {
+    font-size: 1rem;
+    font-style: italic;
+}
+
+.cassette-play {
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: linear-gradient(to bottom, var(--oro-claro), var(--oro));
+    color: var(--wood-dark);
+}
+
+body.dark-mode .cassette-etiqueta {
+    background: #141a36;
+    border-color: #05060f;
+}
+
+/* ---------------- Responsive ---------------- */
+
+@media (max-width: 600px) {
+    .castillo {
+        height: 150%;
+        right: 2%;
+    }
+
+    .flor-cartel {
+        font-size: 0.68rem;
+        padding: 3px 7px;
+        letter-spacing: 0.04em;
+    }
+
+    /* Los objetos se dimensionan por alto de pantalla además de por ancho:
+       son 3 filas (objeto + etiqueta) y tienen que entrar sin recorte en un
+       iPhone SE o en un Android chico. Cada fila dispone de ~26% del alto;
+       se descuenta la etiqueta (~38px) y se convierte a ancho (17:26). */
+    .flor {
+        max-width: min(108px, calc((26dvh - 38px) * 0.654));
+    }
+
+    /* El subtítulo largo chocaba con el widget de visitas, y en táctil las
+       etiquetas de cada objeto ya dicen qué es cada cosa. */
+    .jardin-sub {
+        display: none;
+    }
+
+    /* Si aun así el contenido no entra (pantalla muy baja), se alinea al
+       principio para que nada quede inalcanzable arriba. */
+    .cantero {
+        align-content: start;
+        padding-top: 4px;
+    }
+}
+
+@media (max-width: 600px) and (min-height: 720px) {
+    .cantero {
+        align-content: center;
+    }
+}
+
+/* Teléfono en horizontal: poca altura. Objetos más chicos, cabecera compacta. */
+@media (orientation: landscape) and (max-height: 520px) {
+    .jardin-cabecera {
+        top: 8px;
+    }
+
+    .jardin-titulo {
+        font-size: 1.35rem;
+    }
+
+    .jardin-sub {
+        display: none;
+    }
+
+    .flor {
+        width: clamp(48px, 7.5vw, 66px);
+    }
+
+    .flor-cartel {
+        font-size: 0.6rem;
+        padding: 2px 5px;
+    }
+
+    .widgets-izquierda {
+        top: 8px;
+        left: 8px;
+        transform-origin: top left;
+        transform: scale(0.8);
+    }
+
+    .castillo {
+        height: 170%;
+    }
+}
+
+@media (max-width: 480px) {
+    .jardin-titulo {
+        font-size: 1.55rem;
+    }
+
+    .jardin-sub {
+        font-size: 0.7rem;
+        letter-spacing: 0.18em;
+    }
+
+    .panel-titulo {
+        font-size: 0.95rem;
+    }
+
+    .intro-pista {
+        font-size: 0.78rem;
+    }
+
+    .presencia-aviso {
+        font-size: 0.74rem;
+    }
+
+    .visitas-nombre {
+        font-size: 0.68rem;
+    }
+}
+
+@media (max-width: 360px) {
+    .flor-cartel {
+        font-size: 0.62rem;
+        letter-spacing: 0.02em;
+        gap: 4px;
+        padding: 3px 5px;
+    }
+
+    .flor-icono {
+        font-size: 0.64rem;
+    }
+
+    .jardin-titulo {
+        font-size: 1.3rem;
+    }
+}

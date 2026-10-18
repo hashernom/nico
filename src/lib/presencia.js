@@ -74,6 +74,6 @@ function actualizarAviso() {
     }
 
     elementoAviso.textContent =
-        `🌸 ${nombres.join(' y ')} está${nombres.length > 1 ? 'n' : ''} en el jardín ahora`;
+        `${nombres.join(' y ')} está${nombres.length > 1 ? 'n' : ''} en el castillo ahora`;
     elementoAviso.classList.add('visible');
 }

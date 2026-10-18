@@ -45,7 +45,7 @@ export async function setupGaleria() {
 
         if (error) {
             console.error('Error cargando fotos:', error.message);
-            pintarError(grid, 'No se pudieron cargar las fotos 😢', cargar);
+            pintarError(grid, 'No se pudieron cargar las fotos', cargar);
             return;
         }
         fotos = data;
@@ -190,7 +190,7 @@ export async function setupGaleria() {
             aplicarOrden();
 
             form.reset();
-            estado.textContent = '¡Foto subida! 💕';
+            estado.textContent = '¡Foto subida!';
             setTimeout(() => {
                 estado.textContent = '';
             }, 3000);

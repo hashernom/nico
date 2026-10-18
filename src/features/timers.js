@@ -44,7 +44,7 @@ function pintarContador(elemento, desde) {
         const falta = partirDuracion(Math.abs(diff));
         elemento.innerHTML = `
             <p class="timer-espera">
-                💕 Faltan ${falta.dias} días y ${falta.horas} horas 💕
+                Faltan ${falta.dias} días y ${falta.horas} horas
             </p>`;
         return;
     }

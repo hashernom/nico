@@ -1,3 +1,26 @@
+# EDICIÓN HOGWARTS (rama `harry-potter`)
+
+> Rediseño pedido por Santiago: **todo el front con temática Harry Potter**, usando el plugin
+> Impeccable (`pbakaus/impeccable`) como guía de diseño. Esto **reemplaza la estética Stardew** que
+> describen las secciones de más abajo; la estructura y la lógica no cambian.
+
+- **Rama**: `harry-potter`, creada desde `rework`. No se mergea sola: `rework` es lo que ve Netlify en producción.
+- **Jardín (`index.html`)**: las 6 flores pasan a ser 6 objetos mágicos en pixel art sobre pedestales de
+  piedra: Tiempo = reloj de arena, Galería = retrato, Eventos = mapa del merodeador, To-Do = varita,
+  Cartas = sobre con lacre, Música = libro de hechizos. Siguen dibujados **en código** (`jardin/sprite.js`),
+  las decisiones de "los objetos son navegación, el contenido va en el panel" y "mobile en 2 columnas" siguen vigentes.
+  El escenario es de noche: castillo en el horizonte (`jardin/colinas.js`), velas flotantes y luces fatuas (`jardin/ambiente.js`).
+- **Página clásica (`clasico.html`)**: la animación de orquídeas se reemplazó por una carta de bienvenida con sello de lacre.
+- **Modo claro/oscuro**: Nox (oscuro) es el predeterminado; Lumos (claro) es el crepúsculo. Clave de localStorage: `tema-hogwarts`.
+- **Estilos**: `styles/hogwarts.css` (paleta + componentes compartidos), `hogwarts-jardin.css`, `hogwarts-clasico.css`.
+  Se cargan DESPUÉS de base/jardin/coop y ganan por orden. Los nombres de clase viejos (`.flor`, `.cassette`, `.stardew-card`...) se conservaron a propósito.
+- **Tipografías** autoalojadas en `public/fonts` (Cinzel, Cinzel Decorative, EB Garamond) y Font Awesome desde npm: ya no hay CDN ni Google Fonts.
+- **Responsive**: verificado en 320, 360, 375, 412, 430, 820 (tablet) y 844×390 (horizontal), con áreas seguras de iPhone.
+- **Deploy**: `.github/workflows/netlify-deploy.yml`. Push a `harry-potter` = versión de prueba; producción solo a mano.
+  Necesita el secret `NETLIFY_AUTH_TOKEN`.
+
+---
+
 # Antología — contexto del proyecto
 
 > Documento de traspaso. Si sos un agente que recién llega: **leé esto entero antes de tocar nada**,

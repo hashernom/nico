@@ -28,7 +28,7 @@ export async function setupTodos() {
 
         if (error) {
             console.error('Error cargando to-dos:', error.message);
-            pintarError(lista, 'No se pudieron cargar las tareas 😢', cargar);
+            pintarError(lista, 'No se pudieron cargar las tareas', cargar);
             contador.textContent = '';
             return;
         }
@@ -217,7 +217,7 @@ async function importarDeLocalStorage() {
                 console.error('No se pudieron importar los to-dos viejos:', error.message);
                 return;
             }
-            console.log(`✅ Importados ${nuevos.length} to-dos guardados en este navegador`);
+            console.log(`Importados ${nuevos.length} to-dos guardados en este navegador`);
         }
         localStorage.removeItem('todos');
     } catch {

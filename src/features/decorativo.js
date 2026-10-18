@@ -7,12 +7,12 @@ export function crearParticulas() {
     const contenedor = document.getElementById('particles');
     if (!contenedor) return;
 
-    const tipos = ['🌸', '🌼', '🍃', '⭐', '✨', '💕', '🌺', '🦋'];
+    // Estrellitas doradas hechas en CSS (la forma sale de .particle).
+    const variantes = ['a', 'b', 'c'];
 
     for (let i = 0; i < 15; i++) {
         const particula = document.createElement('div');
-        particula.className = 'particle';
-        particula.textContent = tipos[Math.floor(Math.random() * tipos.length)];
+        particula.className = `particle particle--${variantes[i % variantes.length]}`;
         particula.style.left = Math.random() * 100 + '%';
         particula.style.animationDelay = Math.random() * 15 + 's';
         particula.style.animationDuration = 15 + Math.random() * 10 + 's';
@@ -69,12 +69,10 @@ export function crearEstrellas() {
 export function explosionDeCorazones(x, y) {
     if (sinMovimiento) return;
 
-    const corazones = ['💕', '💖', '💗', '💝', '❤️'];
     const cantidad = 8;
 
     for (let i = 0; i < cantidad; i++) {
         const corazon = document.createElement('div');
-        corazon.textContent = corazones[Math.floor(Math.random() * corazones.length)];
         corazon.className = 'corazon-burst';
         corazon.style.left = x + 'px';
         corazon.style.top = y + 'px';
@@ -106,7 +104,6 @@ export function brilloEnTitulo() {
 
     setInterval(() => {
         const brillo = document.createElement('div');
-        brillo.textContent = '✨';
         brillo.className = 'brillo-titulo';
         brillo.style.left = Math.random() * 100 + '%';
         brillo.style.top = Math.random() * 100 + '%';
@@ -147,20 +144,44 @@ export function animarAlAparecer() {
     });
 }
 
+// Lumos (claro) y Nox (oscuro). El sitio nace de noche: el modo oscuro es el
+// predeterminado y solo se vuelve claro si la persona lo eligió.
+const CLAVE_TEMA = 'tema-hogwarts';
+
 export function setupModoOscuro() {
     const toggle = document.getElementById('darkToggle');
     if (!toggle) return;
     const icono = toggle.querySelector('.toggle-icon');
 
-    if (localStorage.getItem('darkMode') === 'true') {
-        document.body.classList.add('dark-mode');
-        icono.textContent = '☀️';
+    function aplicar(oscuro) {
+        document.body.classList.toggle('dark-mode', oscuro);
+        // El ícono muestra a qué modo se va a pasar, no en cuál se está.
+        icono.innerHTML = oscuro
+            ? '<i class="fas fa-sun" aria-hidden="true"></i>'
+            : '<i class="fas fa-moon" aria-hidden="true"></i>';
+        const etiqueta = oscuro ? 'Lumos: pasar a modo claro' : 'Nox: pasar a modo oscuro';
+        toggle.setAttribute('aria-label', etiqueta);
+        toggle.title = etiqueta;
+        document
+            .querySelector('meta[name="theme-color"]')
+            ?.setAttribute('content', oscuro ? '#0b0d1c' : '#3a2f63');
     }
 
+    let guardado = null;
+    try {
+        guardado = localStorage.getItem(CLAVE_TEMA);
+    } catch (e) {
+        /* sin almacenamiento: se queda en Nox */
+    }
+    aplicar(guardado !== 'claro');
+
     toggle.addEventListener('click', () => {
-        document.body.classList.toggle('dark-mode');
-        const oscuro = document.body.classList.contains('dark-mode');
-        icono.textContent = oscuro ? '☀️' : '🌙';
-        localStorage.setItem('darkMode', oscuro);
+        const oscuro = !document.body.classList.contains('dark-mode');
+        aplicar(oscuro);
+        try {
+            localStorage.setItem(CLAVE_TEMA, oscuro ? 'oscuro' : 'claro');
+        } catch (e) {
+            /* sin almacenamiento: el cambio vale solo para esta visita */
+        }
     });
 }
