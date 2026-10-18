@@ -10,6 +10,9 @@
 //  colores de relleno y brillos.
 // ============================================================
 
+import { crearLienzo, BORDE } from './lienzo.js';
+import { OBJETO_SOMBRERO } from './criaturas.js';
+
 const ANCHO = 17;          // impar: existe un píxel central exacto
 const ALTO_OBJETO = 17;
 const LARGO_PEDESTAL = 9;
@@ -18,60 +21,13 @@ const ALTO = ALTO_OBJETO + LARGO_PEDESTAL;
 const CENTRO_X = (ANCHO - 1) / 2;            // 8
 const CENTRO_Y = (ALTO_OBJETO - 1) / 2;      // 8
 
-const BORDE = '#140c1f';
-
 // Piezas que no llevan contorno: chispas, estrellas, luces. Con contorno
 // se leerían como manchas oscuras en vez de como brillo.
 const SIN_BORDE = new Set(['chispa', 'chispaClara', 'estrella', 'luna', 'lunaSombra']);
 
 // --- Lienzo ------------------------------------------------------------
 
-function lienzo() {
-    const celdas = new Array(ANCHO * ALTO).fill(null);
-    const dentro = (x, y) => x >= 0 && y >= 0 && x < ANCHO && y < ALTO;
-
-    const g = {
-        celdas,
-        px(x, y, color) {
-            if (dentro(x, y)) celdas[y * ANCHO + x] = color;
-        },
-        rect(x, y, ancho, alto, color) {
-            for (let j = 0; j < alto; j++) {
-                for (let i = 0; i < ancho; i++) g.px(x + i, y + j, color);
-            }
-        },
-        disco(cx, cy, radio, color) {
-            for (let y = 0; y < ALTO; y++) {
-                for (let x = 0; x < ANCHO; x++) {
-                    if (Math.hypot(x - cx, y - cy) <= radio) g.px(x, y, color);
-                }
-            }
-        },
-        // Bresenham; `grosor` 2 repite el píxel una columna a la derecha.
-        linea(x0, y0, x1, y1, color, grosor = 1) {
-            const dx = Math.abs(x1 - x0);
-            const dy = Math.abs(y1 - y0);
-            const sx = x0 < x1 ? 1 : -1;
-            const sy = y0 < y1 ? 1 : -1;
-            let err = dx - dy;
-            let x = x0;
-            let y = y0;
-            for (;;) {
-                g.px(x, y, color);
-                if (grosor > 1) g.px(x + 1, y, color);
-                if (grosor > 2) {
-                    g.px(x, y + 1, color);
-                    g.px(x + 1, y + 1, color);
-                }
-                if (x === x1 && y === y1) break;
-                const e2 = 2 * err;
-                if (e2 > -dy) { err -= dy; x += sx; }
-                if (e2 < dx) { err += dx; y += sy; }
-            }
-        }
-    };
-    return g;
-}
+const lienzo = () => crearLienzo(ANCHO, ALTO);
 
 // --- Pedestal compartido ------------------------------------------------
 // Una losa sobre un cuello y un pie ancho, con musgo en la base: los seis
@@ -265,6 +221,9 @@ export const OBJETOS = {
             g.px(8, 11, 'lacreOscuro');
         }
     },
+
+    // Sombrero: el Sombrero Seleccionador, con su cara de dormido.
+    sombrero: OBJETO_SOMBRERO,
 
     // Música: un libro de hechizos con una nota dorada en la tapa.
     libro: {

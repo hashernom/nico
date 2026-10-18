@@ -95,7 +95,13 @@ export async function setupGaleria() {
             caption.appendChild(document.createTextNode(foto.caption));
             caption.appendChild(etiquetaAutor(foto.created_by));
 
-            contenedor.append(img, caption);
+            // El marco recorta la imagen: así los retratos pueden moverse
+            // dentro sin salirse del cuadro.
+            const marco = document.createElement('div');
+            marco.className = 'foto-marco';
+            marco.appendChild(img);
+
+            contenedor.append(marco, caption);
 
             contenedor.addEventListener('click', (e) => {
                 if (e.target.closest('.foto-borrar')) return;

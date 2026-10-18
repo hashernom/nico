@@ -249,6 +249,25 @@ body.dark-mode .flor-icono {
 
 /* ---------------- Intro ---------------- */
 
+/* Siete objetos en hilera: cada uno ocupa su parte del ancho, así ninguno
+   se sale de la pantalla ni se corta contra el borde. */
+.intro-flor {
+    flex: 1 1 0;
+    min-width: 0;
+    max-width: 150px;
+    justify-content: center;
+}
+
+.intro-flor .flor-svg {
+    width: 100%;
+    height: auto;
+}
+
+.intro-flor:nth-child(even) .flor-svg {
+    width: 82%;
+}
+
+
 .intro {
     background: linear-gradient(to bottom, #060918 0%, #11193d 55%, #2a3866 100%);
 }
@@ -271,6 +290,122 @@ body.dark-mode .flor-icono {
     letter-spacing: 0.2em;
     text-transform: uppercase;
     color: var(--oro-claro);
+}
+
+/* ---------------- Carta con lechuza (intro) ---------------- */
+
+.intro-carta {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    display: grid;
+    place-items: center;
+    padding: 24px 16px;
+    transition: opacity 0.7s ease;
+}
+
+.intro-carta.abierta {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.intro-velas {
+    z-index: 0;
+}
+
+/* Cada lechuza cruza el cielo de lado a lado; la carta cae a mitad de vuelo. */
+.intro-lechuzas {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.lechuza {
+    position: absolute;
+    top: 8%;
+    left: 0;
+    width: clamp(110px, 26vw, 190px);
+    aspect-ratio: 30 / 22;
+    animation: cruzar-lechuza 3.6s linear forwards;
+}
+
+.lechuza .lechuza-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    image-rendering: pixelated;
+}
+
+/* Aleteo: los dos cuadros se alternan, sin interpolar. */
+.lechuza .lechuza-arriba {
+    animation: aleteo-a 0.36s steps(1) infinite;
+}
+
+.lechuza .lechuza-abajo {
+    animation: aleteo-b 0.36s steps(1) infinite;
+}
+
+.lechuza--con {
+    animation: cruzar-lechuza 3.6s linear forwards, soltar-carga-a 3.6s steps(1) forwards;
+}
+
+.lechuza--sin {
+    animation: cruzar-lechuza 3.6s linear forwards, soltar-carga-b 3.6s steps(1) forwards;
+}
+
+@keyframes aleteo-a { 0% { opacity: 1; } 50% { opacity: 0; } }
+@keyframes aleteo-b { 0% { opacity: 0; } 50% { opacity: 1; } }
+@keyframes soltar-carga-a { 0% { opacity: 1; } 45% { opacity: 0; } 100% { opacity: 0; } }
+@keyframes soltar-carga-b { 0% { opacity: 0; } 45% { opacity: 1; } 100% { opacity: 1; } }
+
+@keyframes cruzar-lechuza {
+    0%   { transform: translate(-30vw, 6vh); }
+    25%  { transform: translate(15vw, -2vh); }
+    50%  { transform: translate(45vw, 5vh); }
+    75%  { transform: translate(78vw, -2vh); }
+    100% { transform: translate(125vw, 4vh); }
+}
+
+.carta--intro {
+    animation: caer-carta 1.5s cubic-bezier(0.22, 1, 0.36, 1) 1.55s backwards;
+}
+
+@keyframes caer-carta {
+    0%   { opacity: 0; transform: translate(-8vw, -60vh) rotate(-18deg) scale(0.6); }
+    55%  { opacity: 1; transform: translate(3vw, -6vh) rotate(7deg) scale(1.02); }
+    80%  { transform: translate(-1vw, 1vh) rotate(-2.5deg); }
+    100% { opacity: 1; transform: translate(0, 0) rotate(-1.2deg); }
+}
+
+/* Se abre: el papel sube y se desvanece, el sello se desprende. */
+.carta--intro.abierta {
+    animation: none;
+    transform: translateY(-12vh) rotate(0deg) scale(1.06);
+    opacity: 0;
+    transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.7s ease 0.15s;
+}
+
+.carta--intro.abierta .sello-cera {
+    animation: none;
+    transform: scale(1.3) rotate(14deg);
+    opacity: 0;
+}
+
+button.sello {
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    touch-action: manipulation;
+}
+
+button.sello:focus-visible {
+    outline: 3px solid var(--oro-claro);
+    outline-offset: 6px;
+    border-radius: 50%;
 }
 
 /* ---------------- Panel ---------------- */
@@ -463,9 +598,14 @@ body.dark-mode .cassette-etiqueta {
     }
 
     .flor-cartel {
-        font-size: 0.68rem;
-        padding: 3px 7px;
-        letter-spacing: 0.04em;
+        font-size: 0.64rem;
+        padding: 3px 6px;
+        letter-spacing: 0.03em;
+    }
+
+    /* Con tres columnas no sobra ancho para el ícono de la etiqueta. */
+    .flor-icono {
+        display: none;
     }
 
     /* Los objetos se dimensionan por alto de pantalla además de por ancho:

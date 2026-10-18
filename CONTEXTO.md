@@ -16,6 +16,16 @@
   Se cargan DESPUÉS de base/jardin/coop y ganan por orden. Los nombres de clase viejos (`.flor`, `.cassette`, `.stardew-card`...) se conservaron a propósito.
 - **Tipografías** autoalojadas en `public/fonts` (Cinzel, Cinzel Decorative, EB Garamond) y Font Awesome desde npm: ya no hay CDN ni Google Fonts.
 - **Responsive**: verificado en 320, 360, 375, 412, 430, 820 (tablet) y 844×390 (horizontal), con áreas seguras de iPhone.
+- **Sombrero Seleccionador** (7º objeto, `features/sombrero.js` + `sombrero-datos.js`): test real de 12 preguntas
+  más una final que desempata, con sombrero animado, veredicto y resultado por usuario. Las preguntas y pesos
+  están en `sombrero-datos.js`. La casa de cada persona vive en la tabla `casas` de Supabase (una fila por usuario,
+  RLS: solo escribe la propia). **La migración `supabase/migrations/20261018120000_casas.sql` hay que aplicarla**:
+  sin ella el test funciona pero guarda solo en el navegador (`lib/casas.js` cae a localStorage y avisa).
+  Nadie ve la casa de la otra persona hasta haberse seleccionado.
+- **Más Harry Potter**: carta con lechuza en la intro del jardín (`jardin/intro-jardin.js`), Mapa del Merodeador en
+  Eventos (`features/mapa.js`, juramento + huellas), lechuza en Cartas (`features/lechuza.js`), retratos que se mueven
+  en Galería (`features/retratos.js`), Copa de las casas en el widget de visitas (`jardin/visitas.js`) y música/sonidos
+  opcionales con WebAudio (`lib/sonido.js`, apagado por defecto). Los sprites nuevos salen de `jardin/lienzo.js` y `jardin/criaturas.js`.
 - **Deploy**: `.github/workflows/netlify-deploy.yml`. Push a `harry-potter` = versión de prueba; producción solo a mano.
   Necesita el secret `NETLIFY_AUTH_TOKEN`.
 

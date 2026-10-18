@@ -128,9 +128,10 @@ function puntosLibresDesktop(cantidad, separacionMinima) {
 // bordes y el pasillo entre columnas.
 
 const FRANJAS_MOVIL = [
-    { xMin: 2, xMax: 8 }, // borde izquierdo
-    { xMin: 45, xMax: 55 }, // pasillo entre columnas
-    { xMin: 92, xMax: 98 } // borde derecho
+    { xMin: 1, xMax: 5 }, // borde izquierdo
+    { xMin: 31, xMax: 36 }, // primer pasillo entre columnas
+    { xMin: 64, xMax: 69 }, // segundo pasillo
+    { xMin: 95, xMax: 99 } // borde derecho
 ];
 
 function puntosLibresMovil(cantidad) {

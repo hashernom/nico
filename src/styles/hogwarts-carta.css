@@ -1,0 +1,140 @@
+/* ============================================================
+   EDICIÓN HOGWARTS — la carta de bienvenida y su sello de lacre
+   Compartida por la página clásica y la intro del jardín.
+   ============================================================ */
+
+.carta {
+    position: relative;
+    z-index: 1;
+    width: min(100%, 460px);
+    padding: 40px 34px 30px;
+    color: var(--text-dark);
+    background:
+        radial-gradient(120% 90% at 20% 10%, rgba(255, 255, 255, 0.35), transparent 55%),
+        linear-gradient(170deg, #f1e3bd, #dfc895 70%, #cdb07a);
+    border-radius: 3px;
+    box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.8), 0 4px 10px rgba(0, 0, 0, 0.4), inset 0 -10px 40px rgba(122, 82, 28, 0.25);
+    transform: rotate(-1.2deg);
+    transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.7s ease 0.2s;
+}
+
+
+.carta-para {
+    margin-bottom: 14px;
+    font-family: var(--font-titulo);
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.04em;
+    color: #2f1d10;
+}
+
+.carta-cuerpo {
+    font-size: 1.2rem;
+    line-height: 1.5;
+    text-wrap: pretty;
+    color: #2f1d10;
+}
+
+.carta-cuerpo em {
+    font-weight: 500;
+}
+
+.carta-firma {
+    width: fit-content;
+    margin: 18px 0 0 auto;
+    font-style: italic;
+    font-size: 1.1rem;
+    color: #5a3f25;
+}
+
+.carta-pista {
+    margin-top: 16px;
+    text-align: center;
+    font-family: var(--font-titulo);
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #5a3f25;
+}
+
+.sello {
+    display: block;
+    width: 92px;
+    height: 92px;
+    margin: 24px auto 0;
+}
+
+.sello-cera {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 100%;
+    border-radius: 47% 53% 50% 50% / 52% 48% 52% 48%;
+    background: radial-gradient(circle at 35% 30%, #b8374a 0%, #8a1e2d 42%, #5c0f1b 100%);
+    box-shadow: 0 8px 14px rgba(40, 6, 12, 0.55), inset 0 3px 5px rgba(255, 190, 190, 0.35), inset 0 -5px 8px rgba(30, 0, 6, 0.6);
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+    animation: latir-sello 2.4s ease-in-out infinite;
+}
+
+.sello-marca {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 66px;
+    height: 66px;
+    border: 2px solid rgba(255, 205, 190, 0.5);
+    border-radius: 50%;
+    box-shadow: inset 0 2px 4px rgba(30, 0, 6, 0.55);
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 1.25rem;
+    color: #e8b9ad;
+    text-shadow: 0 -1px 0 rgba(30, 0, 6, 0.7), 0 1px 0 rgba(255, 190, 190, 0.25);
+}
+
+.sello-marca i {
+    margin: 0 1px;
+    font-style: normal;
+    opacity: 0.75;
+}
+
+
+@keyframes latir-sello {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.04); }
+}
+
+@media (max-width: 480px) {
+    .carta {
+        padding: 32px 22px 26px;
+    }
+
+    .sello {
+        width: 80px;
+        height: 80px;
+    }
+
+    .sello-marca {
+        width: 58px;
+        height: 58px;
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-height: 520px) and (orientation: landscape) {
+    .carta {
+        padding: 20px 26px;
+    }
+
+    .sello {
+        width: 56px;
+        height: 56px;
+        margin-top: 10px;
+    }
+
+    .sello-marca {
+        width: 40px;
+        height: 40px;
+        font-size: 0.85rem;
+    }
+}

@@ -15,6 +15,29 @@
     <!-- ============ INTRO: las flores floreciendo ============ -->
     <div class="intro" id="intro">
         <div class="intro-cielo"></div>
+
+        <!-- La lechuza trae la carta; el sello se rompe y entonces aparecen los objetos. -->
+        <div class="intro-carta" id="introCarta">
+            <div class="intro-velas carta-velas" aria-hidden="true">
+                <span class="jardin-vela" style="left:8%;top:14%;--bob:7s;--bob-delay:-1s;--flick:.9s"></span>
+                <span class="jardin-vela" style="left:22%;top:34%;--bob:8s;--bob-delay:-3s;--flick:1.2s"></span>
+                <span class="jardin-vela" style="left:36%;top:10%;--bob:6s;--bob-delay:-2s;--flick:1.1s"></span>
+                <span class="jardin-vela" style="left:64%;top:12%;--bob:9s;--bob-delay:-5s;--flick:.8s"></span>
+                <span class="jardin-vela" style="left:78%;top:32%;--bob:7s;--bob-delay:-4s;--flick:1.3s"></span>
+                <span class="jardin-vela" style="left:91%;top:16%;--bob:8s;--bob-delay:-6s;--flick:1s"></span>
+            </div>
+            <div class="intro-lechuzas" id="introLechuzas" aria-hidden="true"></div>
+            <article class="carta carta--intro" id="cartaIntro">
+                <p class="carta-para">Estimada señorita Nicole:</p>
+                <p class="carta-cuerpo">Nos complace informarle que ha sido admitida, con honores, en la <em>Antología de nuestros momentos</em>. Cada recuerdo aguarda su visita.</p>
+                <p class="carta-firma">El director del colegio</p>
+                <button class="sello" id="introSello" type="button" aria-label="Romper el sello y abrir la carta">
+                    <span class="sello-cera"><span class="sello-marca">N<i>·</i>S</span></span>
+                </button>
+                <p class="carta-pista">Toca para romper el sello</p>
+            </article>
+        </div>
+
         <div class="intro-flores" id="introFlores"></div>
         <div class="intro-tierra"></div>
         <p class="intro-pista" id="introPista">tocá para entrar</p>
@@ -44,6 +67,8 @@
     <button class="dark-toggle" id="darkToggle" aria-label="Modo oscuro">
         <span class="toggle-icon"><i class="fas fa-sun" aria-hidden="true"></i></span>
     </button>
+
+    <button class="sonido-btn" id="sonidoBtn" type="button" aria-label="Activar música y sonidos" aria-pressed="false"><i class="fas fa-volume-xmark" aria-hidden="true"></i></button>
 
     <button class="auth-btn" id="authBtn" aria-label="Iniciar sesión"><i class="fas fa-lock"></i></button>
 
@@ -160,6 +185,12 @@
                         <button type="submit">Agregar</button>
                         <p class="form-estado" id="cancionEstado"></p>
                     </form>
+                </section>
+
+
+                <!-- ---------- SOMBRERO SELECCIONADOR ---------- -->
+                <section class="seccion" data-seccion="sombrero" hidden>
+                    <div class="sombrero-escena" id="sombreroEscena"></div>
                 </section>
 
             </div>

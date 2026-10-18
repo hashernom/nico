@@ -1,0 +1,471 @@
+/* ============================================================
+   EDICIÓN HOGWARTS — detalles de cada sección del panel
+   El mapa del merodeador (Eventos), la lechuza (Cartas), los retratos
+   vivos (Galería) y la copa de las casas (visitas).
+   ============================================================ */
+
+.panel-madera {
+    position: relative;
+}
+
+/* Fondos de pergamino que se leen igual de día y de noche. */
+.panel-cuerpo .seccion[data-seccion='eventos'] {
+    --tinta: #2f1d10;
+    --tinta-suave: #5a3f25;
+}
+
+/* ---------------- Mapa: la portada ---------------- */
+
+.merodeador-puerta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    min-height: 280px;
+    padding: 28px 18px;
+    border: 3px solid var(--wood-dark);
+    background:
+        radial-gradient(120% 90% at 20% 10%, rgba(255, 255, 255, 0.3), transparent 60%),
+        linear-gradient(175deg, #f1e3bd, #dcc48f);
+    color: #2f1d10;
+    text-align: center;
+    box-shadow: inset 0 -10px 40px rgba(122, 82, 28, 0.25);
+}
+
+.merodeador-puerta[hidden] {
+    display: none;
+}
+
+.merodeador-pista {
+    max-width: 30ch;
+    font-style: italic;
+    font-size: 1.15rem;
+    line-height: 1.45;
+    text-wrap: balance;
+}
+
+.merodeador-juramento,
+.merodeador-cierre {
+    max-width: 100%;
+    padding: 12px 18px;
+    border: 3px solid #140c1f;
+    border-radius: 8px;
+    background: linear-gradient(to bottom, #a8283f, var(--borgona));
+    color: var(--oro-claro);
+    font-family: var(--font-titulo);
+    font-weight: 700;
+    font-size: 0.82rem;
+    line-height: 1.4;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.35);
+    cursor: pointer;
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    touch-action: manipulation;
+}
+
+.merodeador-juramento:hover,
+.merodeador-cierre:hover {
+    transform: translateY(-2px);
+}
+
+.merodeador-juramento {
+    min-height: 52px;
+    text-wrap: balance;
+}
+
+.merodeador-cierre {
+    display: block;
+    min-height: 46px;
+    margin: 18px auto 0;
+}
+
+.merodeador-cierre[hidden],
+.merodeador-cabecera[hidden] {
+    display: none;
+}
+
+/* ---------------- Mapa: abierto ---------------- */
+
+.merodeador-cabecera {
+    padding: 4px 0 14px;
+    text-align: center;
+}
+
+.merodeador-titulo {
+    font-family: var(--font-titulo);
+    font-weight: 700;
+    font-size: 0.78rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-light);
+}
+
+.merodeador-subtitulo {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: clamp(1.25rem, 5vw, 1.8rem);
+    line-height: 1.15;
+    color: var(--text-dark);
+    text-wrap: balance;
+}
+
+.seccion[data-seccion='eventos']:not(.mapa-abierto) .timeline-container,
+.seccion[data-seccion='eventos']:not(.mapa-abierto) .form-coop {
+    display: none;
+}
+
+.mapa-abierto .timeline-container {
+    padding: 26px 14px 22px;
+    border: 3px solid var(--wood-dark);
+    background:
+        linear-gradient(90deg, transparent calc(50% - 1px), rgba(122, 82, 28, 0.22) 50%, transparent calc(50% + 1px)),
+        radial-gradient(130% 70% at 50% 0%, rgba(255, 255, 255, 0.28), transparent 60%),
+        linear-gradient(180deg, #ead9b0, #d9bf86);
+    box-shadow: inset 0 -12px 50px rgba(122, 82, 28, 0.3);
+}
+
+.mapa-abierto .timeline-line {
+    display: none;
+}
+
+.mapa-abierto #checkpoints-list {
+    position: relative;
+    display: grid;
+    gap: 22px;
+}
+
+/* El sendero punteado por donde van las huellas. */
+.mapa-abierto #checkpoints-list::before {
+    content: '';
+    position: absolute;
+    top: 6px;
+    bottom: 6px;
+    left: 50%;
+    border-left: 2px dotted rgba(90, 63, 37, 0.6);
+}
+
+.mapa-abierto .timeline-item {
+    display: grid;
+    grid-template-columns: 1fr 36px 1fr;
+    align-items: center;
+    margin: 0;
+    animation: none;
+}
+
+.mapa-abierto .timeline-dot {
+    grid-column: 2;
+    grid-row: 1;
+    position: relative;
+    width: 14px;
+    height: 22px;
+    margin: 0 auto;
+    border: 0;
+    border-radius: 50% 50% 48% 48% / 58% 58% 42% 42%;
+    background: #2f1d10;
+    box-shadow: none;
+    transform: rotate(-12deg);
+}
+
+.mapa-abierto .timeline-item:nth-child(even) .timeline-dot {
+    transform: rotate(12deg);
+}
+
+.mapa-abierto .timeline-item:hover .timeline-dot {
+    transform: rotate(-12deg);
+    background: #2f1d10;
+    box-shadow: none;
+}
+
+/* El talón de la huella. */
+.mapa-abierto .timeline-dot::after {
+    content: '';
+    position: absolute;
+    left: 2px;
+    top: 26px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #2f1d10;
+    clip-path: none;
+    opacity: 0.85;
+    transform: none;
+}
+
+.mapa-abierto .timeline-content {
+    grid-row: 1;
+    grid-column: 1;
+    display: block;
+    padding: 0 12px 0 0;
+    border: 0;
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+    text-align: right;
+    transform: none;
+}
+
+.mapa-abierto .timeline-item:nth-child(even) .timeline-content {
+    grid-column: 3;
+    padding: 0 0 0 12px;
+    text-align: left;
+}
+
+.mapa-abierto .timeline-content::before {
+    display: none;
+}
+
+.mapa-abierto .timeline-item:hover .timeline-content {
+    transform: none;
+    box-shadow: none;
+}
+
+.mapa-abierto .timeline-info h3 {
+    font-style: italic;
+    font-weight: 500;
+    font-size: 1.2rem;
+    line-height: 1.25;
+    color: #2f1d10;
+    text-wrap: balance;
+}
+
+.mapa-abierto .timeline-date {
+    display: block;
+    margin-top: 2px;
+    font-size: 0.74rem;
+    letter-spacing: 0.1em;
+    color: #5a3f25;
+}
+
+/* El pergamino es el mismo de día y de noche: se anulan los fondos oscuros
+   que el modo Nox le pone a las tarjetas del timeline. */
+body.dark-mode .mapa-abierto .timeline-content {
+    background: none;
+    border: 0;
+    box-shadow: none;
+}
+
+body.dark-mode .mapa-abierto .timeline-info h3 {
+    color: #2f1d10;
+}
+
+body.dark-mode .mapa-abierto .timeline-date {
+    color: #5a3f25;
+}
+
+body.dark-mode .mapa-abierto .autor-tag {
+    background: rgba(255, 255, 255, 0.55);
+    border-color: #5a3f25;
+    color: #5a3f25;
+}
+
+body.dark-mode .mapa-abierto .timeline-dot,
+body.dark-mode .mapa-abierto .timeline-item:hover .timeline-dot {
+    background: #2f1d10;
+    box-shadow: none;
+}
+
+body.dark-mode .mapa-abierto .timeline-dot::after {
+    background: #2f1d10;
+}
+
+/* Las etiquetas de autor y el borrado se leen sobre pergamino. */
+.mapa-abierto .autor-tag {
+    background: rgba(255, 255, 255, 0.55);
+    border-color: #5a3f25;
+    color: #5a3f25;
+}
+
+.mapa-abierto .evento-borrar {
+    margin-top: 4px;
+}
+
+/* La tinta se escribe sola, evento por evento. */
+.mapa-revelando .timeline-item {
+    animation: tinta 0.9s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+    animation-delay: calc(var(--i, 0) * 120ms + 250ms);
+}
+
+@keyframes tinta {
+    from {
+        opacity: 0.2;
+        clip-path: inset(0 100% 0 0);
+    }
+    to {
+        opacity: 1;
+        clip-path: inset(0 0 0 0);
+    }
+}
+
+@media (max-width: 560px) {
+    .mapa-abierto .timeline-container {
+        background:
+            radial-gradient(130% 70% at 50% 0%, rgba(255, 255, 255, 0.28), transparent 60%),
+            linear-gradient(180deg, #ead9b0, #d9bf86);
+    }
+
+    .mapa-abierto #checkpoints-list::before {
+        left: 15px;
+    }
+
+    .mapa-abierto .timeline-item {
+        grid-template-columns: 30px 1fr;
+    }
+
+    .mapa-abierto .timeline-dot {
+        grid-column: 1;
+    }
+
+    .mapa-abierto .timeline-content,
+    .mapa-abierto .timeline-item:nth-child(even) .timeline-content {
+        grid-column: 2;
+        padding: 0 0 0 10px;
+        text-align: left;
+    }
+}
+
+/* ---------------- Cartas: la lechuza ---------------- */
+
+.lechuza.lechuza-vuelo {
+    top: 0;
+    left: 0;
+    z-index: 20;
+    width: clamp(90px, 18vw, 130px);
+    animation: none;
+    pointer-events: none;
+}
+
+.espera-lechuza .sobre {
+    opacity: 0;
+}
+
+.llegan .sobre {
+    animation: caer-sobre 0.7s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+    animation-delay: calc(var(--orden, 0) * 110ms);
+}
+
+@keyframes caer-sobre {
+    from {
+        opacity: 0;
+        transform: translateY(-34px) rotate(-6deg);
+    }
+}
+
+/* ---------------- Galería: marcos y retratos vivos ---------------- */
+
+.panel-cuerpo .album-photo {
+    padding: 7px;
+    border: 3px solid #140c1f;
+    background: linear-gradient(135deg, #f4d786 0%, #a97b27 24%, #e9c776 50%, #805a1b 76%, #d9ae55 100%);
+}
+
+body.dark-mode .panel-cuerpo .album-photo {
+    background: linear-gradient(135deg, #b38f35 0%, #6e4f17 24%, #a8832f 50%, #503811 76%, #8d6c26 100%);
+}
+
+.foto-marco {
+    overflow: hidden;
+    border: 3px solid #170e07;
+    background: #170e07;
+}
+
+.foto-marco img {
+    display: block;
+    width: 100%;
+    height: auto;
+    transform-origin: 50% 50%;
+    transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.panel-cuerpo .album-photo .album-caption {
+    background: linear-gradient(to bottom, #3a2814, #24170b);
+    border-color: var(--oro-oscuro);
+    color: #f2e3bd;
+}
+
+.panel-cuerpo .album-photo .autor-tag {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: var(--oro-oscuro);
+    color: #f2e3bd;
+}
+
+/* Cobra vida un instante: un vaivén lento de la imagen dentro del marco. */
+.album-photo.viva .foto-marco img {
+    animation: retrato-vivo 3.2s ease-in-out;
+}
+
+@keyframes retrato-vivo {
+    0%, 100% { transform: scale(1) translate(0, 0); }
+    30% { transform: scale(1.08) translate(-2.2%, -1.6%); }
+    65% { transform: scale(1.06) translate(1.8%, 1.2%); }
+}
+
+/* ---------------- Copa de las casas ---------------- */
+
+.visitas-widget--copa::before {
+    content: 'Copa de las casas';
+    display: block;
+    margin-bottom: 2px;
+    font-family: var(--font-titulo);
+    font-weight: 700;
+    font-size: 0.56rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-light);
+}
+
+body.dark-mode .visitas-widget--copa::before {
+    color: #c9b996;
+}
+
+.visitas-escudo {
+    display: none;
+    width: 14px;
+}
+
+.visitas-fila:not([data-casa='']) .visitas-escudo {
+    display: block;
+}
+
+.visitas-escudo .escudo-img {
+    display: block;
+    width: 100%;
+    image-rendering: pixelated;
+}
+
+.visitas-puntos {
+    min-width: 1.4em;
+    font-family: var(--font-titulo);
+    font-weight: 700;
+    font-size: 0.66rem;
+    text-align: right;
+    font-variant-numeric: lining-nums tabular-nums;
+    color: var(--text-dark);
+}
+
+body.dark-mode .visitas-puntos {
+    color: #efe3c7;
+}
+
+.visitas-corona {
+    font-size: 0.62rem;
+    color: var(--oro-oscuro);
+}
+
+body.dark-mode .visitas-corona {
+    color: var(--oro-claro);
+}
+
+.visitas-fila[data-casa='gryffindor'] .visitas-segmento.lleno { background: linear-gradient(to bottom, #e0566a, #9b2335); }
+.visitas-fila[data-casa='slytherin'] .visitas-segmento.lleno { background: linear-gradient(to bottom, #3fa070, #1f6b45); }
+.visitas-fila[data-casa='ravenclaw'] .visitas-segmento.lleno { background: linear-gradient(to bottom, #6a8fe0, #2b4c95); }
+.visitas-fila[data-casa='hufflepuff'] .visitas-segmento.lleno { background: linear-gradient(to bottom, #f4d466, #e3b83a); }
+
+@media (prefers-reduced-motion: reduce) {
+    .mapa-revelando .timeline-item,
+    .llegan .sobre,
+    .album-photo.viva .foto-marco img {
+        animation: none;
+    }
+}

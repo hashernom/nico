@@ -7,7 +7,10 @@ import './styles/base.css';
 import './styles/coop.css';
 import './styles/jardin.css';
 import './styles/hogwarts.css';
+import './styles/hogwarts-carta.css';
 import './styles/hogwarts-jardin.css';
+import './styles/hogwarts-sombrero.css';
+import './styles/hogwarts-secciones.css';
 
 import { setupAuth } from './lib/auth.js';
 import { setupTimers } from './features/timers.js';
@@ -26,6 +29,11 @@ import { setupColinas } from './jardin/colinas.js';
 import { inicializarPrimeraVez } from './jardin/novedades.js';
 import { setupVisitas } from './jardin/visitas.js';
 import { setupPresencia } from './lib/presencia.js';
+import { setupSombrero } from './features/sombrero.js';
+import { setupSonido } from './lib/sonido.js';
+import { setupMapa } from './features/mapa.js';
+import { setupLechuza } from './features/lechuza.js';
+import { setupRetratos } from './features/retratos.js';
 
 async function iniciar() {
     // Nada de esto depende de la red: se pinta de inmediato.
@@ -36,6 +44,10 @@ async function iniciar() {
     setupColinas();
     setupDecoracion();
     setupAmbiente();
+    setupSonido();
+    setupMapa();
+    setupLechuza();
+    setupRetratos();
     setupIntroJardin();
 
     // Antes de que lleguen los datos: si es la primera vez que este
@@ -61,7 +73,8 @@ async function iniciar() {
         setupEventos(),
         setupTodos(),
         setupCartas(),
-        setupMusica()
+        setupMusica(),
+        setupSombrero()
     ]);
 }
 

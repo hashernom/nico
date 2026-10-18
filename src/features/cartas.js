@@ -174,6 +174,7 @@ export async function setupCartas() {
         cartas = ordenar(cartas.map((c) => (c.id === temporal.id ? data : c)));
         pintar();
         estado.textContent = '¡Carta guardada!';
+        document.dispatchEvent(new CustomEvent('carta-enviada'));
         setTimeout(() => {
             estado.textContent = '';
         }, 3000);

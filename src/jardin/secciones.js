@@ -1,4 +1,4 @@
-// Los seis objetos mágicos del jardín. Cada uno es una sección.
+// Los siete objetos mágicos del jardín. Cada uno es una sección.
 //
 // `x` e `y` son porcentajes dentro del cantero. Están desalineados a propósito:
 // una grilla perfecta parece una tabla, no un patio. En pantallas chicas el
@@ -12,7 +12,8 @@ export const SECCIONES = [
     { id: 'eventos', titulo: 'Eventos', leyenda: 'Los checkpoints', icono: 'fa-map-location-dot', objeto: 'mapa', x: 66, y: 24 },
     { id: 'todos', titulo: 'To-Do', leyenda: 'Lo que falta hacer', icono: 'fa-wand-magic-sparkles', objeto: 'varita', x: 88, y: 52 },
     { id: 'cartas', titulo: 'Cartas', leyenda: 'Lo que nos escribimos', icono: 'fa-envelope', objeto: 'sobre', x: 57, y: 62 },
-    { id: 'musica', titulo: 'Música', leyenda: 'Canciones nuestras', icono: 'fa-music', objeto: 'libro', x: 24, y: 70 }
+    { id: 'musica', titulo: 'Música', leyenda: 'Canciones nuestras', icono: 'fa-music', objeto: 'libro', x: 24, y: 70 },
+    { id: 'sombrero', titulo: 'Sombrero', leyenda: '¿A qué casa pertenecemos?', icono: 'fa-hat-wizard', objeto: 'sombrero', x: 41, y: 91 }
 ];
 
 export function seccionPorId(id) {

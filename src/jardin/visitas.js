@@ -1,7 +1,9 @@
 // ============================================================
-//  VISITAS DEL MES
+//  VISITAS DEL MES / COPA DE LAS CASAS
 //  Dos barras pixel art (Santi y Nico), estilo barra de vida de
-//  videojuego: cuántas veces entró cada uno este mes. El contador es
+//  videojuego: cuántas veces entró cada uno este mes. Cuando una persona ya
+//  pasó por el Sombrero Seleccionador, su barra lleva el escudo y los colores
+//  de su casa y cada visita es un punto: es la copa de las casas. El contador es
 //  COMPARTIDO: se guarda en la tabla `visitas` de Supabase con la
 //  identidad de la sesión (created_by, default auth.uid()), así cada
 //  uno ve el ritmo del otro, no solo el propio.
@@ -15,6 +17,8 @@
 import { supabase } from '../lib/supabase.js';
 import { alCambiarSesion } from '../lib/auth.js';
 import { NOMBRES } from '../lib/autores.js';
+import { alCambiarCasas, casasActuales } from '../lib/casas.js';
+import { CASAS, crearEscudoIMG } from './criaturas.js';
 
 const TOPE = 30; // techo VISUAL para que la barra tenga sentido; no es un límite real
 const SEGMENTOS = 8;
@@ -28,8 +32,10 @@ const MESES = [
 // evita insertar de más.
 let registrada = false;
 
-// uuid -> { barra, nombre } para pintar sin reconstruir el DOM.
+// uuid -> { barra, nombre, fila, etiqueta, puntos } para pintar sin reconstruir el DOM.
 const barras = new Map();
+let conteoActual = {};
+let widgetEl = null;
 
 function inicioDelMes() {
     const ahora = new Date();
@@ -53,6 +59,10 @@ export function setupVisitas() {
         const fila = document.createElement('div');
         fila.className = `visitas-fila visitas-fila--${nombre.toLowerCase()}`;
 
+        const escudo = document.createElement('span');
+        escudo.className = 'visitas-escudo';
+        escudo.setAttribute('aria-hidden', 'true');
+
         const etiqueta = document.createElement('span');
         etiqueta.className = 'visitas-nombre';
         etiqueta.textContent = nombre;
@@ -66,12 +76,20 @@ export function setupVisitas() {
                 'visitas-segmento';
         }
 
-        fila.append(etiqueta, barra);
+        const puntos = document.createElement('span');
+        puntos.className = 'visitas-puntos';
+        puntos.hidden = true;
+
+        fila.append(escudo, etiqueta, barra, puntos);
         widget.appendChild(fila);
-        barras.set(uuid, { barra, nombre });
+        barras.set(uuid, { barra, nombre, fila, escudo, etiqueta, puntos });
     }
 
+    widgetEl = widget;
     contenedor.appendChild(widget);
+
+    // Las casas pueden llegar antes o después de las visitas.
+    alCambiarCasas(() => pintarCasas());
 
     alCambiarSesion(async (sesion) => {
         if (sesion && !registrada) {
@@ -104,6 +122,7 @@ async function actualizar() {
         conteo[fila.created_by] = (conteo[fila.created_by] || 0) + 1;
     }
 
+    conteoActual = conteo;
     const mes = MESES[new Date().getMonth()];
     for (const [uuid, { barra, nombre }] of barras) {
         const cantidad = conteo[uuid] || 0;
@@ -123,5 +142,50 @@ async function actualizar() {
             'aria-label',
             `${nombre} entró ${cantidad} ${cantidad === 1 ? 'vez' : 'veces'} en ${mes}`
         );
+    }
+
+    pintarCasas();
+}
+
+// La copa: escudo y color de casa en cada barra, y una corona para quien va
+// adelante cuando las dos personas ya tienen casa.
+function pintarCasas() {
+    if (!widgetEl) return;
+    const casas = casasActuales();
+
+    const conCasa = [...barras.keys()].filter((uuid) => casas[uuid]);
+    widgetEl.classList.toggle('visitas-widget--copa', conCasa.length > 0);
+
+    const cantidades = [...barras.keys()].map((uuid) => conteoActual[uuid] || 0);
+    const hayLider = conCasa.length === barras.size && cantidades[0] !== cantidades[1];
+    const lider = hayLider
+        ? [...barras.keys()][cantidades[0] > cantidades[1] ? 0 : 1]
+        : null;
+
+    for (const [uuid, { fila, escudo, etiqueta, puntos, nombre }] of barras) {
+        const casa = casas[uuid]?.casa;
+        fila.dataset.casa = casa ?? '';
+        escudo.replaceChildren();
+
+        if (casa) {
+            escudo.appendChild(crearEscudoIMG(casa));
+            fila.title = `${nombre}: ${CASAS[casa].nombre}`;
+        } else {
+            fila.removeAttribute('title');
+        }
+
+        const cantidad = conteoActual[uuid] || 0;
+        puntos.hidden = !casa;
+        puntos.textContent = String(cantidad);
+        puntos.setAttribute('aria-label', `${cantidad} ${cantidad === 1 ? 'punto' : 'puntos'}`);
+
+        etiqueta.textContent = nombre;
+        if (uuid === lider) {
+            const corona = document.createElement('i');
+            corona.className = 'fas fa-crown visitas-corona';
+            corona.setAttribute('role', 'img');
+            corona.setAttribute('aria-label', 'va ganando la copa');
+            etiqueta.append(' ', corona);
+        }
     }
 }

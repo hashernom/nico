@@ -3,6 +3,7 @@ import '@fortawesome/fontawesome-free/css/solid.min.css';
 import './styles/base.css';
 import './styles/coop.css';
 import './styles/hogwarts.css';
+import './styles/hogwarts-carta.css';
 import './styles/hogwarts-clasico.css';
 
 import { setupAuth } from './lib/auth.js';

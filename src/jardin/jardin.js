@@ -166,6 +166,8 @@ function abrirSeccion(seccion, flor) {
     void panel.offsetWidth;
     panel.classList.add('creciendo');
 
+    document.dispatchEvent(new CustomEvent('seccion-abierta', { detail: { id: seccion.id } }));
+
     history.pushState({ seccion: seccion.id }, '');
     elementos.cerrar.focus({ preventScroll: true });
     mundo?.setAttribute('aria-hidden', 'true');
@@ -180,6 +182,7 @@ function cerrarSeccion({ volverAtras = true } = {}) {
     document.body.classList.remove('panel-abierto');
     mundo?.removeAttribute('aria-hidden');
     soltarCamara();
+    document.dispatchEvent(new CustomEvent('seccion-cerrada'));
     setSeccionAbierta(null);
 
     if (volverAtras && history.state?.seccion) history.back();
