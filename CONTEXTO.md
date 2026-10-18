@@ -27,8 +27,8 @@
   Eventos (`features/mapa.js`, juramento + huellas), lechuza en Cartas (`features/lechuza.js`), retratos que se mueven
   en Galería (`features/retratos.js`), Copa de las casas en el widget de visitas (`jardin/visitas.js`) y música/sonidos
   opcionales con WebAudio (`lib/sonido.js`, apagado por defecto). Los sprites nuevos salen de `jardin/lienzo.js` y `jardin/criaturas.js`.
-- **Deploy**: `.github/workflows/netlify-deploy.yml`. Push a `harry-potter` = versión de prueba; producción solo a mano.
-  Necesita el secret `NETLIFY_AUTH_TOKEN`.
+- **Deploy**: Netlify está conectado directo al repo (Git integration); cada push a `harry-potter` genera su deploy.
+  Ya no hay workflow de GitHub Actions para Netlify (se eliminó).
 
 ---
 
