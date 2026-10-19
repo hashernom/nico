@@ -25,6 +25,6 @@ function vistaPrevia() {
     }
 }
 
-export const SOMBRERO_ACTIVO = false;
+export const SOMBRERO_ACTIVO = true;
 
 export const sombreroVisible = SOMBRERO_ACTIVO || vistaPrevia();
